@@ -48,8 +48,7 @@ def get_upstream(repo: Repo) -> Remote:
 def release_changelog(repo: Repo, version: Version) -> Commit:
     print("generate release commit")
     check_call(["towncrier", "--yes", "--version", version.public], cwd=str(ROOT_SRC_DIR))
-    release_commit = repo.index.commit(f"release {version}")
-    return release_commit
+    return repo.index.commit(f"release {version}")
 
 
 def tag_release_commit(release_commit, repo, version) -> TagReference:
@@ -59,8 +58,7 @@ def tag_release_commit(release_commit, repo, version) -> TagReference:
         print(f"delete existing tag {version}")
         repo.delete_tag(version)
     print(f"create tag {version}")
-    tag = repo.create_tag(version, ref=release_commit, force=True)
-    return tag
+    return repo.create_tag(version, ref=release_commit, force=True)
 
 
 if __name__ == "__main__":

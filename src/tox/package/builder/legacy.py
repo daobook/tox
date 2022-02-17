@@ -45,10 +45,7 @@ def make_sdist(config, session):
             # check if empty or comment only
             data = []
             with open(str(setup)) as fp:
-                for line in fp:
-                    if line and line[0] == "#":
-                        continue
-                    data.append(line)
+                data.extend(line for line in fp if not line or line[0] != "#")
             if not "".join(data).strip():
                 reporter.error("setup.py is empty")
                 raise SystemExit(1)

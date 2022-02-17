@@ -960,7 +960,7 @@ def test_command_relative_issue36(newmocksession, tmpdir, monkeypatch):
     mocksession.report.not_expect("warning", "*test command found but not*")
     monkeypatch.setenv("PATH", str(tmpdir))
     x4 = venv.getcommandpath("x", cwd=tmpdir)
-    assert x4.endswith(os.sep + "x")
+    assert x4.endswith(f'{os.sep}x')
     mocksession.report.expect("warning", "*test command found but not*")
 
 
@@ -1232,4 +1232,4 @@ def test_path_change(tmpdir, mocksession, newconfig, monkeypatch):
     for x in pcalls:
         path = x.env["PATH"]
         assert os.environ["PATH"] in path
-        assert path.endswith(str(venv.envconfig.config.toxinidir) + "/bin")
+        assert path.endswith(f'{str(venv.envconfig.config.toxinidir)}/bin')

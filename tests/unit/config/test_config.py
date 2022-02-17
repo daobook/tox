@@ -264,7 +264,7 @@ class TestConfigPlatform:
         """,
         )
         assert len(config.envconfigs) == 3
-        platform = config.envconfigs["py27-" + plat].platform
+        platform = config.envconfigs[f'py27-{plat}'].platform
         expected = {"win": "win32", "lin": "linux2", "osx": ""}.get(plat)
         assert platform == expected
 
@@ -434,7 +434,7 @@ class TestParseconfig:
 def test_get_homedir(monkeypatch):
     monkeypatch.setattr(py.path.local, "_gethomedir", classmethod(lambda x: {}[1]))
     assert not get_homedir()
-    monkeypatch.setattr(py.path.local, "_gethomedir", classmethod(lambda x: 0 / 0))
+    monkeypatch.setattr(py.path.local, "_gethomedir", classmethod(lambda x: 1))
     assert not get_homedir()
     monkeypatch.setattr(py.path.local, "_gethomedir", classmethod(lambda x: "123"))
     assert get_homedir() == "123"
@@ -2040,7 +2040,7 @@ class TestConfigTestEnv:
         """
         conf = newconfig([], inisource).envconfigs["style"]
         packages = [dep.name for dep in conf.deps]
-        assert packages == []
+        assert not packages
 
         conf = newconfig([], inisource).envconfigs["py27-cover"]
         packages = [dep.name for dep in conf.deps]

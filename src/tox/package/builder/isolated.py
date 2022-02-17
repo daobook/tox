@@ -39,12 +39,11 @@ def build(config, session):
     base_build_deps = {
         canonicalize_name(Requirement(r.name).name) for r in package_venv.envconfig.deps
     }
-    build_requires_dep = [
+    if build_requires_dep := [
         DepConfig(r, None)
         for r in build_requires
         if canonicalize_name(Requirement(r).name) not in base_build_deps
-    ]
-    if build_requires_dep:
+    ]:
         with package_venv.new_action("build_requires", package_venv.envconfig.envdir) as action:
             package_venv.run_install_command(packages=build_requires_dep, action=action)
         package_venv.finishvenv()

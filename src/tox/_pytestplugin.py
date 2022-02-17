@@ -87,8 +87,11 @@ def check_os_environ_stable():
     diff = {
         "{} = {} vs {}".format(k, old[k], new[k])
         for k in set(old) & set(new)
-        if old[k] != new[k] and not (k.startswith("PYTEST_") or k.startswith("COV_"))
+        if old[k] != new[k]
+        and not k.startswith("PYTEST_")
+        and not k.startswith("COV_")
     }
+
     if extra or miss or diff:
         msg = "test changed environ"
         if extra:
@@ -188,10 +191,7 @@ class RunResult:
             self.out,
             self.err,
         )
-        if six.PY2:
-            return res.encode("UTF-8")
-        else:
-            return res
+        return res.encode("UTF-8") if six.PY2 else res
 
     def output(self):
         return "{}\n{}\n{}".format(self.ret, self.err, self.out)
@@ -200,13 +200,17 @@ class RunResult:
         msg = self.output()
         assert self.ret == 0, msg
         if is_run_test_env:
-            assert any("  congratulations :)" == line for line in reversed(self.outlines)), msg
+            assert any(
+                line == "  congratulations :)" for line in reversed(self.outlines)
+            ), msg
 
     def assert_fail(self, is_run_test_env=True):
         msg = self.output()
         assert self.ret, msg
         if is_run_test_env:
-            assert not any("  congratulations :)" == line for line in reversed(self.outlines)), msg
+            assert all(
+                line != "  congratulations :)" for line in reversed(self.outlines)
+            ), msg
 
 
 class ReportExpectMock:
@@ -493,11 +497,7 @@ def create_files(base, filedefs):
             s = textwrap.dedent(value)
 
             if not isinstance(s, six.text_type):
-                if not isinstance(s, six.binary_type):
-                    s = str(s)
-                else:
-                    s = six.ensure_text(s)
-
+                s = str(s) if not isinstance(s, six.binary_type) else six.ensure_text(s)
             base.join(key).write_text(s, encoding="UTF-8")
 
 

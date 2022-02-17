@@ -111,21 +111,23 @@ def do_prompt(map_, key, text, default=None, validator=nonempty, modificator=Non
             answer = default
         # FIXME use six instead of self baked solution
         # noinspection PyUnresolvedReferences
-        if sys.version_info < (3,) and not isinstance(answer, unicode):  # noqa
-            # for Python 2.x, try to get a Unicode string out of it
-            if answer.decode("ascii", "replace").encode("ascii", "replace") != answer:
-                term_encoding = getattr(sys.stdin, "encoding", None)
-                if term_encoding:
-                    answer = answer.decode(term_encoding)
-                else:
-                    print(
-                        "* Note: non-ASCII characters entered but terminal encoding unknown"
-                        " -> assuming UTF-8 or Latin-1.",
-                    )
-                    try:
-                        answer = answer.decode("utf-8")
-                    except UnicodeDecodeError:
-                        answer = answer.decode("latin1")
+        if (
+            sys.version_info < (3,)
+            and not isinstance(answer, unicode)
+            and answer.decode("ascii", "replace").encode("ascii", "replace")
+            != answer
+        ):
+            if term_encoding := getattr(sys.stdin, "encoding", None):
+                answer = answer.decode(term_encoding)
+            else:
+                print(
+                    "* Note: non-ASCII characters entered but terminal encoding unknown"
+                    " -> assuming UTF-8 or Latin-1.",
+                )
+                try:
+                    answer = answer.decode("utf-8")
+                except UnicodeDecodeError:
+                    answer = answer.decode("latin1")
         if validator:
             try:
                 answer = validator(answer)

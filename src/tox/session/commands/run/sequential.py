@@ -7,15 +7,16 @@ from tox.exception import InvocationError
 def run_sequential(config, venv_dict):
     for venv in venv_dict.values():
         if venv.setupenv():
-            if venv.envconfig.skip_install:
+            if not venv.envconfig.skip_install and venv.envconfig.usedevelop:
+                develop_pkg(venv, config.setupdir)
+            elif (
+                not venv.envconfig.skip_install
+                and config.skipsdist
+                or venv.envconfig.skip_install
+            ):
                 venv.finishvenv()
             else:
-                if venv.envconfig.usedevelop:
-                    develop_pkg(venv, config.setupdir)
-                elif config.skipsdist:
-                    venv.finishvenv()
-                else:
-                    installpkg(venv, venv.package)
+                installpkg(venv, venv.package)
             if venv.status == 0:
                 runenvreport(venv, config)
         if venv.status == 0:

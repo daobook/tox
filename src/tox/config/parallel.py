@@ -34,11 +34,10 @@ def parse_num_processes(s):
         return None
     if s == "auto":
         return auto_detect_cpus()
-    else:
-        value = int(s)
-        if value < 0:
-            raise ArgumentTypeError("value must be positive")
-        return value
+    value = int(s)
+    if value < 0:
+        raise ArgumentTypeError("value must be positive")
+    return value
 
 
 def add_parallel_flags(parser):

@@ -241,7 +241,8 @@ def test_unknown_interpreter(cmd, initproj):
     result = cmd()
     result.assert_fail()
     assert any(
-        "ERROR: InterpreterNotFound: xyz_unknown_interpreter" == line for line in result.outlines
+        line == "ERROR: InterpreterNotFound: xyz_unknown_interpreter"
+        for line in result.outlines
     ), result.outlines
 
 
@@ -721,7 +722,7 @@ def test_test_usedevelop(cmd, initproj, src_root, skipsdist):
 
     # test develop is called if setup.py changes
     setup_py = py.path.local("setup.py")
-    setup_py.write(setup_py.read() + " ")
+    setup_py.write(f'{setup_py.read()} ')
     result = cmd()
     result.assert_fail()
     assert "develop-inst-nodeps" in result.out

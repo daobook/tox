@@ -167,8 +167,7 @@ class DepOption:
         deps = []
         config = testenv_config.config
         for depline in value:
-            m = re.match(r":(\w+):\s*(\S+)", depline)
-            if m:
+            if m := re.match(r":(\w+):\s*(\S+)", depline):
                 iname, name = m.groups()
                 ixserver = config.indexserver[iname]
             else:
@@ -228,8 +227,7 @@ class PosargsOption:
 
     def postprocess(self, testenv_config, value):
         config = testenv_config.config
-        args = config.option.args
-        if args:
+        if args := config.option.args:
             if value:
                 args = []
                 for arg in config.option.args:
@@ -305,8 +303,7 @@ def parseconfig(args, plugins=()):
 
 def get_py_project_toml(path):
     with io.open(str(path), encoding="UTF-8") as file_handler:
-        config_data = toml.load(file_handler)
-        return config_data
+        return toml.load(file_handler)
 
 
 def propose_configs(cli_config_file):
@@ -358,8 +355,7 @@ def feedback(msg, sysexit=False):
 
 def get_version_info(pm):
     out = ["{} imported from {}".format(tox.__version__, tox.__file__)]
-    plugin_dist_info = pm.list_plugin_distinfo()
-    if plugin_dist_info:
+    if plugin_dist_info := pm.list_plugin_distinfo():
         out.append("registered plugins:")
         for mod, egg_info in plugin_dist_info:
             source = getattr(mod, "__file__", repr(mod))
@@ -638,8 +634,7 @@ def tox_addoption(parser):
         python conflict is set in which case the factor name implied version if forced
         """
         for factor in testenv_config.factors:
-            match = tox.PYTHON.PY_FACTORS_RE.match(factor)
-            if match:
+            if match := tox.PYTHON.PY_FACTORS_RE.match(factor):
                 base_exe = {"py": "python"}.get(match.group(1), match.group(1))
                 version_s = match.group(2)
                 if not version_s:
@@ -750,9 +745,7 @@ def tox_addoption(parser):
     )
 
     def recreate(testenv_config, value):
-        if testenv_config.config.option.recreate:
-            return True
-        return value
+        return True if testenv_config.config.option.recreate else value
 
     parser.add_testenv_attribute(
         name="recreate",
@@ -1081,10 +1074,7 @@ class TestenvConfig:
 
     def get_envpython(self):
         """path to python/jython executable."""
-        if "jython" in str(self.basepython):
-            name = "jython"
-        else:
-            name = "python"
+        name = "jython" if "jython" in str(self.basepython) else "python"
         return self.envbindir.join(name)
 
     def get_envsitepackagesdir(self):
@@ -1092,8 +1082,9 @@ class TestenvConfig:
 
         NOTE: Only available during execution, not during parsing.
         """
-        x = self.config.interpreters.get_sitepackagesdir(info=self.python_info, envdir=self.envdir)
-        return x
+        return self.config.interpreters.get_sitepackagesdir(
+            info=self.python_info, envdir=self.envdir
+        )
 
     @property
     def python_info(self):
@@ -1126,9 +1117,7 @@ def get_homedir():
 
 
 def make_hashseed():
-    max_seed = 4294967295
-    if tox.INFO.IS_WIN:
-        max_seed = 1024
+    max_seed = 1024 if tox.INFO.IS_WIN else 4294967295
     return str(random.randint(1, max_seed))
 
 
@@ -1789,15 +1778,14 @@ class SectionReader:
         return x
 
     def getposargs(self, default=None):
-        if self.posargs:
-            posargs = self.posargs
-            if sys.platform.startswith("win"):
-                posargs_string = list2cmdline([x for x in posargs if x])
-            else:
-                posargs_string = " ".join(shlex_quote(x) for x in posargs if x)
-            return posargs_string
-        else:
+        if not self.posargs:
             return default or ""
+        posargs = self.posargs
+        return (
+            list2cmdline([x for x in posargs if x])
+            if sys.platform.startswith("win")
+            else " ".join(shlex_quote(x) for x in posargs if x)
+        )
 
     def _replace_if_needed(self, x, name, replace, crossonly):
         if replace and x and hasattr(x, "replace"):
@@ -1812,7 +1800,8 @@ class SectionReader:
 
             expr, line = m.groups()
             if any(
-                included <= self.factors and not any(x in self.factors for x in excluded)
+                included <= self.factors
+                and all(x not in self.factors for x in excluded)
                 for included, excluded in _split_factor_expr(expr)
             ):
                 return line
@@ -1824,7 +1813,7 @@ class SectionReader:
         if "{" not in value:
             return value
 
-        section_name = section_name if section_name else self.section_name
+        section_name = section_name or self.section_name
         assert name
         self._subststack.append((section_name, name))
         try:
@@ -2009,14 +1998,13 @@ class _ArgvlistReader:
             else:
                 commands.append(cls.processcommand(reader, current_command, replace, name=name))
             current_command = ""
-        else:
-            if current_command:
-                raise tox.exception.ConfigError(
-                    "line-continuation ends nowhere while resolving for [{}] {}".format(
-                        reader.section_name,
-                        "commands",
-                    ),
-                )
+        if current_command:
+            raise tox.exception.ConfigError(
+                "line-continuation ends nowhere while resolving for [{}] {}".format(
+                    reader.section_name,
+                    "commands",
+                ),
+            )
         return commands
 
     @classmethod

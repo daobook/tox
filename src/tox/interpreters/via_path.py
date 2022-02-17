@@ -19,11 +19,10 @@ def check_with_path(candidates, spec):
         base = path
         if not os.path.isabs(path):
             path = py.path.local.sysfind(path)
-        if path is not None:
-            if os.path.exists(str(path)):
-                cur_spec = exe_spec(path, base)
-                if cur_spec is not None and cur_spec.satisfies(spec):
-                    return cur_spec.path
+        if path is not None and os.path.exists(str(path)):
+            cur_spec = exe_spec(path, base)
+            if cur_spec is not None and cur_spec.satisfies(spec):
+                return cur_spec.path
 
 
 _SPECS = {}

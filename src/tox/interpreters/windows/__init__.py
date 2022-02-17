@@ -26,10 +26,13 @@ def tox_get_python_executable(envconfig):
     if spec.name is not None and spec.name != envconfig.basepython:
         candidates.append(spec.name)
     # or check known locations
-    if spec.major is not None and spec.minor is not None:
-        if spec.name == "python":
-            # The standard names are in predictable places.
-            candidates.append(r"c:\python{}{}\python.exe".format(spec.major, spec.minor))
+    if (
+        spec.major is not None
+        and spec.minor is not None
+        and spec.name == "python"
+    ):
+        # The standard names are in predictable places.
+        candidates.append(r"c:\python{}{}\python.exe".format(spec.major, spec.minor))
     return check_with_path(candidates, spec)
 
 

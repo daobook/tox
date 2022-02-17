@@ -115,8 +115,7 @@ class Session(object):
                     OrderedDict((name, v.envconfig.depends) for name, v in need_to_run.items()),
                 )
 
-                venvs = OrderedDict((v, need_to_run[v]) for v in venv_order)
-                return venvs
+                return OrderedDict((v, need_to_run[v]) for v in venv_order)
             except ValueError as exception:
                 reporter.error("circular dependency detected: {}".format(exception))
         except LookupError:
@@ -282,8 +281,7 @@ class Session(object):
                 report(msg)
         if not exit_code and not is_parallel_child:
             reporter.good("  congratulations :)")
-        path = self.config.option.resultjson
-        if path:
+        if path := self.config.option.resultjson:
             if not is_parallel_child:
                 self._add_parallel_summaries()
             path = py.path.local(path)

@@ -156,10 +156,7 @@ class Action(object):
                 buf = getattr(sys.stdout, "buffer", sys.stdout)
                 last_time = time.time()
                 while True:
-                    # we have to read one byte at a time, otherwise there
-                    # might be no output for a long time with slow tests
-                    data = input_file_handler.read(1)
-                    if data:
+                    if data := input_file_handler.read(1):
                         buf.write(data)
                         if b"\n" in data or (time.time() - last_time) > 1:
                             # we flush on newlines or after 1 second to
@@ -251,8 +248,7 @@ class Action(object):
         yield input_file_handler, out_path, stderr, stdout
 
     def get_log_path(self, actionid):
-        log_file = get_unique_file(self.log_dir, prefix=actionid, suffix=".log")
-        return log_file
+        return get_unique_file(self.log_dir, prefix=actionid, suffix=".log")
 
     def _rewrite_args(self, cwd, args):
 

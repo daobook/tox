@@ -28,8 +28,7 @@ def exit_code_str(exception_name, command, exit_code):
             else:
                 str_ += " (exited with code {:d})".format(exit_code)
                 number = exit_code - 128
-                name = signals.get(number)
-                if name:
+                if name := signals.get(number):
                     str_ += (
                         ")\nNote: this might indicate a fatal error signal "
                         "({:d} - 128 = {:d}: {})".format(exit_code, number, name)

@@ -310,8 +310,7 @@ def wheel(tmp_path_factory):
 
         wheels = list(dest_path.glob("*.whl"))
         assert len(wheels) == 1
-        wheel = wheels[0]
-        return wheel
+        return wheels[0]
 
     return _wheel
 

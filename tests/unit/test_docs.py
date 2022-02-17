@@ -21,9 +21,11 @@ INI_BLOCK_RE = re.compile(
 RST_FILES = []
 TOX_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 for root, _, filenames in os.walk(os.path.join(TOX_ROOT, "docs")):
-    for filename in filenames:
-        if filename.endswith(".rst"):
-            RST_FILES.append(os.path.join(root, filename))
+    RST_FILES.extend(
+        os.path.join(root, filename)
+        for filename in filenames
+        if filename.endswith(".rst")
+    )
 
 
 def test_some_files_exist():
