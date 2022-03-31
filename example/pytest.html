@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>pytest and tox &#8212; tox 0.1.dev1 文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="unittest2, discover and tox" href="unittest.html" />
+    <link rel="prev" title="Packaging" href="package.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pytest-and-tox">
+<h1>pytest and tox<a class="headerlink" href="#pytest-and-tox" title="永久链接至标题">¶</a></h1>
+<p>It is easy to integrate <a class="reference external" href="https://pytest.org">pytest</a> runs with tox.  If you encounter
+issues, please check if they are <a class="reference internal" href="#listed-as-a-known-issue">listed as a known issue</a> and/or use
+the <a class="reference internal" href="../support.html"><span class="doc">support channels</span></a>.</p>
+<section id="basic-example">
+<h2>Basic example<a class="headerlink" href="#basic-example" title="永久链接至标题">¶</a></h2>
+<p>Assuming the following layout:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tox.ini      <span class="c1"># see below for content</span>
+setup.py     <span class="c1"># a classic distutils/setuptools setup.py file</span>
+</pre></div>
+</div>
+<p>and the following <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> content:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">py35,py36</span><span class="w"></span>
+
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest               # PYPI package providing pytest</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest {posargs} # substitute with tox&#39; positional arguments</span><span class="w"></span>
+</pre></div>
+</div>
+<p>you can now invoke <code class="docutils literal notranslate"><span class="pre">tox</span></code> in the directory where your <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> resides.
+<code class="docutils literal notranslate"><span class="pre">tox</span></code> will sdist-package your project, create two virtualenv environments
+with the <code class="docutils literal notranslate"><span class="pre">python3.5</span></code> and <code class="docutils literal notranslate"><span class="pre">python3.6</span></code> interpreters, respectively, and will
+then run the specified test command in each of them.</p>
+</section>
+<section id="extended-example-change-dir-before-test-and-use-per-virtualenv-tempdir">
+<h2>Extended example: change dir before test and use per-virtualenv tempdir<a class="headerlink" href="#extended-example-change-dir-before-test-and-use-per-virtualenv-tempdir" title="永久链接至标题">¶</a></h2>
+<p>Assuming the following layout:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tox.ini      <span class="c1"># see below for content</span>
+setup.py     <span class="c1"># a classic distutils/setuptools setup.py file</span>
+tests        <span class="c1"># the directory containing tests</span>
+</pre></div>
+</div>
+<p>and the following <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> content:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">py35,py36</span><span class="w"></span>
+
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="na">changedir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">tests</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest</span><span class="w"></span>
+<span class="c1"># change pytest tempdir and add posargs from command line</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest --basetemp=&quot;{envtmpdir}&quot; {posargs}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>you can invoke <code class="docutils literal notranslate"><span class="pre">tox</span></code> in the directory where your <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> resides.
+Differently than in the previous example the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> command
+will be executed with a current working directory set to <code class="docutils literal notranslate"><span class="pre">tests</span></code>
+and the test run will use the per-virtualenv temporary directory.</p>
+</section>
+<section id="using-multiple-cpus-for-test-runs">
+<span id="passing-positional-arguments"></span><h2>Using multiple CPUs for test runs<a class="headerlink" href="#using-multiple-cpus-for-test-runs" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pytest</span></code> supports distributing tests to multiple processes and hosts
+through the <a class="reference external" href="https://pypi.org/project/pytest-xdist">pytest-xdist</a> plugin.  Here is an example configuration
+to make <code class="docutils literal notranslate"><span class="pre">tox</span></code> use this feature:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest-xdist</span><span class="w"></span>
+<span class="na">changedir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">tests</span><span class="w"></span>
+<span class="c1"># use three sub processes</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest --basetemp=&quot;{envtmpdir}&quot;  \</span><span class="w"></span>
+<span class="w">                  </span><span class="na">--confcutdir</span><span class="o">=</span><span class="s">..         \</span><span class="w"></span>
+<span class="w">                  </span><span class="na">-n 3                    \</span><span class="w"></span>
+<span class="w">                  </span><span class="na">{posargs}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="known-issues-and-limitations">
+<span id="listed-as-a-known-issue"></span><h2>Known issues and limitations<a class="headerlink" href="#known-issues-and-limitations" title="永久链接至标题">¶</a></h2>
+<p><strong>Too long filenames</strong>. you may encounter “too long filenames” for temporarily
+created files in your pytest run.  Try to not use the “–basetemp” parameter.</p>
+<p><strong>installed-versus-checkout version</strong>.  <code class="docutils literal notranslate"><span class="pre">pytest</span></code> collects test
+modules on the filesystem and then tries to import them under their
+<a class="reference external" href="https://docs.pytest.org/en/latest/goodpractices.html#test-package-name">fully qualified name</a>. This means that if your test files are
+importable from somewhere then your <code class="docutils literal notranslate"><span class="pre">pytest</span></code> invocation may end up
+importing the package from the checkout directory rather than the
+installed package.</p>
+<p>This issue may be characterised by pytest test-collection error messages, in python 3.x environments, that look like:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>import file mismatch:
+imported module <span class="s1">&#39;myproj.foo.tests.test_foo&#39;</span> has this __file__ attribute:
+  /home/myuser/repos/myproj/build/lib/myproj/foo/tests/test_foo.py
+which is not the same as the <span class="nb">test</span> file we want to collect:
+  /home/myuser/repos/myproj/myproj/foo/tests/test_foo.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename <span class="k">for</span> your <span class="nb">test</span> file modules
+</pre></div>
+</div>
+<p>There are a few ways to prevent this.</p>
+<p>With installed tests (the tests packages are known to <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>), a
+safe and explicit option is to give the explicit path
+<code class="docutils literal notranslate"><span class="pre">{envsitepackagesdir}/mypkg</span></code> to pytest.
+Alternatively, it is possible to use <code class="docutils literal notranslate"><span class="pre">changedir</span></code> so that checked-out
+files are outside the import path, then pass <code class="docutils literal notranslate"><span class="pre">--pyargs</span> <span class="pre">mypkg</span></code> to
+pytest.</p>
+<p>With tests that won’t be installed, the simplest way to run them
+against your installed package is to avoid <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> files in test
+directories; pytest will still find and import them by adding their
+parent directory to <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> but they won’t be copied to
+other places or be found by Python’s import system outside of pytest.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="../index.html">home</a>
+</td><td>
+        <a href="../examples.html">examples</a>
+</td></tr><tr><td>
+        <a href="../install.html">install</a>
+</td><td>
+        <a href="../changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="../config.html">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="../support.html">support</a>
+</td><td>
+        <a href="../plugins.html">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+
+  <div>
+    <h3><a href="../index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">pytest and tox</a><ul>
+<li><a class="reference internal" href="#basic-example">Basic example</a></li>
+<li><a class="reference internal" href="#extended-example-change-dir-before-test-and-use-per-virtualenv-tempdir">Extended example: change dir before test and use per-virtualenv tempdir</a></li>
+<li><a class="reference internal" href="#using-multiple-cpus-for-test-runs">Using multiple CPUs for test runs</a></li>
+<li><a class="reference internal" href="#known-issues-and-limitations">Known issues and limitations</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">tox configuration and usage examples</a><ul>
+      <li>Previous: <a href="package.html" title="上一章">Packaging</a></li>
+      <li>Next: <a href="unittest.html" title="下一章">unittest2, discover and tox</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>tox installation &#8212; tox 0.1.dev1 文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="tox configuration and usage examples" href="examples.html" />
+    <link rel="prev" title="Welcome to the tox automation project" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="tox-installation">
+<h1>tox installation<a class="headerlink" href="#tox-installation" title="永久链接至标题">¶</a></h1>
+<section id="install-info-in-a-nutshell">
+<h2>Install info in a nutshell<a class="headerlink" href="#install-info-in-a-nutshell" title="永久链接至标题">¶</a></h2>
+<p><strong>Pythons</strong>: CPython 2.7 and 3.5 or later, Jython-2.5.1, pypy-1.9ff</p>
+<p><strong>Operating systems</strong>: Linux, Windows, OSX, Unix</p>
+<p><strong>Installer Requirements</strong>: <a class="reference external" href="https://pypi.org/project/setuptools">setuptools</a></p>
+<p><strong>License</strong>: MIT license</p>
+<p><strong>git repository</strong>: <a class="reference external" href="https://github.com/tox-dev/tox">https://github.com/tox-dev/tox</a></p>
+</section>
+<section id="installation-with-pip">
+<h2>Installation with pip<a class="headerlink" href="#installation-with-pip" title="永久链接至标题">¶</a></h2>
+<p>Use the following command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install tox
+</pre></div>
+</div>
+<p>It is fine to install <code class="docutils literal notranslate"><span class="pre">tox</span></code> itself into a <a class="reference external" href="https://pypi.org/project/virtualenv">virtualenv</a> environment.</p>
+</section>
+<section id="install-from-clone">
+<h2>Install from clone<a class="headerlink" href="#install-from-clone" title="永久链接至标题">¶</a></h2>
+<p>Consult the GitHub page how to clone the git repository:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://github.com/tox-dev/tox">https://github.com/tox-dev/tox</a></p>
+</div></blockquote>
+<p>and then install in your environment with something like:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> &lt;path/to/clone&gt;
+$ pip install .
+</pre></div>
+</div>
+<p>or install it <a class="reference external" href="https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs">editable</a> if you want code changes to propagate automatically:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> &lt;path/to/clone&gt;
+$ pip install --editable .
+</pre></div>
+</div>
+<p>so that you can do changes and submit patches.</p>
+</section>
+<section id="linux-macos-install-via-your-package-manager">
+<h2>[Linux/macOS] Install via your package manager<a class="headerlink" href="#linux-macos-install-via-your-package-manager" title="永久链接至标题">¶</a></h2>
+<p>You can also find tox packaged for many Linux distributions and Homebrew for macOs - usually under the name of <strong>python-tox</strong> or simply <strong>tox</strong>. Be aware though that there also other projects under the same name (most prominently a <a class="reference external" href="https://tox.chat/">secure chat client</a> with no affiliation to this project), so make sure you install the correct package.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="index.html">home</a>
+</td><td>
+        <a href="examples.html">examples</a>
+</td></tr><tr><td>
+        <a href="#">install</a>
+</td><td>
+        <a href="changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="config.html">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="support.html">support</a>
+</td><td>
+        <a href="plugins.html">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">tox installation</a><ul>
+<li><a class="reference internal" href="#install-info-in-a-nutshell">Install info in a nutshell</a></li>
+<li><a class="reference internal" href="#installation-with-pip">Installation with pip</a></li>
+<li><a class="reference internal" href="#install-from-clone">Install from clone</a></li>
+<li><a class="reference internal" href="#linux-macos-install-via-your-package-manager">[Linux/macOS] Install via your package manager</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="上一章">Welcome to the tox automation project</a></li>
+      <li>Next: <a href="examples.html" title="下一章">tox configuration and usage examples</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

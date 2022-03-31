@@ -1,0 +1,573 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Basic usage &#8212; tox 0.1.dev1 文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Packaging" href="package.html" />
+    <link rel="prev" title="tox configuration and usage examples" href="../examples.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="basic-usage">
+<h1>Basic usage<a class="headerlink" href="#basic-usage" title="永久链接至标题">¶</a></h1>
+<section id="a-simple-tox-ini-default-environments">
+<h2>A simple tox.ini / default environments<a class="headerlink" href="#a-simple-tox-ini-default-environments" title="永久链接至标题">¶</a></h2>
+<p>Put basic information about your project and the test environments you
+want your project to run in into a <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file that should
+reside next to your <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of: tox.ini , put in same dir as setup.py</span><span class="w"></span>
+<span class="k">[tox]</span><span class="w"></span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">py27,py36</span><span class="w"></span>
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="c1"># install testing framework</span><span class="w"></span>
+<span class="c1"># ... or install anything else you might need here</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest</span><span class="w"></span>
+<span class="c1"># run the tests</span><span class="w"></span>
+<span class="c1"># ... or run any other command line tool you need to run here</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest</span><span class="w"></span>
+</pre></div>
+</div>
+<p>To sdist-package, install and test your project, you can
+now type at the command prompt:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tox
+</pre></div>
+</div>
+<p>This will sdist-package your current project, create two <a class="reference external" href="https://pypi.org/project/virtualenv">virtualenv</a>
+Environments, install the sdist-package into the environments and run
+the specified command in each of them.  With:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tox -e py36
+</pre></div>
+</div>
+<p>you can restrict the test run to the python3.6 environment.</p>
+<p>Tox currently understands the following patterns:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>py: The current Python version tox is using
+pypy: Whatever available PyPy there is
+jython: Whatever available Jython there is
+pyN: Python of version N. <span class="k">for</span> example py2 or py3 ... etc
+pyNM: Python of version N.M. <span class="k">for</span> example py27 or py38 ... etc
+pypyN: PyPy of version N. <span class="k">for</span> example pypy2 or pypy3 ... etc
+pypyNM: PyPy version N.M. <span class="k">for</span> example pypy27 or pypy35 ... etc
+</pre></div>
+</div>
+<p>However, you can also create your own test environment names,
+see some of the examples in <a class="reference internal" href="../examples.html"><span class="doc">examples</span></a>.</p>
+</section>
+<section id="pyproject-toml-tox-legacy-ini">
+<h2>pyproject.toml tox legacy ini<a class="headerlink" href="#pyproject-toml-tox-legacy-ini" title="永久链接至标题">¶</a></h2>
+<p>The tox configuration can also be in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (if you want to avoid an extra file).</p>
+<p>Currently only the old format is supported via <code class="docutils literal notranslate"><span class="pre">legacy_tox_ini</span></code>, a native implementation is planned though.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s">&quot;setuptools &gt;= 35.0.2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wheel &gt;= 0.29.0&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;setuptools.build_meta&quot;</span><span class="w"></span>
+
+<span class="k">[tool.tox]</span><span class="w"></span>
+<span class="n">legacy_tox_ini</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">[tox]</span>
+<span class="s">envlist = py27,py36</span>
+
+<span class="s">[testenv]</span>
+<span class="s">deps = pytest &gt;= 3.0.0, &lt;4</span>
+<span class="s">commands = pytest</span>
+<span class="s">&quot;&quot;&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Note that when you define a <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> you must define the <code class="docutils literal notranslate"><span class="pre">build-system</span></code> section per PEP-518.</p>
+</section>
+<section id="specifying-a-platform">
+<h2>Specifying a platform<a class="headerlink" href="#specifying-a-platform" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">2.0 新版功能.</span></p>
+</div>
+<p>If you want to specify which platform(s) your test environment
+runs on you can set a platform regular expression like this:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">platform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">linux2|darwin</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If the expression does not match against <code class="docutils literal notranslate"><span class="pre">sys.platform</span></code>
+the test environment will be skipped.</p>
+</section>
+<section id="allowing-non-virtualenv-commands">
+<h2>Allowing non-virtualenv commands<a class="headerlink" href="#allowing-non-virtualenv-commands" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">1.5 新版功能.</span></p>
+</div>
+<p>Sometimes you may want to use tools not contained in your
+virtualenv such as <code class="docutils literal notranslate"><span class="pre">make</span></code>, <code class="docutils literal notranslate"><span class="pre">bash</span></code> or others. To avoid
+warnings you can use the <code class="docutils literal notranslate"><span class="pre">allowlist_externals</span></code> testenv
+configuration:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of tox.ini</span><span class="w"></span>
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="na">allowlist_externals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">make</span><span class="w"></span>
+<span class="w">                      </span><span class="na">/bin/bash</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="depending-on-requirements-txt-or-defining-constraints">
+<span id="multiindex"></span><h2>Depending on requirements.txt or defining constraints<a class="headerlink" href="#depending-on-requirements-txt-or-defining-constraints" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">1.6.1 新版功能.</span></p>
+</div>
+<p>(experimental) If you have a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file or a <code class="docutils literal notranslate"><span class="pre">constraints.txt</span></code> file you can add it to your <code class="docutils literal notranslate"><span class="pre">deps</span></code> variable like this:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-rrequirements.txt</span><span class="w"></span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">-rrequirements.txt</span><span class="w"></span>
+<span class="w">    </span><span class="na">-cconstraints.txt</span><span class="w"></span>
+</pre></div>
+</div>
+<p>All installation commands are executed using <code class="docutils literal notranslate"><span class="pre">{toxinidir}</span></code> (the directory where <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> resides) as the current working directory.
+Therefore, the underlying <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation will assume <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> or <code class="docutils literal notranslate"><span class="pre">constraints.txt</span></code> to exist at <code class="docutils literal notranslate"><span class="pre">{toxinidir}/requirements.txt</span></code> or <code class="docutils literal notranslate"><span class="pre">{toxinidir}/constraints.txt</span></code>.</p>
+<p>This is actually a side effect that all elements of the dependency list is directly passed to <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<p>For more details on <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> files or <code class="docutils literal notranslate"><span class="pre">constraints.txt</span></code> files please see:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pip.pypa.io/en/stable/user_guide/#requirements-files">https://pip.pypa.io/en/stable/user_guide/#requirements-files</a></p></li>
+<li><p><a class="reference external" href="https://pip.pypa.io/en/stable/user_guide/#constraints-files">https://pip.pypa.io/en/stable/user_guide/#constraints-files</a></p></li>
+</ul>
+</section>
+<section id="using-a-different-default-pypi-url">
+<h2>Using a different default PyPI URL<a class="headerlink" href="#using-a-different-default-pypi-url" title="永久链接至标题">¶</a></h2>
+<p>To install dependencies and packages from a different
+default PyPI server you can type interactively:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tox -i https://pypi.my-alternative-index.org
+</pre></div>
+</div>
+<p>This causes tox to install dependencies and the sdist install step
+to use the specified URL as the index server.</p>
+<p>You can cause the same effect by using a <code class="docutils literal notranslate"><span class="pre">PIP_INDEX_URL</span></code> environment variable.
+This variable can be also set in <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code>:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">setenv</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">PIP_INDEX_URL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">https://pypi.my-alternative-index.org</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Alternatively, a configuration where <code class="docutils literal notranslate"><span class="pre">PIP_INDEX_URL</span></code> could be overridden from environment:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">setenv</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">PIP_INDEX_URL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{env:PIP_INDEX_URL:https://pypi.my-alternative-index.org}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="installing-dependencies-from-multiple-pypi-servers">
+<h2>Installing dependencies from multiple PyPI servers<a class="headerlink" href="#installing-dependencies-from-multiple-pypi-servers" title="永久链接至标题">¶</a></h2>
+<p>You can instrument tox to install dependencies from
+multiple PyPI servers, using <code class="docutils literal notranslate"><span class="pre">PIP_EXTRA_INDEX_URL</span></code> environment variable:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">setenv</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">PIP_EXTRA_INDEX_URL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">https://mypypiserver.org</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># docutils will be installed directly from PyPI</span><span class="w"></span>
+<span class="w">    </span><span class="na">docutils</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># mypackage missing at PyPI will be installed from custom PyPI URL</span><span class="w"></span>
+<span class="w">    </span><span class="na">mypackage</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This configuration will install <code class="docutils literal notranslate"><span class="pre">docutils</span></code> from the default
+Python PyPI server and will install the <code class="docutils literal notranslate"><span class="pre">mypackage</span></code> from
+our index server at <code class="docutils literal notranslate"><span class="pre">https://mypypiserver.org</span></code> URL.</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Using an extra PyPI index for installing private packages may cause security issues.
+For example, if <code class="docutils literal notranslate"><span class="pre">mypackage</span></code> is registered with the default PyPI index, pip will install <code class="docutils literal notranslate"><span class="pre">mypackage</span></code>
+from the default PyPI index, not from the custom one.</p>
+</div>
+</section>
+<section id="further-customizing-installation">
+<h2>Further customizing installation<a class="headerlink" href="#further-customizing-installation" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">1.6 新版功能.</span></p>
+</div>
+<p>By default tox uses <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> to install packages, both the
+package-under-test and any dependencies you specify in <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code>.
+You can fully customize tox’s install-command through the
+testenv-specific <a class="reference internal" href="../config.html#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span> <span class="pre">=</span> <span class="pre">ARGV</span></code></a> setting.
+For instance, to use pip’s <code class="docutils literal notranslate"><span class="pre">--find-links</span></code> and <code class="docutils literal notranslate"><span class="pre">--no-index</span></code> options to specify
+an alternative source for your dependencies:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">install_command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pip install --pre --find-links https://packages.example.com --no-index {opts} {packages}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="forcing-re-creation-of-virtual-environments">
+<h2>Forcing re-creation of virtual environments<a class="headerlink" href="#forcing-re-creation-of-virtual-environments" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">0.9 新版功能.</span></p>
+</div>
+<p>To force tox to recreate a (particular) virtual environment:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tox --recreate -e py27
+</pre></div>
+</div>
+<p>would trigger a complete reinstallation of the existing py27 environment
+(or create it afresh if it doesn’t exist).</p>
+</section>
+<section id="passing-down-environment-variables">
+<h2>Passing down environment variables<a class="headerlink" href="#passing-down-environment-variables" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">2.0 新版功能.</span></p>
+</div>
+<p>By default tox will only pass the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> environment variable (and on
+windows <code class="docutils literal notranslate"><span class="pre">SYSTEMROOT</span></code> and <code class="docutils literal notranslate"><span class="pre">PATHEXT</span></code>) from the tox invocation to the
+test environments.  If you want to pass down additional environment
+variables you can use the <code class="docutils literal notranslate"><span class="pre">passenv</span></code> option:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">passenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">LANG</span><span class="w"></span>
+</pre></div>
+</div>
+<p>When your test commands execute they will execute with
+the same LANG setting as the one with which tox was invoked.</p>
+</section>
+<section id="setting-environment-variables">
+<h2>Setting environment variables<a class="headerlink" href="#setting-environment-variables" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">1.0 新版功能.</span></p>
+</div>
+<p>If you need to set an environment variable like <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> you
+can use the <code class="docutils literal notranslate"><span class="pre">setenv</span></code> directive:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">setenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">PYTHONPATH = {toxinidir}/subdir</span><span class="w"></span>
+</pre></div>
+</div>
+<p>When your test commands execute they will execute with
+a PYTHONPATH setting that will lead Python to also import
+from the <code class="docutils literal notranslate"><span class="pre">subdir</span></code> below the directory where your <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code>
+file resides.</p>
+</section>
+<section id="special-handling-of-pythonhashseed">
+<h2>Special handling of PYTHONHASHSEED<a class="headerlink" href="#special-handling-of-pythonhashseed" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">1.6.2 新版功能.</span></p>
+</div>
+<p>By default, tox sets <a class="reference external" href="https://docs.python.org/3/using/cmdline.html#envvar-PYTHONHASHSEED">PYTHONHASHSEED</a> for test commands to a random integer
+generated when <code class="docutils literal notranslate"><span class="pre">tox</span></code> is invoked.  This mimics Python’s hash randomization
+enabled by default starting <a class="reference external" href="https://docs.python.org/3/whatsnew/3.3.html#builtin-functions-and-types">in Python 3.3</a>.  To aid in reproducing test
+failures, tox displays the value of <code class="docutils literal notranslate"><span class="pre">PYTHONHASHSEED</span></code> in the test output.</p>
+<p>You can tell tox to use an explicit hash seed value via the <code class="docutils literal notranslate"><span class="pre">--hashseed</span></code>
+command-line option to <code class="docutils literal notranslate"><span class="pre">tox</span></code>.  You can also override the hash seed value
+per test environment in <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> as follows:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">setenv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">PYTHONHASHSEED = 100</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you wish to disable this feature, you can pass the command line option
+<code class="docutils literal notranslate"><span class="pre">--hashseed=noset</span></code> when <code class="docutils literal notranslate"><span class="pre">tox</span></code> is invoked. You can also disable it from the
+<code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> by setting <code class="docutils literal notranslate"><span class="pre">PYTHONHASHSEED</span> <span class="pre">=</span> <span class="pre">0</span></code> as described above.</p>
+</section>
+<section id="integration-with-setup-py-test-command">
+<h2>Integration with “setup.py test” command<a class="headerlink" href="#integration-with-setup-py-test-command" title="永久链接至标题">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p><code class="docutils literal notranslate"><span class="pre">setup.py</span> <span class="pre">test</span></code> is <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html#test-build-package-and-run-a-unittest-suite">deprecated</a>
+and will be removed in a future version.</p>
+</div>
+</section>
+<section id="ignoring-a-command-exit-code">
+<span id="ignoring-exit-code"></span><h2>Ignoring a command exit code<a class="headerlink" href="#ignoring-a-command-exit-code" title="永久链接至标题">¶</a></h2>
+<p>In some cases, you may want to ignore a command exit code. For example:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv:py27]</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">coverage erase</span><span class="w"></span>
+<span class="w">       </span><span class="na">{envbindir}/python setup.py develop</span><span class="w"></span>
+<span class="w">       </span><span class="na">coverage run -p setup.py test</span><span class="w"></span>
+<span class="w">       </span><span class="na">coverage combine</span><span class="w"></span>
+<span class="w">       </span><span class="na">- coverage html</span><span class="w"></span>
+<span class="w">       </span><span class="na">{envbindir}/flake8 loads</span><span class="w"></span>
+</pre></div>
+</div>
+<p>By using the <code class="docutils literal notranslate"><span class="pre">-</span></code> prefix, similar to a <code class="docutils literal notranslate"><span class="pre">make</span></code> recipe line, you can ignore
+the exit code for that command.</p>
+</section>
+<section id="compressing-dependency-matrix">
+<h2>Compressing dependency matrix<a class="headerlink" href="#compressing-dependency-matrix" title="永久链接至标题">¶</a></h2>
+<p>If you have a large matrix of dependencies, python versions and/or environments you can
+use <a class="reference internal" href="../config.html#generative-envlist"><span class="std std-ref">Generative envlist</span></a> and <a class="reference internal" href="../config.html#factors"><span class="std std-ref">conditional settings</span></a> to express that in a concise form:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">py{36,37,38}-django{22,30}-{sqlite,mysql}</span><span class="w"></span>
+
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">django22: Django&gt;</span><span class="o">=</span><span class="s">2.2,&lt;2.3</span><span class="w"></span>
+<span class="w">    </span><span class="na">django30: Django&gt;</span><span class="o">=</span><span class="s">3.0,&lt;3.1</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># use PyMySQL if factors &quot;py37&quot; and &quot;mysql&quot; are present in env name</span><span class="w"></span>
+<span class="w">    </span><span class="na">py38-mysql: PyMySQL</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># use urllib3 if any of &quot;py36&quot; or &quot;py37&quot; are present in env name</span><span class="w"></span>
+<span class="w">    </span><span class="na">py36,py37: urllib3</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># mocking sqlite on 3.6 and 3.7 if factor &quot;sqlite&quot; is present</span><span class="w"></span>
+<span class="w">    </span><span class="na">py{36,37}-sqlite: mock</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="using-generative-section-names">
+<h2>Using generative section names<a class="headerlink" href="#using-generative-section-names" title="永久链接至标题">¶</a></h2>
+<p>Suppose you have some binary packages, and need to run tests both in 32 and 64 bits.
+You also want an environment to create your virtual env for the developers.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">basepython</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">py38-x86: python3.8-32</span><span class="w"></span>
+<span class="w">    </span><span class="na">py38-x64: python3.8-64</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest</span><span class="w"></span>
+
+<span class="k">[testenv:py38-{x86,x64}-venv]</span><span class="w"></span>
+<span class="na">usedevelop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span><span class="w"></span>
+<span class="na">envdir</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">x86: .venv-x86</span><span class="w"></span>
+<span class="w">    </span><span class="na">x64: .venv-x64</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="prevent-symbolic-links-in-virtualenv">
+<h2>Prevent symbolic links in virtualenv<a class="headerlink" href="#prevent-symbolic-links-in-virtualenv" title="永久链接至标题">¶</a></h2>
+<p>By default virtualenv will use symlinks to point to the system’s python files, modules, etc.
+If you want the files to be copied instead, possibly because your filesystem is not capable
+of handling symbolic links, you can instruct virtualenv to use the “–always-copy” argument
+meant exactly for that purpose, by setting the <code class="docutils literal notranslate"><span class="pre">alwayscopy</span></code> directive in your environment:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">alwayscopy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="parallel-mode">
+<span id="id1"></span><h2>Parallel mode<a class="headerlink" href="#parallel-mode" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tox</span></code> allows running environments in parallel:</p>
+<ul>
+<li><p>Invoke by using the <code class="docutils literal notranslate"><span class="pre">--parallel</span></code> or <code class="docutils literal notranslate"><span class="pre">-p</span></code> flag. After the packaging phase completes tox will run in parallel
+processes tox environments (spins a new instance of the tox interpreter, but passes through all host flags and
+environment variables).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span></code> takes an argument specifying the degree of parallelization, defaulting to <code class="docutils literal notranslate"><span class="pre">auto</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">all</span></code> to run all invoked environments in parallel,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> to limit it to CPU count,</p></li>
+<li><p>or pass an integer to set that limit.</p></li>
+</ul>
+</li>
+<li><p>Parallel mode displays a progress spinner while running tox environments in parallel, and reports outcome of
+these as soon as completed with a human readable duration timing attached. This spinner can be disabled by
+setting the environment variable <code class="docutils literal notranslate"><span class="pre">TOX_PARALLEL_NO_SPINNER</span></code> to the value <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p>Parallel mode by default shows output only of failed environments and ones marked as <a class="reference internal" href="../config.html#conf-parallel_show_output"><code class="xref std std-conf docutils literal notranslate"><span class="pre">parallel_show_output</span></code></a>
+<code class="docutils literal notranslate"><span class="pre">=True</span></code>.</p></li>
+<li><p>There’s now a concept of dependency between environments (specified via <a class="reference internal" href="../config.html#conf-depends"><code class="xref std std-conf docutils literal notranslate"><span class="pre">depends</span></code></a>), tox will re-order the
+environment list to be run to satisfy these dependencies (in sequential run too). Furthermore, in parallel mode,
+will only schedule a tox environment to run once all of its dependencies finished (independent of their outcome).</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p><code class="docutils literal notranslate"><span class="pre">depends</span></code> does not pull in dependencies into the run target, for example if you select <code class="docutils literal notranslate"><span class="pre">py27,py36,coverage</span></code>
+via the <code class="docutils literal notranslate"><span class="pre">-e</span></code> tox will only run those three (even if <code class="docutils literal notranslate"><span class="pre">coverage</span></code> may specify as <code class="docutils literal notranslate"><span class="pre">depends</span></code> other targets too -
+such as <code class="docutils literal notranslate"><span class="pre">py27,</span> <span class="pre">py35,</span> <span class="pre">py36,</span> <span class="pre">py37</span></code>).</p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--parallel-live</span></code>/<code class="docutils literal notranslate"><span class="pre">-o</span></code> allows showing the live output of the standard output and error, also turns off reporting
+described above.</p></li>
+<li><p>Note: parallel evaluation disables standard input. Use non parallel invocation if you need standard input.</p></li>
+</ul>
+<p>Example final output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tox -e py27,py36,coverage -p all
+✔ OK py36 <span class="k">in</span> <span class="m">9</span>.533 seconds
+✔ OK py27 <span class="k">in</span> <span class="m">9</span>.96 seconds
+✔ OK coverage <span class="k">in</span> <span class="m">2</span>.0 seconds
+___________________________ summary ______________________________________________________
+  py27: commands succeeded
+  py36: commands succeeded
+  coverage: commands succeeded
+  congratulations :<span class="o">)</span>
+</pre></div>
+</div>
+<p>Example progress bar, showing a rotating spinner, the number of environments running and their list (limited up to 120 characters):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>⠹ <span class="o">[</span><span class="m">2</span><span class="o">]</span> py27 <span class="p">|</span> py36
+</pre></div>
+</div>
+</section>
+<section id="tox-auto-provisioning">
+<span id="auto-provision"></span><h2>tox auto-provisioning<a class="headerlink" href="#tox-auto-provisioning" title="永久链接至标题">¶</a></h2>
+<p>In case the host tox does not satisfy either the <a class="reference internal" href="../config.html#conf-minversion"><code class="xref std std-conf docutils literal notranslate"><span class="pre">minversion</span></code></a> or the <a class="reference internal" href="../config.html#conf-requires"><code class="xref std std-conf docutils literal notranslate"><span class="pre">requires</span></code></a>, tox will now automatically
+create a virtual environment under <a class="reference internal" href="../config.html#conf-provision_tox_env"><code class="xref std std-conf docutils literal notranslate"><span class="pre">provision_tox_env</span></code></a> that satisfies those constraints and delegate all calls
+to this meta environment. This should allow automatically satisfying constraints on your tox environment,
+given you have at least version <code class="docutils literal notranslate"><span class="pre">3.8.0</span></code> of tox.</p>
+<p>For example given:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">minversion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3.10.0</span><span class="w"></span>
+<span class="na">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">tox_venv &gt;= 1.0.0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>if the user runs it with tox <code class="docutils literal notranslate"><span class="pre">3.8.0</span></code> or later installed tox will automatically ensured that both the minimum version
+and requires constraints are satisfied, by creating a virtual environment under <code class="docutils literal notranslate"><span class="pre">.tox</span></code> folder, and then installing
+into it <code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">&gt;=</span> <span class="pre">3.10.0</span></code> and <code class="docutils literal notranslate"><span class="pre">tox_venv</span> <span class="pre">&gt;=</span> <span class="pre">1.0.0</span></code>. Afterwards all tox invocations are forwarded to the tox installed
+inside <code class="docutils literal notranslate"><span class="pre">.tox\.tox</span></code> folder (referred to as meta-tox or auto-provisioned tox).</p>
+<p>This allows tox to automatically setup itself with all its plugins for the current project.  If the host tox satisfies
+the constraints expressed with the <a class="reference internal" href="../config.html#conf-requires"><code class="xref std std-conf docutils literal notranslate"><span class="pre">requires</span></code></a> and <a class="reference internal" href="../config.html#conf-minversion"><code class="xref std std-conf docutils literal notranslate"><span class="pre">minversion</span></code></a> no such provisioning is done (to avoid
+setup cost when it’s not explicitly needed).</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="../index.html">home</a>
+</td><td>
+        <a href="../examples.html">examples</a>
+</td></tr><tr><td>
+        <a href="../install.html">install</a>
+</td><td>
+        <a href="../changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="../config.html">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="../support.html">support</a>
+</td><td>
+        <a href="../plugins.html">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+
+  <div>
+    <h3><a href="../index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Basic usage</a><ul>
+<li><a class="reference internal" href="#a-simple-tox-ini-default-environments">A simple tox.ini / default environments</a></li>
+<li><a class="reference internal" href="#pyproject-toml-tox-legacy-ini">pyproject.toml tox legacy ini</a></li>
+<li><a class="reference internal" href="#specifying-a-platform">Specifying a platform</a></li>
+<li><a class="reference internal" href="#allowing-non-virtualenv-commands">Allowing non-virtualenv commands</a></li>
+<li><a class="reference internal" href="#depending-on-requirements-txt-or-defining-constraints">Depending on requirements.txt or defining constraints</a></li>
+<li><a class="reference internal" href="#using-a-different-default-pypi-url">Using a different default PyPI URL</a></li>
+<li><a class="reference internal" href="#installing-dependencies-from-multiple-pypi-servers">Installing dependencies from multiple PyPI servers</a></li>
+<li><a class="reference internal" href="#further-customizing-installation">Further customizing installation</a></li>
+<li><a class="reference internal" href="#forcing-re-creation-of-virtual-environments">Forcing re-creation of virtual environments</a></li>
+<li><a class="reference internal" href="#passing-down-environment-variables">Passing down environment variables</a></li>
+<li><a class="reference internal" href="#setting-environment-variables">Setting environment variables</a></li>
+<li><a class="reference internal" href="#special-handling-of-pythonhashseed">Special handling of PYTHONHASHSEED</a></li>
+<li><a class="reference internal" href="#integration-with-setup-py-test-command">Integration with “setup.py test” command</a></li>
+<li><a class="reference internal" href="#ignoring-a-command-exit-code">Ignoring a command exit code</a></li>
+<li><a class="reference internal" href="#compressing-dependency-matrix">Compressing dependency matrix</a></li>
+<li><a class="reference internal" href="#using-generative-section-names">Using generative section names</a></li>
+<li><a class="reference internal" href="#prevent-symbolic-links-in-virtualenv">Prevent symbolic links in virtualenv</a></li>
+<li><a class="reference internal" href="#parallel-mode">Parallel mode</a></li>
+<li><a class="reference internal" href="#tox-auto-provisioning">tox auto-provisioning</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">tox configuration and usage examples</a><ul>
+      <li>Previous: <a href="../examples.html" title="上一章">tox configuration and usage examples</a></li>
+      <li>Next: <a href="package.html" title="下一章">Packaging</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
