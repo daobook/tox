@@ -1,0 +1,604 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tox plugins &#8212; tox 3.24.6.dev14 文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Developers FAQ" href="developers.html" />
+    <link rel="prev" title="Changelog history" href="changelog.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tox-plugins">
+<h1>tox plugins<a class="headerlink" href="#tox-plugins" title="永久链接至标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">2.0 新版功能.</span></p>
+</div>
+<p>A growing number of hooks make tox modifiable in different phases of execution by writing plugins.</p>
+<p>tox - like <a class="reference external" href="https://pytest.org">pytest</a> and <a class="reference external" href="https://doc.devpi.net">devpi</a> - uses <a class="reference external" href="https://pluggy.readthedocs.io">pluggy</a> to provide an extension mechanism for pip-installable internal or devpi/PyPI-published plugins.</p>
+<div class="section" id="using-plugins">
+<h2>Using plugins<a class="headerlink" href="#using-plugins" title="永久链接至标题">¶</a></h2>
+<p>To start using a plugin you need to install it in the same environment where the tox host
+is installed.</p>
+<p>e.g.:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install tox-travis
+</pre></div>
+</div>
+<p>You can search for available plugins on PyPI by visiting <a class="reference external" href="https://pypi.org/search/?q=tox">PyPI</a> and
+searching for packages that are prefixed <code class="docutils literal notranslate"><span class="pre">tox-</span></code> or contain the word “plugin” in the description.
+Examples include:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tox-ansible                          - Plugin for generating tox environments for tools like ansible-test
+tox-asdf                             - A tox plugin that finds python executables using asdf
+tox-backticks                        - Allows backticks within setenv blocks for populating
+                                       environment variables
+tox-bindep                           - Runs bindep checks prior to tests
+tox-bitbucket-status                 - Update bitbucket status for each env
+tox-cmake                            - Build CMake projects using tox
+tox-conda                            - Provides integration with the condo package manager
+tox-current-env                      - Run tests in the current python environment
+tox-docker                           - Launch a docker instance around test runs
+tox-direct                           - Run everything directly without tox venvs
+tox-envlist                          - Allows selection of a different tox envlist
+tox-envreport                        - A tox-plugin to document the setup of used virtual
+tox-factor                           - Runs a subset of tox test environments
+tox-globinterpreter                  - tox plugin to allow specification of interpreter
+tox-gh-actions                       - A plugin for helping to run tox in GitHub actions.
+tox-ltt                              - Light-the-torch integration
+tox-no-internet                      - Workarounds for using tox with no internet connection
+tox-pdm                              - Utilizes PDM as the package manager and installer
+tox-pip-extensions                   - Augment tox with different installation methods via
+                                       progressive enhancement.
+tox-pipenv                           - A pipenv plugin for tox
+tox-pipenv-install                   - Install packages from Pipfile
+tox-poetry                           - Install packages using poetry
+tox-py-backwards                     - tox plugin for py-backwards
+tox-pyenv                            - tox plugin that makes tox use ``pyenv which`` to find
+                                       python executables
+tox-pytest-summary                   - tox + Py.test summary
+tox-run-before                       - tox plugin to run shell commands before the test
+                                       environments are created.
+tox-run-command                      - tox plugin to run arbitrary commands in a virtualenv
+tox-tags                             - Allows running subsets of environments based on tags
+tox-travis                           - Seamless integration of tox into Travis CI
+tox-venv                             - Use python3 venvs for python3 tox testenvs environments.
+tox-virtualenv-no-download           - Disable virtualenv&#39;s download-by-default in tox
+</pre></div>
+</div>
+<p>There might also be some plugins not (yet) available from PyPI that could be installed directly
+from source hosters like Github or Bitbucket (or from a local clone). See the associated <a class="reference external" href="https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support">pip documentation</a>.</p>
+<p>To see what is installed you can call <code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">--version</span></code> to get the version of the host and names
+and locations of all installed plugins:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">3.0.0</span> <span class="n">imported</span> <span class="kn">from</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ob</span><span class="o">/.</span><span class="n">virtualenvs</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.6</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">tox</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+<span class="n">registered</span> <span class="n">plugins</span><span class="p">:</span>
+    <span class="n">tox</span><span class="o">-</span><span class="n">travis</span><span class="o">-</span><span class="mf">0.10</span> <span class="n">at</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ob</span><span class="o">/.</span><span class="n">virtualenvs</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.6</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">tox_travis</span><span class="o">/</span><span class="n">hooks</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-a-plugin">
+<h2>Creating a plugin<a class="headerlink" href="#creating-a-plugin" title="永久链接至标题">¶</a></h2>
+<p>Start from a template</p>
+<p>You can create a new tox plugin with all the bells and whistles via a <a class="reference external" href="https://cookiecutter.readthedocs.io">Cookiecutter</a> template
+(see <a class="reference external" href="https://github.com/tox-dev/cookiecutter-tox-plugin">cookiecutter-tox-plugin</a> - this will create a complete PyPI-releasable, documented
+project with license, documentation and CI.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install -U cookiecutter
+$ cookiecutter gh:tox-dev/cookiecutter-tox-plugin
+</pre></div>
+</div>
+</div>
+<div class="section" id="tutorial-a-minimal-tox-plugin">
+<h2>Tutorial: a minimal tox plugin<a class="headerlink" href="#tutorial-a-minimal-tox-plugin" title="永久链接至标题">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This is the minimal implementation to demonstrate what is absolutely necessary to have a
+working plugin for internal use. To move from something like this to a publishable plugin
+you could apply <code class="docutils literal notranslate"><span class="pre">cookiecutter</span> <span class="pre">-f</span> <span class="pre">cookiecutter-tox-plugin</span></code> and adapt the code to the
+package based structure used in the cookiecutter.</p>
+</div>
+<p>Let us consider you want to extend tox behaviour by displaying fireworks at the end of a
+successful tox run (we won’t go into the details of how to display fireworks though).</p>
+<p>To create a working plugin you need at least a python project with a tox entry point and a python
+module implementing one or more of the pluggy-based hooks tox specifies (using the
+<code class="docutils literal notranslate"><span class="pre">&#64;tox.hookimpl</span></code> decorator as marker).</p>
+<p>minimal structure:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ mkdir tox-fireworks
+$ <span class="nb">cd</span> tox-fireworks
+$ touch tox_fireworks.py
+$ touch setup.py
+</pre></div>
+</div>
+<p>contents of <code class="docutils literal notranslate"><span class="pre">tox_fireworks.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pluggy</span>
+
+<span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">&quot;tox&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@hookimpl</span>
+<span class="k">def</span> <span class="nf">tox_addoption</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add command line option to display fireworks on request.&quot;&quot;&quot;</span>
+
+
+<span class="nd">@hookimpl</span>
+<span class="k">def</span> <span class="nf">tox_configure</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Post process config after parsing.&quot;&quot;&quot;</span>
+
+
+<span class="nd">@hookimpl</span>
+<span class="k">def</span> <span class="nf">tox_runenvreport</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display fireworks if all was fine and requested.&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>See <a class="reference internal" href="#toxhookspecsapi"><span class="std std-ref">Hook specifications and related API</span></a> for details</p>
+</div>
+<p>contents of <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tox-fireworks&quot;</span><span class="p">,</span>
+    <span class="n">py_modules</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tox_fireworks&quot;</span><span class="p">],</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tox&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;fireworks = tox_fireworks&quot;</span><span class="p">]},</span>
+    <span class="n">classifiers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Framework:: tox&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Using the  <strong>tox-</strong> prefix in <code class="docutils literal notranslate"><span class="pre">tox-fireworks</span></code> is an established convention to be able to
+see from the project name that this is a plugin for tox. It also makes it easier to find with
+e.g. <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">search</span> <span class="pre">'tox-'</span></code> once it is released on PyPI.</p>
+<p>To make your new plugin discoverable by tox, you need to install it. During development you should
+install it with <code class="docutils literal notranslate"><span class="pre">-e</span></code> or <code class="docutils literal notranslate"><span class="pre">--editable</span></code>, so that changes to the code are immediately active:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install -e &lt;/path/to/tox-fireworks&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="publish-your-plugin-to-pypi">
+<h2>Publish your plugin to PyPI<a class="headerlink" href="#publish-your-plugin-to-pypi" title="永久链接至标题">¶</a></h2>
+<p>If you think the rest of the world could profit using your plugin, you can publish it to PyPI.</p>
+<p>You need to add some more meta data to <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> (see <a class="reference external" href="https://github.com/tox-dev/cookiecutter-tox-plugin">cookiecutter-tox-plugin</a> for a complete
+example or consult the <a class="reference external" href="https://docs.python.org/3/distutils/setupscript.html">setup.py docs</a>).</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Make sure your plugin project name is prefixed by <code class="docutils literal notranslate"><span class="pre">tox-</span></code> to be easy to find via e.g.
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">search</span> <span class="pre">tox-</span></code></p>
+</div>
+<p>You can and publish it like:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> &lt;/path/to/tox-fireworks&gt;
+$ python setup.py sdist bdist_wheel upload
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>You could also use <a class="reference external" href="https://pypi.org/project/twine/">twine</a> for secure uploads.</p>
+<p>For more information about packaging and deploying Python projects see the
+<a class="reference external" href="https://packaging.python.org/tutorials/packaging-projects/">Python Packaging Guide</a>.</p>
+</div>
+</div>
+<div class="section" id="module-tox.hookspecs">
+<span id="hook-specifications-and-related-api"></span><span id="toxhookspecsapi"></span><h2>Hook specifications and related API<a class="headerlink" href="#module-tox.hookspecs" title="永久链接至标题">¶</a></h2>
+<p>Hook specifications for tox - see <a class="reference external" href="https://pluggy.readthedocs.io/">https://pluggy.readthedocs.io/</a></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_addoption">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_addoption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_addoption"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_addoption" title="永久链接至目标">¶</a></dt>
+<dd><p>add command line options to the argparse-style parser object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_cleanup">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_cleanup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_cleanup"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_cleanup" title="永久链接至目标">¶</a></dt>
+<dd><p>Called just before the session is destroyed, allowing any final cleanup operation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_configure">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_configure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_configure"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_configure" title="永久链接至目标">¶</a></dt>
+<dd><p>Called after command line options are parsed and ini-file has been read.</p>
+<p>Please be aware that the config object layout may change between major tox versions.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_get_python_executable">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_get_python_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">envconfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_get_python_executable"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_get_python_executable" title="永久链接至目标">¶</a></dt>
+<dd><p>Return a python executable for the given python base name.</p>
+<p>The first plugin/hook which returns an executable path will determine it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">envconfig</span></code> is the testenv configuration which contains
+per-testenv configuration, notably the <code class="docutils literal notranslate"><span class="pre">.envname</span></code> and <code class="docutils literal notranslate"><span class="pre">.basepython</span></code>
+setting.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_package">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">venv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_package"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_package" title="永久链接至目标">¶</a></dt>
+<dd><p>Return the package to be installed for the given venv.</p>
+<p>Called once for every environment.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_runenvreport">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_runenvreport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">venv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_runenvreport"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_runenvreport" title="永久链接至目标">¶</a></dt>
+<dd><p>Get the installed packages and versions in this venv.</p>
+<p>This could be used for alternative (ie non-pip) package managers, this
+plugin should return a <code class="docutils literal notranslate"><span class="pre">list</span></code> of type <code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_runtest">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_runtest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">venv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_runtest"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_runtest" title="永久链接至目标">¶</a></dt>
+<dd><p>Run the tests for this venv.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This hook uses <code class="docutils literal notranslate"><span class="pre">firstresult=True</span></code> (see <a class="reference external" href="https://pluggy.readthedocs.io/en/latest/#first-result-only">pluggy first result only</a>) – hooks
+implementing this will be run until one returns non-<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_runtest_post">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_runtest_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">venv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_runtest_post"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_runtest_post" title="永久链接至目标">¶</a></dt>
+<dd><p>Perform arbitrary action after running tests for this venv.</p>
+<p>This could be used to have per-venv test reporting of pass/fail status.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_runtest_pre">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_runtest_pre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">venv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_runtest_pre"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_runtest_pre" title="永久链接至目标">¶</a></dt>
+<dd><p>Perform arbitrary action before running tests for this venv.</p>
+<p>This could be used to indicate that tests for a given venv have started, for instance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_testenv_create">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_testenv_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">venv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_testenv_create"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_testenv_create" title="永久链接至目标">¶</a></dt>
+<dd><p>Perform creation action for this venv.</p>
+<p>Some example usage:</p>
+<ul class="simple">
+<li><p>To <em>add</em> behavior but still use tox’s implementation to set up a
+virtualenv, implement this hook but do not return a value (or explicitly
+return <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p>To <em>override</em> tox’s virtualenv creation, implement this hook and return
+a non-<code class="docutils literal notranslate"><span class="pre">None</span></code> value.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This api is experimental due to the unstable api of
+<a class="reference internal" href="#tox.venv.VirtualEnv" title="tox.venv.VirtualEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">tox.venv.VirtualEnv</span></code></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This hook uses <code class="docutils literal notranslate"><span class="pre">firstresult=True</span></code> (see <a class="reference external" href="https://pluggy.readthedocs.io/en/latest/#first-result-only">pluggy first result only</a>) – hooks
+implementing this will be run until one returns non-<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tox.hookspecs.tox_testenv_install_deps">
+<span class="sig-prename descclassname"><span class="pre">tox.hookspecs.</span></span><span class="sig-name descname"><span class="pre">tox_testenv_install_deps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">venv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/hookspecs.html#tox_testenv_install_deps"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.hookspecs.tox_testenv_install_deps" title="永久链接至目标">¶</a></dt>
+<dd><p>Perform install dependencies action for this venv.</p>
+<p>Some example usage:</p>
+<ul class="simple">
+<li><p>To <em>add</em> behavior but still use tox’s implementation to install
+dependencies, implement this hook but do not return a value (or
+explicitly return <code class="docutils literal notranslate"><span class="pre">None</span></code>).  One use-case may be to install (or ensure)
+non-python dependencies such as debian packages.</p></li>
+<li><p>To <em>override</em> tox’s installation of dependencies, implement this hook
+and return a non-<code class="docutils literal notranslate"><span class="pre">None</span></code> value.  One use-case may be to install via
+a different installation tool such as <a class="reference external" href="https://github.com/paylogic/pip-accel">pip-accel</a> or <a class="reference external" href="https://github.com/Yelp/venv-update">pip-faster</a>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This api is experimental due to the unstable api of
+<a class="reference internal" href="#tox.venv.VirtualEnv" title="tox.venv.VirtualEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">tox.venv.VirtualEnv</span></code></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This hook uses <code class="docutils literal notranslate"><span class="pre">firstresult=True</span></code> (see <a class="reference external" href="https://pluggy.readthedocs.io/en/latest/#first-result-only">pluggy first result only</a>) – hooks
+implementing this will be run until one returns non-<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tox.config.Parser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tox.config.</span></span><span class="sig-name descname"><span class="pre">Parser</span></span><a class="reference internal" href="_modules/tox/config.html#Parser"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.Parser" title="永久链接至目标">¶</a></dt>
+<dd><p>Command line and ini-parser control object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tox.config.Parser.add_argument">
+<span class="sig-name descname"><span class="pre">add_argument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/config.html#Parser.add_argument"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.Parser.add_argument" title="永久链接至目标">¶</a></dt>
+<dd><p>add argument to command line parser.  This takes the
+same arguments that <code class="docutils literal notranslate"><span class="pre">argparse.ArgumentParser.add_argument</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tox.config.Parser.add_testenv_attribute">
+<span class="sig-name descname"><span class="pre">add_testenv_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postprocess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/config.html#Parser.add_testenv_attribute"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.Parser.add_testenv_attribute" title="永久链接至目标">¶</a></dt>
+<dd><p>add an ini-file variable for “testenv” section.</p>
+<p>Types are specified as strings like “bool”, “line-list”, “string”, “argv”, “path”,
+“argvlist”.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">postprocess</span></code> function will be called for each testenv
+like <code class="docutils literal notranslate"><span class="pre">postprocess(testenv_config=testenv_config,</span> <span class="pre">value=value)</span></code>
+where <code class="docutils literal notranslate"><span class="pre">value</span></code> is the value as read from the ini (or the default value)
+and <code class="docutils literal notranslate"><span class="pre">testenv_config</span></code> is a <a class="reference internal" href="#tox.config.TestenvConfig" title="tox.config.TestenvConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">tox.config.TestenvConfig</span></code></a> instance
+which will receive all ini-variables as object attributes.</p>
+<p>Any postprocess function must return a value which will then be set
+as the final value in the testenv section.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tox.config.Parser.add_testenv_attribute_obj">
+<span class="sig-name descname"><span class="pre">add_testenv_attribute_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/config.html#Parser.add_testenv_attribute_obj"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.Parser.add_testenv_attribute_obj" title="永久链接至目标">¶</a></dt>
+<dd><p>add an ini-file variable as an object.</p>
+<p>This works as the <code class="docutils literal notranslate"><span class="pre">add_testenv_attribute</span></code> function but expects
+“name”, “type”, “help”, and “postprocess” attributes on the object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tox.config.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tox.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="_modules/tox/config.html#Config"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.Config" title="永久链接至目标">¶</a></dt>
+<dd><p>Global Tox config object.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tox.config.Config.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#tox.config.Config.args" title="永久链接至目标">¶</a></dt>
+<dd><p>option namespace containing all parsed command line options</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tox.config.Config.envconfigs">
+<span class="sig-name descname"><span class="pre">envconfigs</span></span><a class="headerlink" href="#tox.config.Config.envconfigs" title="永久链接至目标">¶</a></dt>
+<dd><p>Mapping envname -&gt; envconfig</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tox.config.</span></span><span class="sig-name descname"><span class="pre">TestenvConfig</span></span><a class="reference internal" href="_modules/tox/config.html#TestenvConfig"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.TestenvConfig" title="永久链接至目标">¶</a></dt>
+<dd><p>Testenv Configuration object.</p>
+<p>In addition to some core attributes/properties this config object holds all
+per-testenv ini attributes as attributes, see “tox –help-ini” for an overview.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.config">
+<span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#tox.config.TestenvConfig.config" title="永久链接至目标">¶</a></dt>
+<dd><p>global tox config object</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.envname">
+<span class="sig-name descname"><span class="pre">envname</span></span><a class="headerlink" href="#tox.config.TestenvConfig.envname" title="永久链接至目标">¶</a></dt>
+<dd><p>test environment name</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.envpython">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">envpython</span></span><a class="headerlink" href="#tox.config.TestenvConfig.envpython" title="永久链接至目标">¶</a></dt>
+<dd><p>Path to python executable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.factors">
+<span class="sig-name descname"><span class="pre">factors</span></span><a class="headerlink" href="#tox.config.TestenvConfig.factors" title="永久链接至目标">¶</a></dt>
+<dd><p>set of factors</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.get_envbindir">
+<span class="sig-name descname"><span class="pre">get_envbindir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/config.html#TestenvConfig.get_envbindir"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.TestenvConfig.get_envbindir" title="永久链接至目标">¶</a></dt>
+<dd><p>Path to directory where scripts/binaries reside.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.get_envpython">
+<span class="sig-name descname"><span class="pre">get_envpython</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/config.html#TestenvConfig.get_envpython"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.TestenvConfig.get_envpython" title="永久链接至目标">¶</a></dt>
+<dd><p>path to python/jython executable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.get_envsitepackagesdir">
+<span class="sig-name descname"><span class="pre">get_envsitepackagesdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/config.html#TestenvConfig.get_envsitepackagesdir"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.config.TestenvConfig.get_envsitepackagesdir" title="永久链接至目标">¶</a></dt>
+<dd><p>Return sitepackagesdir of the virtualenv environment.</p>
+<p>NOTE: Only available during execution, not during parsing.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tox.config.TestenvConfig.python_info">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">python_info</span></span><a class="headerlink" href="#tox.config.TestenvConfig.python_info" title="永久链接至目标">¶</a></dt>
+<dd><p>Return sitepackagesdir of the virtualenv environment.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tox.venv.VirtualEnv">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tox.venv.</span></span><span class="sig-name descname"><span class="pre">VirtualEnv</span></span><a class="reference internal" href="_modules/tox/venv.html#VirtualEnv"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.venv.VirtualEnv" title="永久链接至目标">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tox.venv.VirtualEnv.getcommandpath">
+<span class="sig-name descname"><span class="pre">getcommandpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">venv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/venv.html#VirtualEnv.getcommandpath"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.venv.VirtualEnv.getcommandpath" title="永久链接至目标">¶</a></dt>
+<dd><p>Return absolute path (str or localpath) for specified command name.</p>
+<ul class="simple">
+<li><p>If it’s a local path we will rewrite it as as a relative path.</p></li>
+<li><p>If venv is True we will check if the command is coming from the venv
+or is allowed to come from external.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tox.venv.VirtualEnv.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#tox.venv.VirtualEnv.name" title="永久链接至目标">¶</a></dt>
+<dd><p>test environment name.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tox.venv.VirtualEnv.path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><a class="headerlink" href="#tox.venv.VirtualEnv.path" title="永久链接至目标">¶</a></dt>
+<dd><p>Path to environment base dir.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tox.venv.VirtualEnv.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tox/venv.html#VirtualEnv.update"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.venv.VirtualEnv.update" title="永久链接至目标">¶</a></dt>
+<dd><p>return status string for updating actual venv to match configuration.
+if status string is empty, all is ok.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tox.session.Session">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tox.session.</span></span><span class="sig-name descname"><span class="pre">Session</span></span><a class="reference internal" href="_modules/tox/session.html#Session"><span class="viewcode-link"><span class="pre">[源代码]</span></span></a><a class="headerlink" href="#tox.session.Session" title="永久链接至目标">¶</a></dt>
+<dd><p>The session object that ties together configuration, reporting, venv creation, testing.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="index.html">home</a>
+</td><td>
+        <a href="examples.html">examples</a>
+</td></tr><tr><td>
+        <a href="install.html">install</a>
+</td><td>
+        <a href="changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="config.html">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="support.html">support</a>
+</td><td>
+        <a href="#">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">tox plugins</a><ul>
+<li><a class="reference internal" href="#using-plugins">Using plugins</a></li>
+<li><a class="reference internal" href="#creating-a-plugin">Creating a plugin</a></li>
+<li><a class="reference internal" href="#tutorial-a-minimal-tox-plugin">Tutorial: a minimal tox plugin</a></li>
+<li><a class="reference internal" href="#publish-your-plugin-to-pypi">Publish your plugin to PyPI</a></li>
+<li><a class="reference internal" href="#module-tox.hookspecs">Hook specifications and related API</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="changelog.html" title="上一章">Changelog history</a></li>
+      <li>Next: <a href="developers.html" title="下一章">Developers FAQ</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

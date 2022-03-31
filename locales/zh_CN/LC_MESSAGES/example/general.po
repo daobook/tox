@@ -1,0 +1,317 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/general.rst:4
+msgid "General tips and tricks"
+msgstr ""
+
+#: ../../docs/example/general.rst:7
+msgid "Interactively passing positional arguments"
+msgstr ""
+
+#: ../../docs/example/general.rst:9
+msgid "If you invoke ``tox`` like this:"
+msgstr ""
+
+#: ../../docs/example/general.rst:15
+msgid ""
+"the arguments after the ``--`` will be substituted everywhere where you "
+"specify ``{posargs}`` in your test commands, for example using "
+"``pytest``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:25
+msgid "or using ``nosetests``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:32
+msgid ""
+"the above ``tox`` invocation will trigger the test runners to stop after "
+"the first failure and to only run a particular test file."
+msgstr ""
+
+#: ../../docs/example/general.rst:35
+msgid "You can specify defaults for the positional arguments using this syntax:"
+msgstr ""
+
+#: ../../docs/example/general.rst:46
+msgid "Dependency changes and tracking"
+msgstr ""
+
+#: ../../docs/example/general.rst:48
+msgid ""
+"Creating virtual environments and installing dependencies is an expensive"
+" operation. Therefore tox tries to avoid it whenever possible, meaning it"
+" will never perform this unless it detects with absolute certainty that "
+"it needs to perform an update. A tox environment creation is made up of:"
+msgstr ""
+
+#: ../../docs/example/general.rst:53
+msgid "create the virtual environment"
+msgstr ""
+
+#: ../../docs/example/general.rst:54
+msgid "install dependencies specified inside deps"
+msgstr ""
+
+#: ../../docs/example/general.rst:55
+msgid ""
+"if it's a library project (has build package phase), install library "
+"dependencies (with potential extras)"
+msgstr ""
+
+#: ../../docs/example/general.rst:58
+msgid ""
+"These three steps are only performed once (given they all succeeded). "
+"Subsequent calls that don't detect changes to the traits of that step "
+"will not alter the virtual environment in any way. When a change is "
+"detected for any of the steps, the entire virtual environment is removed "
+"and the operation starts from scratch (this is because it's very hard to "
+"determine what would the delta changes would be needed - e.g. a "
+"dependency could migrate from one dependency to another, and in this case"
+" we would need to install the new while removing the old one)."
+msgstr ""
+
+#: ../../docs/example/general.rst:66
+msgid "Here's what traits we track at the moment for each steps:"
+msgstr ""
+
+#: ../../docs/example/general.rst:68
+msgid ""
+"virtual environment trait is tied to the python path the "
+":conf:`basepython` resolves too (if this config changes, the virtual "
+"environment will be recreated),"
+msgstr ""
+
+#: ../../docs/example/general.rst:70
+msgid ""
+":conf:`deps` sections changes (meaning any string-level change for the "
+"entries, note requirement file content changes are not tracked),"
+msgstr ""
+
+#: ../../docs/example/general.rst:72
+msgid ""
+"library dependencies are tracked at :conf:`extras` level (because there's"
+" no Python API to enquire about the actual dependencies in a non-tool "
+"specific way, e.g. setuptools has one way, flit something else, and "
+"poetry another)."
+msgstr ""
+
+#: ../../docs/example/general.rst:76
+msgid ""
+"Whenever you change traits that are not tracked we recommend you to "
+"manually trigger a rebuild of the tox environment by passing the ``-r`` "
+"flag for the tox invocation. For instance, for a setuptools project "
+"whenever you modify the ``install_requires`` keyword at the next run "
+"force the recreation of the tox environment by passing the recreate cli "
+"tox flag."
+msgstr ""
+
+#: ../../docs/example/general.rst:85
+msgid "Selecting one or more environments to run tests against"
+msgstr ""
+
+#: ../../docs/example/general.rst:87
+msgid ""
+"Using the ``-e ENV[,ENV36,...]``  option you explicitly list the "
+"environments where you want to run tests against. For example, given the "
+"previous sphinx example you may call:"
+msgstr ""
+
+#: ../../docs/example/general.rst:95
+msgid ""
+"which will make ``tox`` only manage the ``docs`` environment and call its"
+" test commands.  You may specify more than one environment like this:"
+msgstr ""
+
+#: ../../docs/example/general.rst:103
+msgid ""
+"which would run the commands of the ``py27`` and ``py36`` "
+"testenvironments respectively.  The special value ``ALL`` selects all "
+"environments."
+msgstr ""
+
+#: ../../docs/example/general.rst:106
+msgid "You can also specify an environment list in your ``tox.ini``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:113
+msgid ""
+"or override it from the command line or from the environment variable "
+"``TOXENV``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:123
+msgid "Access package artifacts between multiple tox-runs"
+msgstr ""
+
+#: ../../docs/example/general.rst:125
+msgid ""
+"If you have multiple projects using tox you can make use of a "
+"``distshare`` directory where ``tox`` will copy in sdist-packages so that"
+" another tox run can find the \"latest\" dependency.  This feature allows"
+" you to test a package against an unreleased development version or even "
+"an uncommitted version on your own machine."
+msgstr ""
+
+#: ../../docs/example/general.rst:131
+msgid ""
+"By default, ``{homedir}/.tox/distshare`` will be used for copying in and "
+"copying out artifacts (i.e. Python packages)."
+msgstr ""
+
+#: ../../docs/example/general.rst:134
+msgid ""
+"For project ``two`` to depend on the ``one`` package you use the "
+"following entry:"
+msgstr ""
+
+#: ../../docs/example/general.rst:144
+msgid ""
+"That's all.  tox running on project ``one`` will copy the sdist-package "
+"into the ``distshare`` directory after which a ``tox`` run on project "
+"``two`` will grab it because ``deps`` contain an entry with the "
+"``one-*.zip`` pattern.  If there is more than one matching package the "
+"highest version will be taken.  ``tox`` uses verlib_  to compare version "
+"strings which must be compliant with :pep:`386`."
+msgstr ""
+
+#: ../../docs/example/general.rst:151
+msgid ""
+"If you want to use this with Jenkins_, also checkout the :ref:`jenkins "
+"artifact example`."
+msgstr ""
+
+#: ../../docs/example/general.rst:156
+msgid "basepython defaults, overriding"
+msgstr ""
+
+#: ../../docs/example/general.rst:158
+msgid ""
+"For any ``pyXY`` test environment name the underlying ``pythonX.Y`` "
+"executable will be searched in your system ``PATH``. Similarly, for "
+"``jython`` and ``pypy`` the respective ``jython`` and ``pypy-c`` names "
+"will be looked for. The executable must exist in order to successfully "
+"create *virtualenv* environments. On Windows a ``pythonX.Y`` named "
+"executable will be searched in typical default locations using the "
+"``C:\\PythonXY\\python.exe`` pattern."
+msgstr ""
+
+#: ../../docs/example/general.rst:165
+msgid ""
+"All other targets will use the system ``python`` instead. You can "
+"override any of the default settings by defining the :conf:`basepython` "
+"variable in a specific test environment section, for example:"
+msgstr ""
+
+#: ../../docs/example/general.rst:175
+msgid "Avoiding expensive sdist"
+msgstr ""
+
+#: ../../docs/example/general.rst:177
+msgid ""
+"Some projects are large enough that running an sdist, followed by an "
+"install every time can be prohibitively costly. To solve this, there are "
+"two different options you can add to the ``tox`` section. First, you can "
+"simply ask tox to please not make an sdist:"
+msgstr ""
+
+#: ../../docs/example/general.rst:187
+msgid ""
+"If you do this, your local software package will not be installed into "
+"the virtualenv. You should probably be okay with that, or take steps to "
+"deal with it in your commands section:"
+msgstr ""
+
+#: ../../docs/example/general.rst:197
+msgid ""
+"Running ``setup.py develop`` is a common enough model that it has its own"
+" option:"
+msgstr ""
+
+#: ../../docs/example/general.rst:205
+msgid ""
+"And a corresponding command line option ``--develop``, which will set "
+"``skipsdist`` to True and then perform the ``setup.py develop`` step at "
+"the place where ``tox`` normally performs the installation of the sdist. "
+"Specifically, it actually runs ``pip install -e .`` behind the scenes, "
+"which itself calls ``setup.py develop``."
+msgstr ""
+
+#: ../../docs/example/general.rst:211
+msgid ""
+"There is an optimization coded in to not bother re-running the command if"
+" ``$projectname.egg-info`` is newer than ``setup.py`` or ``setup.cfg``."
+msgstr ""
+
+#: ../../docs/example/general.rst:218
+msgid "Understanding ``InvocationError`` exit codes"
+msgstr ""
+
+#: ../../docs/example/general.rst:220
+msgid ""
+"When a command (defined by ``commands =`` in ``tox.ini``) fails, it has a"
+" non-zero exit code, and an ``InvocationError`` exception is raised by "
+"``tox``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:229
+msgid ""
+"If the command starts with ``pytest`` or ``python setup.py test`` for "
+"instance, then the `pytest exit codes`_ are relevant."
+msgstr ""
+
+#: ../../docs/example/general.rst:232
+msgid ""
+"On unix systems, there are some rather `common exit codes`_. This is why "
+"for exit codes larger than 128, if a signal with number equal to ``<exit "
+"code> - 128`` is found in the :py:mod:`signal` module, an additional hint"
+" is given:"
+msgstr ""
+
+#: ../../docs/example/general.rst:243
+msgid ""
+"where ``<command>`` is the command defined in ``tox.ini``, with quotes "
+"removed."
+msgstr ""
+
+#: ../../docs/example/general.rst:245
+msgid ""
+"The signal numbers (e.g. 11 for a segmentation fault) can be found in the"
+" \"Standard signals\" section of the `signal man page`_. Their meaning is"
+" described in `POSIX signals`_."
+msgstr ""
+
+#: ../../docs/example/general.rst:249
+msgid ""
+"Beware that programs may issue custom exit codes with any value, so their"
+" documentation should be consulted."
+msgstr ""
+
+#: ../../docs/example/general.rst:253
+msgid ""
+"Sometimes, no exit code is given at all. An example may be found in "
+"`pytest-qt issue #170`_, where Qt was calling ``abort()`` instead of "
+"``exit()``."
+msgstr ""
+
+#: ../../docs/example/general.rst:257
+msgid ":ref:`ignoring exit code`."
+msgstr ""
+

@@ -139,3 +139,7 @@ nitpick_ignore = [
 ]
 # workaround for https://github.com/sphinx-doc/sphinx/issues/10112
 logging.getLogger("sphinx.ext.extlinks").setLevel(40)
+
+language = 'zh_CN'
+gettext_compact = False
+locale_dirs = ['../locales/']

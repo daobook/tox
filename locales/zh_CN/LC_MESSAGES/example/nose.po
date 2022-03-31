@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/nose.rst:2
+msgid "nose and tox"
+msgstr ""
+
+#: ../../docs/example/nose.rst:4
+msgid ""
+"It is easy to integrate `nosetests`_ runs with tox. For starters here is "
+"a simple ``tox.ini`` config to configure your project for running with "
+"nose:"
+msgstr ""
+
+#: ../../docs/example/nose.rst:9
+msgid "Basic nosetests example"
+msgstr ""
+
+#: ../../docs/example/nose.rst:11
+msgid "Assuming the following layout:"
+msgstr ""
+
+#: ../../docs/example/nose.rst:18
+msgid "and the following ``tox.ini`` content:"
+msgstr ""
+
+#: ../../docs/example/nose.rst:27
+msgid ""
+"you can invoke ``tox`` in the directory where your ``tox.ini`` resides. "
+"``tox`` will sdist-package your project create two virtualenv "
+"environments with the ``python2.7`` and ``python3.6`` interpreters, "
+"respectively, and will then run the specified test command."
+msgstr ""
+
+#: ../../docs/example/nose.rst:34
+msgid "More examples?"
+msgstr ""
+
+#: ../../docs/example/nose.rst:36
+msgid "Also you might want to checkout :doc:`general` and :doc:`documentation`."
+msgstr ""
+

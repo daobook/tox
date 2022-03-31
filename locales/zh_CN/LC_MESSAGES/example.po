@@ -1,0 +1,1482 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:54+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/basic.rst:2
+msgid "Basic usage"
+msgstr ""
+
+#: ../../docs/example/basic.rst:5
+msgid "A simple tox.ini / default environments"
+msgstr ""
+
+#: ../../docs/example/basic.rst:7
+msgid ""
+"Put basic information about your project and the test environments you "
+"want your project to run in into a ``tox.ini`` file that should reside "
+"next to your ``setup.py`` file:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:24
+msgid ""
+"To sdist-package, install and test your project, you can now type at the "
+"command prompt:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:31
+msgid ""
+"This will sdist-package your current project, create two virtualenv_ "
+"Environments, install the sdist-package into the environments and run the"
+" specified command in each of them.  With:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:39
+msgid "you can restrict the test run to the python3.6 environment."
+msgstr ""
+
+#: ../../docs/example/basic.rst:41
+msgid "Tox currently understands the following patterns:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:53
+msgid ""
+"However, you can also create your own test environment names, see some of"
+" the examples in :doc:`examples <../examples>`."
+msgstr ""
+
+#: ../../docs/example/basic.rst:57
+msgid "pyproject.toml tox legacy ini"
+msgstr ""
+
+#: ../../docs/example/basic.rst:59
+msgid ""
+"The tox configuration can also be in ``pyproject.toml`` (if you want to "
+"avoid an extra file)."
+msgstr ""
+
+#: ../../docs/example/basic.rst:61
+msgid ""
+"Currently only the old format is supported via ``legacy_tox_ini``, a "
+"native implementation is planned though."
+msgstr ""
+
+#: ../../docs/example/basic.rst:79
+msgid ""
+"Note that when you define a ``pyproject.toml`` you must define the "
+"``build-system`` section per PEP-518."
+msgstr ""
+
+#: ../../docs/example/basic.rst:82
+msgid "Specifying a platform"
+msgstr ""
+
+#: ../../docs/example/basic.rst:86
+msgid ""
+"If you want to specify which platform(s) your test environment runs on "
+"you can set a platform regular expression like this:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:94
+msgid ""
+"If the expression does not match against ``sys.platform`` the test "
+"environment will be skipped."
+msgstr ""
+
+#: ../../docs/example/basic.rst:98
+msgid "Allowing non-virtualenv commands"
+msgstr ""
+
+#: ../../docs/example/basic.rst:102
+msgid ""
+"Sometimes you may want to use tools not contained in your virtualenv such"
+" as ``make``, ``bash`` or others. To avoid warnings you can use the "
+"``allowlist_externals`` testenv configuration:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:120
+msgid "Depending on requirements.txt or defining constraints"
+msgstr ""
+
+#: ../../docs/example/basic.rst:124
+msgid ""
+"(experimental) If you have a ``requirements.txt`` file or a "
+"``constraints.txt`` file you can add it to your ``deps`` variable like "
+"this:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:131
+msgid "or"
+msgstr ""
+
+#: ../../docs/example/basic.rst:140
+msgid ""
+"All installation commands are executed using ``{toxinidir}`` (the "
+"directory where ``tox.ini`` resides) as the current working directory. "
+"Therefore, the underlying ``pip`` installation will assume "
+"``requirements.txt`` or ``constraints.txt`` to exist at "
+"``{toxinidir}/requirements.txt`` or ``{toxinidir}/constraints.txt``."
+msgstr ""
+
+#: ../../docs/example/basic.rst:143
+msgid ""
+"This is actually a side effect that all elements of the dependency list "
+"is directly passed to ``pip``."
+msgstr ""
+
+#: ../../docs/example/basic.rst:145
+msgid ""
+"For more details on ``requirements.txt`` files or ``constraints.txt`` "
+"files please see:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:147
+msgid "https://pip.pypa.io/en/stable/user_guide/#requirements-files"
+msgstr ""
+
+#: ../../docs/example/basic.rst:148
+msgid "https://pip.pypa.io/en/stable/user_guide/#constraints-files"
+msgstr ""
+
+#: ../../docs/example/basic.rst:151
+msgid "Using a different default PyPI URL"
+msgstr ""
+
+#: ../../docs/example/basic.rst:153
+msgid ""
+"To install dependencies and packages from a different default PyPI server"
+" you can type interactively:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:160
+msgid ""
+"This causes tox to install dependencies and the sdist install step to use"
+" the specified URL as the index server."
+msgstr ""
+
+#: ../../docs/example/basic.rst:163
+msgid ""
+"You can cause the same effect by using a ``PIP_INDEX_URL`` environment "
+"variable. This variable can be also set in ``tox.ini``:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:172
+msgid ""
+"Alternatively, a configuration where ``PIP_INDEX_URL`` could be "
+"overridden from environment:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:181
+msgid "Installing dependencies from multiple PyPI servers"
+msgstr ""
+
+#: ../../docs/example/basic.rst:183
+msgid ""
+"You can instrument tox to install dependencies from multiple PyPI "
+"servers, using ``PIP_EXTRA_INDEX_URL`` environment variable:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:197
+msgid ""
+"This configuration will install ``docutils`` from the default Python PyPI"
+" server and will install the ``mypackage`` from our index server at "
+"``https://mypypiserver.org`` URL."
+msgstr ""
+
+#: ../../docs/example/basic.rst:203
+msgid ""
+"Using an extra PyPI index for installing private packages may cause "
+"security issues. For example, if ``mypackage`` is registered with the "
+"default PyPI index, pip will install ``mypackage`` from the default PyPI "
+"index, not from the custom one."
+msgstr ""
+
+#: ../../docs/example/basic.rst:208
+msgid "Further customizing installation"
+msgstr ""
+
+#: ../../docs/example/basic.rst:212
+msgid ""
+"By default tox uses `pip`_ to install packages, both the package-under-"
+"test and any dependencies you specify in ``tox.ini``. You can fully "
+"customize tox's install-command through the testenv-specific "
+":conf:`install_command = ARGV <install_command>` setting. For instance, "
+"to use pip's ``--find-links`` and ``--no-index`` options to specify an "
+"alternative source for your dependencies:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:227
+msgid "Forcing re-creation of virtual environments"
+msgstr ""
+
+#: ../../docs/example/basic.rst:231
+msgid "To force tox to recreate a (particular) virtual environment:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:237
+msgid ""
+"would trigger a complete reinstallation of the existing py27 environment "
+"(or create it afresh if it doesn't exist)."
+msgstr ""
+
+#: ../../docs/example/basic.rst:241
+msgid "Passing down environment variables"
+msgstr ""
+
+#: ../../docs/example/basic.rst:245
+msgid ""
+"By default tox will only pass the ``PATH`` environment variable (and on "
+"windows ``SYSTEMROOT`` and ``PATHEXT``) from the tox invocation to the "
+"test environments.  If you want to pass down additional environment "
+"variables you can use the ``passenv`` option:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:255
+msgid ""
+"When your test commands execute they will execute with the same LANG "
+"setting as the one with which tox was invoked."
+msgstr ""
+
+#: ../../docs/example/basic.rst:259
+msgid "Setting environment variables"
+msgstr ""
+
+#: ../../docs/example/basic.rst:263
+msgid ""
+"If you need to set an environment variable like ``PYTHONPATH`` you can "
+"use the ``setenv`` directive:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:271
+msgid ""
+"When your test commands execute they will execute with a PYTHONPATH "
+"setting that will lead Python to also import from the ``subdir`` below "
+"the directory where your ``tox.ini`` file resides."
+msgstr ""
+
+#: ../../docs/example/basic.rst:277
+msgid "Special handling of PYTHONHASHSEED"
+msgstr ""
+
+#: ../../docs/example/basic.rst:281
+msgid ""
+"By default, tox sets PYTHONHASHSEED_ for test commands to a random "
+"integer generated when ``tox`` is invoked.  This mimics Python's hash "
+"randomization enabled by default starting `in Python 3.3`_.  To aid in "
+"reproducing test failures, tox displays the value of ``PYTHONHASHSEED`` "
+"in the test output."
+msgstr ""
+
+#: ../../docs/example/basic.rst:286
+msgid ""
+"You can tell tox to use an explicit hash seed value via the "
+"``--hashseed`` command-line option to ``tox``.  You can also override the"
+" hash seed value per test environment in ``tox.ini`` as follows:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:295
+msgid ""
+"If you wish to disable this feature, you can pass the command line option"
+" ``--hashseed=noset`` when ``tox`` is invoked. You can also disable it "
+"from the ``tox.ini`` by setting ``PYTHONHASHSEED = 0`` as described "
+"above."
+msgstr ""
+
+#: ../../docs/example/basic.rst:303
+msgid "Integration with \"setup.py test\" command"
+msgstr ""
+
+#: ../../docs/example/basic.rst:307
+msgid ""
+"``setup.py test`` is `deprecated "
+"<https://setuptools.readthedocs.io/en/latest/setuptools.html#test-build-"
+"package-and-run-a-unittest-suite>`_ and will be removed in a future "
+"version."
+msgstr ""
+
+#: ../../docs/example/basic.rst:314
+msgid "Ignoring a command exit code"
+msgstr ""
+
+#: ../../docs/example/basic.rst:316
+msgid "In some cases, you may want to ignore a command exit code. For example:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:328
+msgid ""
+"By using the ``-`` prefix, similar to a ``make`` recipe line, you can "
+"ignore the exit code for that command."
+msgstr ""
+
+#: ../../docs/example/basic.rst:332
+msgid "Compressing dependency matrix"
+msgstr ""
+
+#: ../../docs/example/basic.rst:334
+msgid ""
+"If you have a large matrix of dependencies, python versions and/or "
+"environments you can use :ref:`generative-envlist` and :ref:`conditional "
+"settings <factors>` to express that in a concise form:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:355
+msgid "Using generative section names"
+msgstr ""
+
+#: ../../docs/example/basic.rst:357
+msgid ""
+"Suppose you have some binary packages, and need to run tests both in 32 "
+"and 64 bits. You also want an environment to create your virtual env for "
+"the developers."
+msgstr ""
+
+#: ../../docs/example/basic.rst:377
+msgid "Prevent symbolic links in virtualenv"
+msgstr ""
+
+#: ../../docs/example/basic.rst:378
+msgid ""
+"By default virtualenv will use symlinks to point to the system's python "
+"files, modules, etc. If you want the files to be copied instead, possibly"
+" because your filesystem is not capable of handling symbolic links, you "
+"can instruct virtualenv to use the \"--always-copy\" argument meant "
+"exactly for that purpose, by setting the ``alwayscopy`` directive in your"
+" environment:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:391
+msgid "Parallel mode"
+msgstr ""
+
+#: ../../docs/example/basic.rst:392
+msgid "``tox`` allows running environments in parallel:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:394
+msgid ""
+"Invoke by using the ``--parallel`` or ``-p`` flag. After the packaging "
+"phase completes tox will run in parallel processes tox environments "
+"(spins a new instance of the tox interpreter, but passes through all host"
+" flags and environment variables)."
+msgstr ""
+
+#: ../../docs/example/basic.rst:397
+msgid ""
+"``-p`` takes an argument specifying the degree of parallelization, "
+"defaulting to ``auto``:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:399
+msgid "``all`` to run all invoked environments in parallel,"
+msgstr ""
+
+#: ../../docs/example/basic.rst:400
+msgid "``auto`` to limit it to CPU count,"
+msgstr ""
+
+#: ../../docs/example/basic.rst:401
+msgid "or pass an integer to set that limit."
+msgstr ""
+
+#: ../../docs/example/basic.rst:402
+msgid ""
+"Parallel mode displays a progress spinner while running tox environments "
+"in parallel, and reports outcome of these as soon as completed with a "
+"human readable duration timing attached. This spinner can be disabled by "
+"setting the environment variable ``TOX_PARALLEL_NO_SPINNER`` to the value"
+" ``1``."
+msgstr ""
+
+#: ../../docs/example/basic.rst:405
+msgid ""
+"Parallel mode by default shows output only of failed environments and "
+"ones marked as :conf:`parallel_show_output` ``=True``."
+msgstr ""
+
+#: ../../docs/example/basic.rst:407
+msgid ""
+"There's now a concept of dependency between environments (specified via "
+":conf:`depends`), tox will re-order the environment list to be run to "
+"satisfy these dependencies (in sequential run too). Furthermore, in "
+"parallel mode, will only schedule a tox environment to run once all of "
+"its dependencies finished (independent of their outcome)."
+msgstr ""
+
+#: ../../docs/example/basic.rst:413
+msgid ""
+"``depends`` does not pull in dependencies into the run target, for "
+"example if you select ``py27,py36,coverage`` via the ``-e`` tox will only"
+" run those three (even if ``coverage`` may specify as ``depends`` other "
+"targets too - such as ``py27, py35, py36, py37``)."
+msgstr ""
+
+#: ../../docs/example/basic.rst:417
+msgid ""
+"``--parallel-live``/``-o`` allows showing the live output of the standard"
+" output and error, also turns off reporting described above."
+msgstr ""
+
+#: ../../docs/example/basic.rst:419
+msgid ""
+"Note: parallel evaluation disables standard input. Use non parallel "
+"invocation if you need standard input."
+msgstr ""
+
+#: ../../docs/example/basic.rst:421
+msgid "Example final output:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:436
+msgid ""
+"Example progress bar, showing a rotating spinner, the number of "
+"environments running and their list (limited up to \\ 120 characters):"
+msgstr ""
+
+#: ../../docs/example/basic.rst:446
+msgid "tox auto-provisioning"
+msgstr ""
+
+#: ../../docs/example/basic.rst:447
+msgid ""
+"In case the host tox does not satisfy either the :conf:`minversion` or "
+"the :conf:`requires`, tox will now automatically create a virtual "
+"environment under :conf:`provision_tox_env` that satisfies those "
+"constraints and delegate all calls to this meta environment. This should "
+"allow automatically satisfying constraints on your tox environment, given"
+" you have at least version ``3.8.0`` of tox."
+msgstr ""
+
+#: ../../docs/example/basic.rst:452
+msgid "For example given:"
+msgstr ""
+
+#: ../../docs/example/basic.rst:460
+msgid ""
+"if the user runs it with tox ``3.8.0`` or later installed tox will "
+"automatically ensured that both the minimum version and requires "
+"constraints are satisfied, by creating a virtual environment under "
+"``.tox`` folder, and then installing into it ``tox >= 3.10.0`` and "
+"``tox_venv >= 1.0.0``. Afterwards all tox invocations are forwarded to "
+"the tox installed inside ``.tox\\.tox`` folder (referred to as meta-tox "
+"or auto-provisioned tox)."
+msgstr ""
+
+#: ../../docs/example/basic.rst:465
+msgid ""
+"This allows tox to automatically setup itself with all its plugins for "
+"the current project.  If the host tox satisfies the constraints expressed"
+" with the :conf:`requires` and :conf:`minversion` no such provisioning is"
+" done (to avoid setup cost when it's not explicitly needed)."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:3
+msgid "Development environment"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:5
+msgid ""
+"tox can be used for just preparing different virtual environments "
+"required by a project."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:8
+msgid ""
+"This feature can be used by deployment tools when preparing deployed "
+"project environments. It can also be used for setting up normalized "
+"project development environments and thus help reduce the risk of "
+"different team members using mismatched development environments."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:15
+msgid "Creating development environments using the ``--devenv`` option"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:17
+msgid ""
+"The easiest way to set up a development environment is to use the "
+"``--devenv`` option along with your existing configured ``testenv``\\ s."
+"  The ``--devenv`` option accepts a single argument, the location you "
+"want to create a development environment at."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:22
+msgid ""
+"For example, if I wanted to replicate the ``py36`` environment, I could "
+"run::"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:30
+msgid ""
+"The ``--devenv`` option skips the ``commands=`` section of that "
+"configured test environment and always sets ``usedevelop=true`` for the "
+"environment that is created."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:34
+msgid ""
+"If you don't specify an environment with ``-e``, the devenv feature will "
+"default to ``-e py`` -- usually taking the interpreter you're running "
+"``tox`` with and the default ``[testenv]`` configuration."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:38
+msgid ""
+"It is possible to use the ``--devenv`` option without a tox configuration"
+" file, however the configuration file is respected if present."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:42
+msgid "Creating development environments using configuration"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:44
+msgid ""
+"Here are some examples illustrating how to set up a project's development"
+" environment using tox. For illustration purposes, let us call the "
+"development environment ``dev``."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:50
+msgid "Example 1: Basic scenario"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:53
+msgid "Step 1 - Configure the development environment"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:55
+msgid ""
+"First, we prepare the tox configuration for our development environment "
+"by defining a ``[testenv:dev]`` section in the project's ``tox.ini`` "
+"configuration file:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:65
+msgid "In it we state:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:67
+msgid "what Python executable to use in the environment,"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:68
+msgid ""
+"that our project should be installed into the environment using "
+"``setup.py develop``, as opposed to building and installing its source "
+"distribution using ``setup.py install``."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:72
+msgid ""
+"The development environment will reside in ``toxworkdir`` (default is "
+"``.tox``) just like the other tox environments."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:75
+msgid ""
+"We can configure a lot more, if we want to. For example, we can add the "
+"following to our configuration, telling tox not to reuse ``commands`` or "
+"``deps`` settings from the base ``[testenv]`` configuration:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:88
+msgid "Step 2 - Create the development environment"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:90
+msgid ""
+"Once the ``[testenv:dev]`` configuration section has been defined, we "
+"create the actual development environment by running the following:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:97
+msgid ""
+"This creates the environment at the path specified by the environment's "
+"``envdir`` configuration value."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:102
+msgid "Example 2: A more complex scenario"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:104
+msgid "Let us say we want our project development environment to:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:106
+msgid "use Python executable ``python2.7``,"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:107
+msgid ""
+"pull packages from ``requirements.txt``, located in the same directory as"
+" ``tox.ini``."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:110
+msgid "Here is an example configuration for the described scenario:"
+msgstr ""
+
+#: ../../docs/example/documentation.rst:2
+msgid "Generate documentation"
+msgstr ""
+
+#: ../../docs/example/documentation.rst:4
+msgid ""
+"It's possible to generate the projects documentation with tox itself. The"
+" advantage of this path is that now generating the documentation can be "
+"part of the CI, and whenever any validations/checks/operations fail while"
+" generating the documentation you'll catch it within tox."
+msgstr ""
+
+#: ../../docs/example/documentation.rst:10
+msgid "Sphinx"
+msgstr ""
+
+#: ../../docs/example/documentation.rst:12
+msgid ""
+"No need to use the cryptic make file to generate a sphinx documentation. "
+"One can use tox to ensure all right dependencies are available within a "
+"virtual environment, and even specify the python version needed to "
+"perform the build. For example if the sphinx file structure is under the "
+"``doc`` folder the following configuration will generate the "
+"documentation under ``{toxworkdir}/docs_out`` and print out a link to the"
+" generated documentation:"
+msgstr ""
+
+#: ../../docs/example/documentation.rst:28
+msgid ""
+"Note here we say we also require python 3.7, allowing us to use f-strings"
+" within the sphinx ``conf.py``. Now one can specify a separate test "
+"environment that will validate that the links are correct."
+msgstr ""
+
+#: ../../docs/example/documentation.rst:33
+msgid "mkdocs"
+msgstr ""
+
+#: ../../docs/example/documentation.rst:35
+msgid ""
+"Define one environment to write/generate the documentation, and another "
+"to deploy it. Use the config substitution logic to avoid defining "
+"dependencies multiple time:"
+msgstr ""
+
+#: ../../docs/example/general.rst:4
+msgid "General tips and tricks"
+msgstr ""
+
+#: ../../docs/example/general.rst:7
+msgid "Interactively passing positional arguments"
+msgstr ""
+
+#: ../../docs/example/general.rst:9
+msgid "If you invoke ``tox`` like this:"
+msgstr ""
+
+#: ../../docs/example/general.rst:15
+msgid ""
+"the arguments after the ``--`` will be substituted everywhere where you "
+"specify ``{posargs}`` in your test commands, for example using "
+"``pytest``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:25
+msgid "or using ``nosetests``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:32
+msgid ""
+"the above ``tox`` invocation will trigger the test runners to stop after "
+"the first failure and to only run a particular test file."
+msgstr ""
+
+#: ../../docs/example/general.rst:35
+msgid "You can specify defaults for the positional arguments using this syntax:"
+msgstr ""
+
+#: ../../docs/example/general.rst:46
+msgid "Dependency changes and tracking"
+msgstr ""
+
+#: ../../docs/example/general.rst:48
+msgid ""
+"Creating virtual environments and installing dependencies is an expensive"
+" operation. Therefore tox tries to avoid it whenever possible, meaning it"
+" will never perform this unless it detects with absolute certainty that "
+"it needs to perform an update. A tox environment creation is made up of:"
+msgstr ""
+
+#: ../../docs/example/general.rst:53
+msgid "create the virtual environment"
+msgstr ""
+
+#: ../../docs/example/general.rst:54
+msgid "install dependencies specified inside deps"
+msgstr ""
+
+#: ../../docs/example/general.rst:55
+msgid ""
+"if it's a library project (has build package phase), install library "
+"dependencies (with potential extras)"
+msgstr ""
+
+#: ../../docs/example/general.rst:58
+msgid ""
+"These three steps are only performed once (given they all succeeded). "
+"Subsequent calls that don't detect changes to the traits of that step "
+"will not alter the virtual environment in any way. When a change is "
+"detected for any of the steps, the entire virtual environment is removed "
+"and the operation starts from scratch (this is because it's very hard to "
+"determine what would the delta changes would be needed - e.g. a "
+"dependency could migrate from one dependency to another, and in this case"
+" we would need to install the new while removing the old one)."
+msgstr ""
+
+#: ../../docs/example/general.rst:66
+msgid "Here's what traits we track at the moment for each steps:"
+msgstr ""
+
+#: ../../docs/example/general.rst:68
+msgid ""
+"virtual environment trait is tied to the python path the "
+":conf:`basepython` resolves too (if this config changes, the virtual "
+"environment will be recreated),"
+msgstr ""
+
+#: ../../docs/example/general.rst:70
+msgid ""
+":conf:`deps` sections changes (meaning any string-level change for the "
+"entries, note requirement file content changes are not tracked),"
+msgstr ""
+
+#: ../../docs/example/general.rst:72
+msgid ""
+"library dependencies are tracked at :conf:`extras` level (because there's"
+" no Python API to enquire about the actual dependencies in a non-tool "
+"specific way, e.g. setuptools has one way, flit something else, and "
+"poetry another)."
+msgstr ""
+
+#: ../../docs/example/general.rst:76
+msgid ""
+"Whenever you change traits that are not tracked we recommend you to "
+"manually trigger a rebuild of the tox environment by passing the ``-r`` "
+"flag for the tox invocation. For instance, for a setuptools project "
+"whenever you modify the ``install_requires`` keyword at the next run "
+"force the recreation of the tox environment by passing the recreate cli "
+"tox flag."
+msgstr ""
+
+#: ../../docs/example/general.rst:85
+msgid "Selecting one or more environments to run tests against"
+msgstr ""
+
+#: ../../docs/example/general.rst:87
+msgid ""
+"Using the ``-e ENV[,ENV36,...]``  option you explicitly list the "
+"environments where you want to run tests against. For example, given the "
+"previous sphinx example you may call:"
+msgstr ""
+
+#: ../../docs/example/general.rst:95
+msgid ""
+"which will make ``tox`` only manage the ``docs`` environment and call its"
+" test commands.  You may specify more than one environment like this:"
+msgstr ""
+
+#: ../../docs/example/general.rst:103
+msgid ""
+"which would run the commands of the ``py27`` and ``py36`` "
+"testenvironments respectively.  The special value ``ALL`` selects all "
+"environments."
+msgstr ""
+
+#: ../../docs/example/general.rst:106
+msgid "You can also specify an environment list in your ``tox.ini``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:113
+msgid ""
+"or override it from the command line or from the environment variable "
+"``TOXENV``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:123
+msgid "Access package artifacts between multiple tox-runs"
+msgstr ""
+
+#: ../../docs/example/general.rst:125
+msgid ""
+"If you have multiple projects using tox you can make use of a "
+"``distshare`` directory where ``tox`` will copy in sdist-packages so that"
+" another tox run can find the \"latest\" dependency.  This feature allows"
+" you to test a package against an unreleased development version or even "
+"an uncommitted version on your own machine."
+msgstr ""
+
+#: ../../docs/example/general.rst:131
+msgid ""
+"By default, ``{homedir}/.tox/distshare`` will be used for copying in and "
+"copying out artifacts (i.e. Python packages)."
+msgstr ""
+
+#: ../../docs/example/general.rst:134
+msgid ""
+"For project ``two`` to depend on the ``one`` package you use the "
+"following entry:"
+msgstr ""
+
+#: ../../docs/example/general.rst:144
+msgid ""
+"That's all.  tox running on project ``one`` will copy the sdist-package "
+"into the ``distshare`` directory after which a ``tox`` run on project "
+"``two`` will grab it because ``deps`` contain an entry with the "
+"``one-*.zip`` pattern.  If there is more than one matching package the "
+"highest version will be taken.  ``tox`` uses verlib_  to compare version "
+"strings which must be compliant with :pep:`386`."
+msgstr ""
+
+#: ../../docs/example/general.rst:151
+msgid ""
+"If you want to use this with Jenkins_, also checkout the :ref:`jenkins "
+"artifact example`."
+msgstr ""
+
+#: ../../docs/example/general.rst:156
+msgid "basepython defaults, overriding"
+msgstr ""
+
+#: ../../docs/example/general.rst:158
+msgid ""
+"For any ``pyXY`` test environment name the underlying ``pythonX.Y`` "
+"executable will be searched in your system ``PATH``. Similarly, for "
+"``jython`` and ``pypy`` the respective ``jython`` and ``pypy-c`` names "
+"will be looked for. The executable must exist in order to successfully "
+"create *virtualenv* environments. On Windows a ``pythonX.Y`` named "
+"executable will be searched in typical default locations using the "
+"``C:\\PythonXY\\python.exe`` pattern."
+msgstr ""
+
+#: ../../docs/example/general.rst:165
+msgid ""
+"All other targets will use the system ``python`` instead. You can "
+"override any of the default settings by defining the :conf:`basepython` "
+"variable in a specific test environment section, for example:"
+msgstr ""
+
+#: ../../docs/example/general.rst:175
+msgid "Avoiding expensive sdist"
+msgstr ""
+
+#: ../../docs/example/general.rst:177
+msgid ""
+"Some projects are large enough that running an sdist, followed by an "
+"install every time can be prohibitively costly. To solve this, there are "
+"two different options you can add to the ``tox`` section. First, you can "
+"simply ask tox to please not make an sdist:"
+msgstr ""
+
+#: ../../docs/example/general.rst:187
+msgid ""
+"If you do this, your local software package will not be installed into "
+"the virtualenv. You should probably be okay with that, or take steps to "
+"deal with it in your commands section:"
+msgstr ""
+
+#: ../../docs/example/general.rst:197
+msgid ""
+"Running ``setup.py develop`` is a common enough model that it has its own"
+" option:"
+msgstr ""
+
+#: ../../docs/example/general.rst:205
+msgid ""
+"And a corresponding command line option ``--develop``, which will set "
+"``skipsdist`` to True and then perform the ``setup.py develop`` step at "
+"the place where ``tox`` normally performs the installation of the sdist. "
+"Specifically, it actually runs ``pip install -e .`` behind the scenes, "
+"which itself calls ``setup.py develop``."
+msgstr ""
+
+#: ../../docs/example/general.rst:211
+msgid ""
+"There is an optimization coded in to not bother re-running the command if"
+" ``$projectname.egg-info`` is newer than ``setup.py`` or ``setup.cfg``."
+msgstr ""
+
+#: ../../docs/example/general.rst:218
+msgid "Understanding ``InvocationError`` exit codes"
+msgstr ""
+
+#: ../../docs/example/general.rst:220
+msgid ""
+"When a command (defined by ``commands =`` in ``tox.ini``) fails, it has a"
+" non-zero exit code, and an ``InvocationError`` exception is raised by "
+"``tox``:"
+msgstr ""
+
+#: ../../docs/example/general.rst:229
+msgid ""
+"If the command starts with ``pytest`` or ``python setup.py test`` for "
+"instance, then the `pytest exit codes`_ are relevant."
+msgstr ""
+
+#: ../../docs/example/general.rst:232
+msgid ""
+"On unix systems, there are some rather `common exit codes`_. This is why "
+"for exit codes larger than 128, if a signal with number equal to ``<exit "
+"code> - 128`` is found in the :py:mod:`signal` module, an additional hint"
+" is given:"
+msgstr ""
+
+#: ../../docs/example/general.rst:243
+msgid ""
+"where ``<command>`` is the command defined in ``tox.ini``, with quotes "
+"removed."
+msgstr ""
+
+#: ../../docs/example/general.rst:245
+msgid ""
+"The signal numbers (e.g. 11 for a segmentation fault) can be found in the"
+" \"Standard signals\" section of the `signal man page`_. Their meaning is"
+" described in `POSIX signals`_."
+msgstr ""
+
+#: ../../docs/example/general.rst:249
+msgid ""
+"Beware that programs may issue custom exit codes with any value, so their"
+" documentation should be consulted."
+msgstr ""
+
+#: ../../docs/example/general.rst:253
+msgid ""
+"Sometimes, no exit code is given at all. An example may be found in "
+"`pytest-qt issue #170`_, where Qt was calling ``abort()`` instead of "
+"``exit()``."
+msgstr ""
+
+#: ../../docs/example/general.rst:257
+msgid ":ref:`ignoring exit code`."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:2
+msgid "Using tox with the Jenkins Integration Server"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:5
+msgid "Using Jenkins multi-configuration jobs"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:7
+msgid ""
+"The Jenkins_ continuous integration server allows you to define \"jobs\" "
+"with \"build steps\" which can be test invocations.  If you :doc:`install"
+" <../install>` ``tox`` on your default Python installation on each "
+"Jenkins agent, you can easily create a Jenkins multi-configuration job "
+"that will drive your tox runs from the CI-server side, using these steps:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:13
+msgid "install the Python plugin for Jenkins under \"manage jenkins\""
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:14
+msgid "create a \"multi-configuration\" job, give it a name of your choice"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:15
+msgid "configure your repository so that Jenkins can pull it"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:16
+msgid ""
+"(optional) configure multiple nodes so that tox-runs are performed on "
+"multiple hosts"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:18
+msgid ""
+"configure ``axes`` by using :ref:`TOXENV <TOXENV>` as an axis name and as"
+" values provide space-separated test environment names you want "
+"Jenkins/tox to execute."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:22
+msgid "add a **Python-build step** with this content (see also next example):"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:31
+msgid ""
+"check ``Publish JUnit test result report`` and enter ``**/junit-*.xml`` "
+"as the pattern so that Jenkins collects test results in the JUnit XML "
+"format."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:35
+msgid ""
+"The last point requires that your test command creates JunitXML files, "
+"for example with ``pytest`` it is done like this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:46
+msgid "**zero-installation** for agents"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:50
+msgid ""
+"This feature is broken currently because \"toxbootstrap.py\" has been "
+"removed.  Please file an issue if you'd like to see it back."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:54
+msgid ""
+"If you manage many Jenkins agents and want to use the latest officially "
+"released tox (or latest development version) and want to skip manually "
+"installing ``tox`` then substitute the above **Python build step** code "
+"with this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:69
+msgid ""
+"The downloaded ``toxbootstrap.py`` file downloads all necessary files to "
+"install ``tox`` in a virtual sub environment.  Notes:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:72
+msgid ""
+"uncomment the line containing ``USETOXDEV`` to use the latest "
+"development-release version of tox instead of the latest released "
+"version."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:76
+msgid ""
+"adapt the options in the last line as needed (the example code will cause"
+" tox to reinstall all virtual environments all the time which is often "
+"what one wants in CI server contexts)"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:82
+msgid "Integrating \"sphinx\" documentation checks in a Jenkins job"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:84
+msgid ""
+"If you are using a multi-configuration Jenkins job which collects JUnit "
+"Test results you will run into problems using the previous method of "
+"running the sphinx-build command because it will not generate JUnit "
+"results.  To accommodate this issue one solution is to have ``pytest`` "
+"wrap the sphinx-checks and create a JUnit result file which wraps the "
+"result of calling sphinx-build. Here is an example:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:92
+msgid "create a ``docs`` environment in your ``tox.ini`` file like this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:104
+msgid "create a ``doc/check_sphinx.py`` file like this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:126
+msgid ""
+"run ``tox -e docs`` and then you may integrate this environment along "
+"with your other environments into Jenkins."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:129
+msgid ""
+"Note that ``pytest`` is only installed into the docs environment and does"
+" not need to be in use or installed with any other environment."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:135
+msgid "Access package artifacts between Jenkins jobs"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:139
+msgid ""
+"In an extension to :ref:`artifacts` you can also configure Jenkins jobs "
+"to access each others artifacts.  ``tox`` uses the ``distshare`` "
+"directory to access artifacts and in a Jenkins context (detected via "
+"existence of the environment variable ``HUDSON_URL``); it defaults to to "
+"``{toxworkdir}/distshare``."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:145
+msgid ""
+"This means that each workspace will have its own ``distshare`` directory "
+"and we need to configure Jenkins to perform artifact copying. The "
+"recommend way to do this is to install the `Jenkins Copy Artifact "
+"plugin`_ and for each job which \"receives\" artifacts you add a **Copy "
+"artifacts from another project** build step using roughly this "
+"configuration:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:159
+msgid ""
+"You also need to configure the \"other\" job to archive artifacts; This "
+"is done by checking ``Archive the artifacts`` and entering:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:166
+msgid ""
+"So our \"other\" job will create an sdist-package artifact and the "
+"\"copy-artifacts\" plugin will copy it to our ``distshare`` area. Now "
+"everything proceeds as :ref:`artifacts` shows it."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:170
+msgid ""
+"So if you are using defaults you can re-use and debug exactly the same "
+"``tox.ini`` file and make use of automatic sharing of your artifacts "
+"between runs or Jenkins jobs."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:176
+msgid "Avoiding the \"path too long\" error with long shebang lines"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:178
+msgid ""
+"When using ``tox`` on a Jenkins instance, there may be a scenario where "
+"``tox`` can not invoke ``pip`` because the shebang (Unix) line is too "
+"long. Some systems only support a limited amount of characters for an "
+"interpreter directive (e.x. Linux as a limit of 128). There are two "
+"methods to workaround this issue:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:183
+msgid ""
+"Invoke ``tox`` with the ``--workdir`` option which tells ``tox`` to use a"
+" specific directory for its virtual environments. Using a unique and "
+"short path can prevent this issue."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:186
+msgid ""
+"Use the environment variable ``TOX_LIMITED_SHEBANG`` to deal with "
+"environments with interpreter directive limitations (consult :ref:`long "
+"interpreter directives` for more information)."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:192
+msgid "Running tox environments in parallel"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:194
+msgid ""
+"Jenkins has parallel stages allowing you to run commands in parallel, "
+"however tox package building it is not parallel safe. Use the "
+"``--parallel--safe-build`` flag to enable parallel safe builds (this will"
+" generate unique folder names for ``distdir``, ``distshare`` and ``log``."
+" Here's a generic stage definition demonstrating how to use this inside "
+"Jenkins:"
+msgstr ""
+
+#: ../../docs/example/nose.rst:2
+msgid "nose and tox"
+msgstr ""
+
+#: ../../docs/example/nose.rst:4
+msgid ""
+"It is easy to integrate `nosetests`_ runs with tox. For starters here is "
+"a simple ``tox.ini`` config to configure your project for running with "
+"nose:"
+msgstr ""
+
+#: ../../docs/example/nose.rst:9
+msgid "Basic nosetests example"
+msgstr ""
+
+#: ../../docs/example/nose.rst:11 ../../docs/example/platform.rst:9
+#: ../../docs/example/pytest.rst:11 ../../docs/example/pytest.rst:37
+msgid "Assuming the following layout:"
+msgstr ""
+
+#: ../../docs/example/nose.rst:18 ../../docs/example/platform.rst:16
+#: ../../docs/example/pytest.rst:18 ../../docs/example/pytest.rst:45
+msgid "and the following ``tox.ini`` content:"
+msgstr ""
+
+#: ../../docs/example/nose.rst:27
+msgid ""
+"you can invoke ``tox`` in the directory where your ``tox.ini`` resides. "
+"``tox`` will sdist-package your project create two virtualenv "
+"environments with the ``python2.7`` and ``python3.6`` interpreters, "
+"respectively, and will then run the specified test command."
+msgstr ""
+
+#: ../../docs/example/nose.rst:34
+msgid "More examples?"
+msgstr ""
+
+#: ../../docs/example/nose.rst:36
+msgid "Also you might want to checkout :doc:`general` and :doc:`documentation`."
+msgstr ""
+
+#: ../../docs/example/package.rst:2
+msgid "Packaging"
+msgstr ""
+
+#: ../../docs/example/package.rst:4
+msgid ""
+"Although one can use tox to develop and test applications one of its most"
+" popular usage is to help library creators. Libraries need first to be "
+"packaged, so then they can be installed inside a virtual environment for "
+"testing. To help with this tox implements PEP-517_ and PEP-518_. This "
+"means that by default tox will build source distribution out of source "
+"trees. Before running test commands ``pip`` is used to install the source"
+" distribution inside the build environment."
+msgstr ""
+
+#: ../../docs/example/package.rst:11
+msgid ""
+"To create a source distribution there are multiple tools out there and "
+"with PEP-517_ and PEP-518_ you can easily use your favorite one with tox."
+" Historically tox only supported ``setuptools``, and always used the tox "
+"host environment to build a source distribution from the source tree. "
+"This is still the default behavior. To opt out of this behaviour you need"
+" to set isolated builds to true."
+msgstr ""
+
+#: ../../docs/example/package.rst:18
+msgid "setuptools"
+msgstr ""
+
+#: ../../docs/example/package.rst:19
+msgid ""
+"Using the ``pyproject.toml`` file at the root folder (alongside "
+"``setup.py``) one can specify build requirements."
+msgstr ""
+
+#: ../../docs/example/package.rst:38
+msgid "flit"
+msgstr ""
+
+#: ../../docs/example/package.rst:39
+msgid ""
+"flit_ requires ``Python 3``, however the generated source distribution "
+"can be installed under ``python 2``. Furthermore it does not require a "
+"``setup.py`` file as that information is also added to the "
+"``pyproject.toml`` file."
+msgstr ""
+
+#: ../../docs/example/package.rst:62
+msgid "poetry"
+msgstr ""
+
+#: ../../docs/example/package.rst:63
+msgid ""
+"poetry_ requires ``Python 3``, however the generated source distribution "
+"can be installed under ``python 2``. Furthermore it does not require a "
+"``setup.py`` file as that information is also added to the "
+"``pyproject.toml`` file."
+msgstr ""
+
+#: ../../docs/example/platform.rst:4
+msgid "Platform specification"
+msgstr ""
+
+#: ../../docs/example/platform.rst:7
+msgid "Basic multi-platform example"
+msgstr ""
+
+#: ../../docs/example/platform.rst:41
+msgid ""
+"you can invoke ``tox`` in the directory where your ``tox.ini`` resides. "
+"``tox`` creates two virtualenv environments with the ``python2.7`` and "
+"``python3.6`` interpreters, respectively, and will then run the specified"
+" command according to platform you invoke ``tox`` at."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:2
+msgid "pytest and tox"
+msgstr ""
+
+#: ../../docs/example/pytest.rst:4
+msgid ""
+"It is easy to integrate `pytest`_ runs with tox.  If you encounter "
+"issues, please check if they are `listed as a known issue`_ and/or use "
+"the :doc:`support channels <../support>`."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:9
+msgid "Basic example"
+msgstr ""
+
+#: ../../docs/example/pytest.rst:29
+msgid ""
+"you can now invoke ``tox`` in the directory where your ``tox.ini`` "
+"resides. ``tox`` will sdist-package your project, create two virtualenv "
+"environments with the ``python3.5`` and ``python3.6`` interpreters, "
+"respectively, and will then run the specified test command in each of "
+"them."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:35
+msgid "Extended example: change dir before test and use per-virtualenv tempdir"
+msgstr ""
+
+#: ../../docs/example/pytest.rst:58
+msgid ""
+"you can invoke ``tox`` in the directory where your ``tox.ini`` resides. "
+"Differently than in the previous example the ``pytest`` command will be "
+"executed with a current working directory set to ``tests`` and the test "
+"run will use the per-virtualenv temporary directory."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:66
+msgid "Using multiple CPUs for test runs"
+msgstr ""
+
+#: ../../docs/example/pytest.rst:68
+msgid ""
+"``pytest`` supports distributing tests to multiple processes and hosts "
+"through the `pytest-xdist`_ plugin.  Here is an example configuration to "
+"make ``tox`` use this feature:"
+msgstr ""
+
+#: ../../docs/example/pytest.rst:86
+msgid "Known issues and limitations"
+msgstr ""
+
+#: ../../docs/example/pytest.rst:88
+msgid ""
+"**Too long filenames**. you may encounter \"too long filenames\" for "
+"temporarily created files in your pytest run.  Try to not use the \"--"
+"basetemp\" parameter."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:91
+msgid ""
+"**installed-versus-checkout version**.  ``pytest`` collects test modules "
+"on the filesystem and then tries to import them under their `fully "
+"qualified name`_. This means that if your test files are importable from "
+"somewhere then your ``pytest`` invocation may end up importing the "
+"package from the checkout directory rather than the installed package."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:98
+msgid ""
+"This issue may be characterised by pytest test-collection error messages,"
+" in python 3.x environments, that look like:"
+msgstr ""
+
+#: ../../docs/example/pytest.rst:109
+msgid "There are a few ways to prevent this."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:111
+msgid ""
+"With installed tests (the tests packages are known to ``setup.py``), a "
+"safe and explicit option is to give the explicit path "
+"``{envsitepackagesdir}/mypkg`` to pytest. Alternatively, it is possible "
+"to use ``changedir`` so that checked-out files are outside the import "
+"path, then pass ``--pyargs mypkg`` to pytest."
+msgstr ""
+
+#: ../../docs/example/pytest.rst:118
+msgid ""
+"With tests that won't be installed, the simplest way to run them against "
+"your installed package is to avoid ``__init__.py`` files in test "
+"directories; pytest will still find and import them by adding their "
+"parent directory to ``sys.path`` but they won't be copied to other places"
+" or be found by Python's import system outside of pytest."
+msgstr ""
+
+#: ../../docs/example/result.rst:2
+msgid "Writing a JSON result file"
+msgstr ""
+
+#: ../../docs/example/result.rst:6
+msgid "You can instruct tox to write a json-report file via:"
+msgstr ""
+
+#: ../../docs/example/result.rst:13
+msgid "This will create a json-formatted result file using this schema:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:2
+msgid "unittest2, discover and tox"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:5
+msgid "Running unittests with 'discover'"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:7
+msgid ""
+"The discover_ project allows you to discover and run unittests that you "
+"can easily integrate it in a ``tox`` run.  As an example, perform a "
+"checkout of `Pygments <https://pypi.org/project/Pygments>`_:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:15
+msgid "and add the following ``tox.ini`` to it:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:27
+msgid ""
+"If you now invoke ``tox`` you will see the creation of three virtual "
+"environments and a unittest-run performed in each of them."
+msgstr ""
+
+#: ../../docs/example/unittest.rst:32
+msgid "Running unittest2 and sphinx tests in one go"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:36
+msgid ""
+"`Michael Foord`_ has contributed a ``tox.ini`` file that allows you to "
+"run all tests for his mock_ project, including some sphinx-based "
+"doctests.  If you checkout its repository with:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:45
+msgid ""
+"The checkout has a `tox.ini file <https://github.com/testing-"
+"cabal/mock/blob/master/tox.ini>`_ that looks like this:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:75
+msgid ""
+"mock uses unittest2_ to run the tests. Invoking ``tox`` starts test "
+"discovery by executing the ``unit2 discover`` commands on Python 2.7, "
+"3.5, 3.6 and 3.7 respectively.  Against Python3.6 and Python2.7 it will "
+"additionally run sphinx-mediated doctests. If building the docs fails, "
+"due to a reST error, or any of the doctests fails, it will be reported by"
+" the tox run."
+msgstr ""
+
+#: ../../docs/example/unittest.rst:82
+msgid ""
+"The ``[]`` parentheses in the commands provide :ref:`positional "
+"substitution` which means you can e.g. type:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:89
+msgid "which will ultimately invoke:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:95
+msgid ""
+"in each of the environments. This allows you to customize test discovery "
+"in your ``tox`` runs."
+msgstr ""
+

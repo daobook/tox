@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/package.rst:2
+msgid "Packaging"
+msgstr ""
+
+#: ../../docs/example/package.rst:4
+msgid ""
+"Although one can use tox to develop and test applications one of its most"
+" popular usage is to help library creators. Libraries need first to be "
+"packaged, so then they can be installed inside a virtual environment for "
+"testing. To help with this tox implements PEP-517_ and PEP-518_. This "
+"means that by default tox will build source distribution out of source "
+"trees. Before running test commands ``pip`` is used to install the source"
+" distribution inside the build environment."
+msgstr ""
+
+#: ../../docs/example/package.rst:11
+msgid ""
+"To create a source distribution there are multiple tools out there and "
+"with PEP-517_ and PEP-518_ you can easily use your favorite one with tox."
+" Historically tox only supported ``setuptools``, and always used the tox "
+"host environment to build a source distribution from the source tree. "
+"This is still the default behavior. To opt out of this behaviour you need"
+" to set isolated builds to true."
+msgstr ""
+
+#: ../../docs/example/package.rst:18
+msgid "setuptools"
+msgstr ""
+
+#: ../../docs/example/package.rst:19
+msgid ""
+"Using the ``pyproject.toml`` file at the root folder (alongside "
+"``setup.py``) one can specify build requirements."
+msgstr ""
+
+#: ../../docs/example/package.rst:38
+msgid "flit"
+msgstr ""
+
+#: ../../docs/example/package.rst:39
+msgid ""
+"flit_ requires ``Python 3``, however the generated source distribution "
+"can be installed under ``python 2``. Furthermore it does not require a "
+"``setup.py`` file as that information is also added to the "
+"``pyproject.toml`` file."
+msgstr ""
+
+#: ../../docs/example/package.rst:62
+msgid "poetry"
+msgstr ""
+
+#: ../../docs/example/package.rst:63
+msgid ""
+"poetry_ requires ``Python 3``, however the generated source distribution "
+"can be installed under ``python 2``. Furthermore it does not require a "
+"``setup.py`` file as that information is also added to the "
+"``pyproject.toml`` file."
+msgstr ""
+

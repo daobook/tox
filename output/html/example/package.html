@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Packaging &#8212; tox 3.24.6.dev14 文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="pytest and tox" href="pytest.html" />
+    <link rel="prev" title="Basic usage" href="basic.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="packaging">
+<h1>Packaging<a class="headerlink" href="#packaging" title="永久链接至标题">¶</a></h1>
+<p>Although one can use tox to develop and test applications one of its most popular
+usage is to help library creators. Libraries need first to be packaged, so then
+they can be installed inside a virtual environment for testing. To help with this
+tox implements <a class="reference external" href="https://www.python.org/dev/peps/pep-0517/">PEP-517</a> and <a class="reference external" href="https://www.python.org/dev/peps/pep-0518/">PEP-518</a>. This means that by default
+tox will build source distribution out of source trees. Before running test commands
+<code class="docutils literal notranslate"><span class="pre">pip</span></code> is used to install the source distribution inside the build environment.</p>
+<p>To create a source distribution there are multiple tools out there and with <a class="reference external" href="https://www.python.org/dev/peps/pep-0517/">PEP-517</a> and <a class="reference external" href="https://www.python.org/dev/peps/pep-0518/">PEP-518</a>
+you can easily use your favorite one with tox. Historically tox
+only supported <code class="docutils literal notranslate"><span class="pre">setuptools</span></code>, and always used the tox host environment to build
+a source distribution from the source tree. This is still the default behavior.
+To opt out of this behaviour you need to set isolated builds to true.</p>
+<div class="section" id="setuptools">
+<h2>setuptools<a class="headerlink" href="#setuptools" title="永久链接至标题">¶</a></h2>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file at the root folder (alongside <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>) one can specify
+build requirements.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;setuptools &gt;= 35.0.2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;setuptools_scm &gt;= 2.0.0, &lt;3&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;setuptools.build_meta&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># tox.ini</span><span class="w"></span>
+<span class="k">[tox]</span><span class="w"></span>
+<span class="na">isolated_build</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="flit">
+<h2>flit<a class="headerlink" href="#flit" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="https://flit.readthedocs.io/en/latest/">flit</a> requires <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3</span></code>, however the generated source
+distribution can be installed under <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">2</span></code>. Furthermore it does not require a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>
+file as that information is also added to the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;flit_core &gt;=2,&lt;4&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;flit_core.buildapi&quot;</span><span class="w"></span>
+
+<span class="k">[tool.flit.metadata]</span><span class="w"></span>
+<span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;package_toml_flit&quot;</span><span class="w"></span>
+<span class="n">author</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Happy Harry&quot;</span><span class="w"></span>
+<span class="n">author-email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;happy@harry.com&quot;</span><span class="w"></span>
+<span class="n">home-page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;https://github.com/happy-harry/is&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># tox.ini</span><span class="w"></span>
+<span class="k">[tox]</span><span class="w"></span>
+<span class="na">isolated_build</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="poetry">
+<h2>poetry<a class="headerlink" href="#poetry" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="https://python-poetry.org/">poetry</a> requires <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3</span></code>, however the generated source
+distribution can be installed under <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">2</span></code>. Furthermore it does not require a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>
+file as that information is also added to the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;poetry_core&gt;=1.0.0&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;poetry.core.masonry.api&quot;</span><span class="w"></span>
+
+<span class="k">[tool.poetry]</span><span class="w"></span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;package_toml_poetry&quot;</span><span class="w"></span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0.1.0&quot;</span><span class="w"></span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Name &lt;email@email.com&gt;&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># tox.ini</span><span class="w"></span>
+<span class="k">[tox]</span><span class="w"></span>
+<span class="na">isolated_build</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span><span class="w"></span>
+
+<span class="k">[tox:.package]</span><span class="w"></span>
+<span class="c1"># note tox will use the same python version as under what tox is installed to package</span><span class="w"></span>
+<span class="c1"># so unless this is python 3 you can require a given python version for the packaging</span><span class="w"></span>
+<span class="c1"># environment via the basepython key</span><span class="w"></span>
+<span class="na">basepython</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">python3</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="../index.html">home</a>
+</td><td>
+        <a href="../examples.html">examples</a>
+</td></tr><tr><td>
+        <a href="../install.html">install</a>
+</td><td>
+        <a href="../changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="../config.html">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="../support.html">support</a>
+</td><td>
+        <a href="../plugins.html">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+
+  <div>
+    <h3><a href="../index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Packaging</a><ul>
+<li><a class="reference internal" href="#setuptools">setuptools</a></li>
+<li><a class="reference internal" href="#flit">flit</a></li>
+<li><a class="reference internal" href="#poetry">poetry</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">tox configuration and usage examples</a><ul>
+      <li>Previous: <a href="basic.html" title="上一章">Basic usage</a></li>
+      <li>Next: <a href="pytest.html" title="下一章">pytest and tox</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

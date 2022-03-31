@@ -1,0 +1,234 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/jenkins.rst:2
+msgid "Using tox with the Jenkins Integration Server"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:5
+msgid "Using Jenkins multi-configuration jobs"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:7
+msgid ""
+"The Jenkins_ continuous integration server allows you to define \"jobs\" "
+"with \"build steps\" which can be test invocations.  If you :doc:`install"
+" <../install>` ``tox`` on your default Python installation on each "
+"Jenkins agent, you can easily create a Jenkins multi-configuration job "
+"that will drive your tox runs from the CI-server side, using these steps:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:13
+msgid "install the Python plugin for Jenkins under \"manage jenkins\""
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:14
+msgid "create a \"multi-configuration\" job, give it a name of your choice"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:15
+msgid "configure your repository so that Jenkins can pull it"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:16
+msgid ""
+"(optional) configure multiple nodes so that tox-runs are performed on "
+"multiple hosts"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:18
+msgid ""
+"configure ``axes`` by using :ref:`TOXENV <TOXENV>` as an axis name and as"
+" values provide space-separated test environment names you want "
+"Jenkins/tox to execute."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:22
+msgid "add a **Python-build step** with this content (see also next example):"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:31
+msgid ""
+"check ``Publish JUnit test result report`` and enter ``**/junit-*.xml`` "
+"as the pattern so that Jenkins collects test results in the JUnit XML "
+"format."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:35
+msgid ""
+"The last point requires that your test command creates JunitXML files, "
+"for example with ``pytest`` it is done like this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:46
+msgid "**zero-installation** for agents"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:50
+msgid ""
+"This feature is broken currently because \"toxbootstrap.py\" has been "
+"removed.  Please file an issue if you'd like to see it back."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:54
+msgid ""
+"If you manage many Jenkins agents and want to use the latest officially "
+"released tox (or latest development version) and want to skip manually "
+"installing ``tox`` then substitute the above **Python build step** code "
+"with this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:69
+msgid ""
+"The downloaded ``toxbootstrap.py`` file downloads all necessary files to "
+"install ``tox`` in a virtual sub environment.  Notes:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:72
+msgid ""
+"uncomment the line containing ``USETOXDEV`` to use the latest "
+"development-release version of tox instead of the latest released "
+"version."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:76
+msgid ""
+"adapt the options in the last line as needed (the example code will cause"
+" tox to reinstall all virtual environments all the time which is often "
+"what one wants in CI server contexts)"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:82
+msgid "Integrating \"sphinx\" documentation checks in a Jenkins job"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:84
+msgid ""
+"If you are using a multi-configuration Jenkins job which collects JUnit "
+"Test results you will run into problems using the previous method of "
+"running the sphinx-build command because it will not generate JUnit "
+"results.  To accommodate this issue one solution is to have ``pytest`` "
+"wrap the sphinx-checks and create a JUnit result file which wraps the "
+"result of calling sphinx-build. Here is an example:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:92
+msgid "create a ``docs`` environment in your ``tox.ini`` file like this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:104
+msgid "create a ``doc/check_sphinx.py`` file like this:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:126
+msgid ""
+"run ``tox -e docs`` and then you may integrate this environment along "
+"with your other environments into Jenkins."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:129
+msgid ""
+"Note that ``pytest`` is only installed into the docs environment and does"
+" not need to be in use or installed with any other environment."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:135
+msgid "Access package artifacts between Jenkins jobs"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:139
+msgid ""
+"In an extension to :ref:`artifacts` you can also configure Jenkins jobs "
+"to access each others artifacts.  ``tox`` uses the ``distshare`` "
+"directory to access artifacts and in a Jenkins context (detected via "
+"existence of the environment variable ``HUDSON_URL``); it defaults to to "
+"``{toxworkdir}/distshare``."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:145
+msgid ""
+"This means that each workspace will have its own ``distshare`` directory "
+"and we need to configure Jenkins to perform artifact copying. The "
+"recommend way to do this is to install the `Jenkins Copy Artifact "
+"plugin`_ and for each job which \"receives\" artifacts you add a **Copy "
+"artifacts from another project** build step using roughly this "
+"configuration:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:159
+msgid ""
+"You also need to configure the \"other\" job to archive artifacts; This "
+"is done by checking ``Archive the artifacts`` and entering:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:166
+msgid ""
+"So our \"other\" job will create an sdist-package artifact and the "
+"\"copy-artifacts\" plugin will copy it to our ``distshare`` area. Now "
+"everything proceeds as :ref:`artifacts` shows it."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:170
+msgid ""
+"So if you are using defaults you can re-use and debug exactly the same "
+"``tox.ini`` file and make use of automatic sharing of your artifacts "
+"between runs or Jenkins jobs."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:176
+msgid "Avoiding the \"path too long\" error with long shebang lines"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:178
+msgid ""
+"When using ``tox`` on a Jenkins instance, there may be a scenario where "
+"``tox`` can not invoke ``pip`` because the shebang (Unix) line is too "
+"long. Some systems only support a limited amount of characters for an "
+"interpreter directive (e.x. Linux as a limit of 128). There are two "
+"methods to workaround this issue:"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:183
+msgid ""
+"Invoke ``tox`` with the ``--workdir`` option which tells ``tox`` to use a"
+" specific directory for its virtual environments. Using a unique and "
+"short path can prevent this issue."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:186
+msgid ""
+"Use the environment variable ``TOX_LIMITED_SHEBANG`` to deal with "
+"environments with interpreter directive limitations (consult :ref:`long "
+"interpreter directives` for more information)."
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:192
+msgid "Running tox environments in parallel"
+msgstr ""
+
+#: ../../docs/example/jenkins.rst:194
+msgid ""
+"Jenkins has parallel stages allowing you to run commands in parallel, "
+"however tox package building it is not parallel safe. Use the "
+"``--parallel--safe-build`` flag to enable parallel safe builds (this will"
+" generate unique folder names for ``distdir``, ``distshare`` and ``log``."
+" Here's a generic stage definition demonstrating how to use this inside "
+"Jenkins:"
+msgstr ""
+

@@ -1,0 +1,167 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/devenv.rst:3
+msgid "Development environment"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:5
+msgid ""
+"tox can be used for just preparing different virtual environments "
+"required by a project."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:8
+msgid ""
+"This feature can be used by deployment tools when preparing deployed "
+"project environments. It can also be used for setting up normalized "
+"project development environments and thus help reduce the risk of "
+"different team members using mismatched development environments."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:15
+msgid "Creating development environments using the ``--devenv`` option"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:17
+msgid ""
+"The easiest way to set up a development environment is to use the "
+"``--devenv`` option along with your existing configured ``testenv``\\ s."
+"  The ``--devenv`` option accepts a single argument, the location you "
+"want to create a development environment at."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:22
+msgid ""
+"For example, if I wanted to replicate the ``py36`` environment, I could "
+"run::"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:30
+msgid ""
+"The ``--devenv`` option skips the ``commands=`` section of that "
+"configured test environment and always sets ``usedevelop=true`` for the "
+"environment that is created."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:34
+msgid ""
+"If you don't specify an environment with ``-e``, the devenv feature will "
+"default to ``-e py`` -- usually taking the interpreter you're running "
+"``tox`` with and the default ``[testenv]`` configuration."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:38
+msgid ""
+"It is possible to use the ``--devenv`` option without a tox configuration"
+" file, however the configuration file is respected if present."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:42
+msgid "Creating development environments using configuration"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:44
+msgid ""
+"Here are some examples illustrating how to set up a project's development"
+" environment using tox. For illustration purposes, let us call the "
+"development environment ``dev``."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:50
+msgid "Example 1: Basic scenario"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:53
+msgid "Step 1 - Configure the development environment"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:55
+msgid ""
+"First, we prepare the tox configuration for our development environment "
+"by defining a ``[testenv:dev]`` section in the project's ``tox.ini`` "
+"configuration file:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:65
+msgid "In it we state:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:67
+msgid "what Python executable to use in the environment,"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:68
+msgid ""
+"that our project should be installed into the environment using "
+"``setup.py develop``, as opposed to building and installing its source "
+"distribution using ``setup.py install``."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:72
+msgid ""
+"The development environment will reside in ``toxworkdir`` (default is "
+"``.tox``) just like the other tox environments."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:75
+msgid ""
+"We can configure a lot more, if we want to. For example, we can add the "
+"following to our configuration, telling tox not to reuse ``commands`` or "
+"``deps`` settings from the base ``[testenv]`` configuration:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:88
+msgid "Step 2 - Create the development environment"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:90
+msgid ""
+"Once the ``[testenv:dev]`` configuration section has been defined, we "
+"create the actual development environment by running the following:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:97
+msgid ""
+"This creates the environment at the path specified by the environment's "
+"``envdir`` configuration value."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:102
+msgid "Example 2: A more complex scenario"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:104
+msgid "Let us say we want our project development environment to:"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:106
+msgid "use Python executable ``python2.7``,"
+msgstr ""
+
+#: ../../docs/example/devenv.rst:107
+msgid ""
+"pull packages from ``requirements.txt``, located in the same directory as"
+" ``tox.ini``."
+msgstr ""
+
+#: ../../docs/example/devenv.rst:110
+msgid "Here is an example configuration for the described scenario:"
+msgstr ""
+

@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tox configuration and usage examples &#8212; tox 3.24.6.dev14 文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Basic usage" href="example/basic.html" />
+    <link rel="prev" title="tox installation" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tox-configuration-and-usage-examples">
+<h1>tox configuration and usage examples<a class="headerlink" href="#tox-configuration-and-usage-examples" title="永久链接至标题">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example/basic.html">Basic usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#a-simple-tox-ini-default-environments">A simple tox.ini / default environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#pyproject-toml-tox-legacy-ini">pyproject.toml tox legacy ini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#specifying-a-platform">Specifying a platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#allowing-non-virtualenv-commands">Allowing non-virtualenv commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#depending-on-requirements-txt-or-defining-constraints">Depending on requirements.txt or defining constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#using-a-different-default-pypi-url">Using a different default PyPI URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#installing-dependencies-from-multiple-pypi-servers">Installing dependencies from multiple PyPI servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#further-customizing-installation">Further customizing installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#forcing-re-creation-of-virtual-environments">Forcing re-creation of virtual environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#passing-down-environment-variables">Passing down environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#setting-environment-variables">Setting environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#special-handling-of-pythonhashseed">Special handling of PYTHONHASHSEED</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#integration-with-setup-py-test-command">Integration with “setup.py test” command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#ignoring-a-command-exit-code">Ignoring a command exit code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#compressing-dependency-matrix">Compressing dependency matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#using-generative-section-names">Using generative section names</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#prevent-symbolic-links-in-virtualenv">Prevent symbolic links in virtualenv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#parallel-mode">Parallel mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/basic.html#tox-auto-provisioning">tox auto-provisioning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/package.html">Packaging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/package.html#setuptools">setuptools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/package.html#flit">flit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/package.html#poetry">poetry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/pytest.html">pytest and tox</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/pytest.html#basic-example">Basic example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/pytest.html#extended-example-change-dir-before-test-and-use-per-virtualenv-tempdir">Extended example: change dir before test and use per-virtualenv tempdir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/pytest.html#using-multiple-cpus-for-test-runs">Using multiple CPUs for test runs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/pytest.html#known-issues-and-limitations">Known issues and limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/unittest.html">unittest2, discover and tox</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/unittest.html#running-unittests-with-discover">Running unittests with ‘discover’</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/unittest.html#running-unittest2-and-sphinx-tests-in-one-go">Running unittest2 and sphinx tests in one go</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/nose.html">nose and tox</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/nose.html#basic-nosetests-example">Basic nosetests example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/nose.html#more-examples">More examples?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/documentation.html">Generate documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/documentation.html#sphinx">Sphinx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/documentation.html#mkdocs">mkdocs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/general.html">General tips and tricks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/general.html#interactively-passing-positional-arguments">Interactively passing positional arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/general.html#dependency-changes-and-tracking">Dependency changes and tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/general.html#selecting-one-or-more-environments-to-run-tests-against">Selecting one or more environments to run tests against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/general.html#access-package-artifacts-between-multiple-tox-runs">Access package artifacts between multiple tox-runs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/general.html#avoiding-expensive-sdist">Avoiding expensive sdist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/general.html#understanding-invocationerror-exit-codes">Understanding <code class="docutils literal notranslate"><span class="pre">InvocationError</span></code> exit codes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/jenkins.html">Using tox with the Jenkins Integration Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/jenkins.html#using-jenkins-multi-configuration-jobs">Using Jenkins multi-configuration jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/jenkins.html#zero-installation-for-agents"><strong>zero-installation</strong> for agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/jenkins.html#integrating-sphinx-documentation-checks-in-a-jenkins-job">Integrating “sphinx” documentation checks in a Jenkins job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/jenkins.html#access-package-artifacts-between-jenkins-jobs">Access package artifacts between Jenkins jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/jenkins.html#avoiding-the-path-too-long-error-with-long-shebang-lines">Avoiding the “path too long” error with long shebang lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/jenkins.html#running-tox-environments-in-parallel">Running tox environments in parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/devenv.html">Development environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/devenv.html#creating-development-environments-using-the-devenv-option">Creating development environments using the <code class="docutils literal notranslate"><span class="pre">--devenv</span></code> option</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example/devenv.html#creating-development-environments-using-configuration">Creating development environments using configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example/platform.html">Platform specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example/platform.html#basic-multi-platform-example">Basic multi-platform example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="index.html">home</a>
+</td><td>
+        <a href="#">examples</a>
+</td></tr><tr><td>
+        <a href="install.html">install</a>
+</td><td>
+        <a href="changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="config.html">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="support.html">support</a>
+</td><td>
+        <a href="plugins.html">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="上一章">tox installation</a></li>
+      <li>Next: <a href="example/basic.html" title="下一章">Basic usage</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,1606 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tox configuration specification &#8212; tox 3.24.6.dev14 文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Support and contact channels" href="support.html" />
+    <link rel="prev" title="Platform specification" href="example/platform.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tox-configuration-specification">
+<h1>tox configuration specification<a class="headerlink" href="#tox-configuration-specification" title="永久链接至标题">¶</a></h1>
+<div class="section" id="configuration-discovery">
+<h2>Configuration discovery<a class="headerlink" href="#configuration-discovery" title="永久链接至标题">¶</a></h2>
+<p>At the moment tox supports three configuration locations prioritized in the following order:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tox.ini</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p></li>
+</ol>
+<p>As far as the configuration format at the moment we only support standard <a class="reference external" href="https://docs.python.org/3/library/configparser.html">ConfigParser</a> “ini-style” format
+(there is a plan to add a pure TOML one soon).
+<code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> and <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> are such files. Note that <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> requires the content to be under the
+<code class="docutils literal notranslate"><span class="pre">tox:tox</span></code> and <code class="docutils literal notranslate"><span class="pre">testenv</span></code> sections and is otherwise ignored. <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> on the other hand is
+in TOML format. However, one can inline the <em>ini-style</em> format under the <code class="docutils literal notranslate"><span class="pre">tool.tox.legacy_tox_ini</span></code> key
+as a multi-line string.</p>
+<p>Below you find the specification for the <em>ini-style</em> format, but you might want to skim some
+<a class="reference internal" href="examples.html"><span class="doc">tox configuration and usage examples</span></a> first and use this page as a reference.</p>
+</div>
+<div class="section" id="tox-global-settings">
+<h2>tox global settings<a class="headerlink" href="#tox-global-settings" title="永久链接至标题">¶</a></h2>
+<p>Global settings are defined under the <code class="docutils literal notranslate"><span class="pre">tox</span></code> section as:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">minversion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3.4.0</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-minversion">
+<strong><span class="pre">minversion</span></strong><a class="headerlink" href="#conf-minversion" title="永久链接至目标">¶</a></dt>
+<dd><p>Define the minimal tox version required to run; if the host’s tox version is less
+than this the tool will create an environment and provision it with a version of
+tox that satisfies this under <a class="reference internal" href="#conf-provision_tox_env"><code class="xref std std-conf docutils literal notranslate"><span class="pre">provision_tox_env</span></code></a>.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 3.23.0 版更改.</span></p>
+</div>
+<p>When tox is invoked with the <code class="docutils literal notranslate"><span class="pre">--no-provision</span></code> flag,
+the provision won’t be attempted, tox will fail instead.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-requires">
+<strong><span class="pre">requires</span></strong><span class="pre">(LIST</span> <span class="pre">of</span> <span class="pre">PEP-508)</span><a class="headerlink" href="#conf-requires" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.2.0 新版功能.</span></p>
+</div>
+<p>Specify python packages that need to exist alongside the tox installation for the tox build
+to be able to start (must be <a class="reference external" href="https://www.python.org/dev/peps/pep-0508/">PEP-508</a> compliant). Use this to specify plugin requirements
+(or the version of <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> - determines the default <code class="docutils literal notranslate"><span class="pre">pip</span></code>, <code class="docutils literal notranslate"><span class="pre">setuptools</span></code>, and <code class="docutils literal notranslate"><span class="pre">wheel</span></code>
+versions the tox environments start with). If these dependencies are not specified tox will create
+<a class="reference internal" href="#conf-provision_tox_env"><code class="xref std std-conf docutils literal notranslate"><span class="pre">provision_tox_env</span></code></a> environment so that they are satisfied and delegate all calls to that.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">tox-pipenv</span><span class="w"></span>
+<span class="w">           </span><span class="na">setuptools &gt;</span><span class="o">=</span><span class="w"> </span><span class="s">30.0.0</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 3.23.0 版更改.</span></p>
+</div>
+<p>When tox is invoked with the <code class="docutils literal notranslate"><span class="pre">--no-provision</span></code> flag,
+the provision won’t be attempted, tox will fail instead.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-provision_tox_env">
+<strong><span class="pre">provision_tox_env</span></strong><code class="docutils literal notranslate"><span class="pre">=.tox</span></code><span class="pre">(string)</span><a class="headerlink" href="#conf-provision_tox_env" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.8.0 新版功能.</span></p>
+</div>
+<p>Name of the virtual environment used to provision a tox having all dependencies specified
+inside <a class="reference internal" href="#conf-requires"><code class="xref std std-conf docutils literal notranslate"><span class="pre">requires</span></code></a> and <a class="reference internal" href="#conf-minversion"><code class="xref std std-conf docutils literal notranslate"><span class="pre">minversion</span></code></a>.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 3.23.0 版更改.</span></p>
+</div>
+<p>When tox is invoked with the <code class="docutils literal notranslate"><span class="pre">--no-provision</span></code> flag,
+the provision won’t be attempted, tox will fail instead.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-toxworkdir">
+<strong><span class="pre">toxworkdir</span></strong><code class="docutils literal notranslate"><span class="pre">={toxinidir}/.tox</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-toxworkdir" title="永久链接至目标">¶</a></dt>
+<dd><p>Directory for tox to generate its environments into, will be created if it does not exist.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-temp_dir">
+<strong><span class="pre">temp_dir</span></strong><code class="docutils literal notranslate"><span class="pre">={toxworkdir}/.tmp</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-temp_dir" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.5.0 新版功能.</span></p>
+</div>
+<p>Directory where to put tox temporary files. For example: we create a hard link (if possible,
+otherwise new copy) in this directory for the project package. This ensures tox works correctly
+when having parallel runs (as each session will have its own copy of the project package - e.g.
+the source distribution).</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-skipsdist">
+<strong><span class="pre">skipsdist</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-skipsdist" title="永久链接至目标">¶</a></dt>
+<dd><p>Flag indicating to perform the packaging operation or not. Set it to <code class="docutils literal notranslate"><span class="pre">true</span></code> when using tox for
+an application, instead of a library.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-setupdir">
+<strong><span class="pre">setupdir</span></strong><code class="docutils literal notranslate"><span class="pre">={toxinidir}</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-setupdir" title="永久链接至目标">¶</a></dt>
+<dd><p>Indicates where the packaging root file exists (historically the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> for <code class="docutils literal notranslate"><span class="pre">setuptools</span></code>).
+This will be the working directory when performing the packaging.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-distdir">
+<strong><span class="pre">distdir</span></strong><code class="docutils literal notranslate"><span class="pre">={toxworkdir}/dist</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-distdir" title="永久链接至目标">¶</a></dt>
+<dd><p>Directory where the packaged source distribution should be put. Note this is cleaned at the start of
+every packaging invocation.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-sdistsrc">
+<strong><span class="pre">sdistsrc</span></strong><code class="docutils literal notranslate"><span class="pre">={toxworkdir}/dist</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-sdistsrc" title="永久链接至目标">¶</a></dt>
+<dd><p>Do not build the package, but instead use the latest package available under this path.
+You can override it via the command line flag <code class="docutils literal notranslate"><span class="pre">--installpkg</span></code>.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-distshare">
+<strong><span class="pre">distshare</span></strong><code class="docutils literal notranslate"><span class="pre">={homedir}/.tox/distshare</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-distshare" title="永久链接至目标">¶</a></dt>
+<dd><p>Folder where the packaged source distribution will be moved, this is not cleaned between packaging
+invocations. On Jenkins (exists <code class="docutils literal notranslate"><span class="pre">JENKINS_URL</span></code> or <code class="docutils literal notranslate"><span class="pre">HUDSON_URL</span></code> environment variable)
+the default path is <code class="docutils literal notranslate"><span class="pre">{toxworkdir}/distshare</span></code>.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-envlist">
+<strong><span class="pre">envlist</span></strong><span class="pre">(comma</span> <span class="pre">separated</span> <span class="pre">values)</span><a class="headerlink" href="#conf-envlist" title="永久链接至目标">¶</a></dt>
+<dd><p>Determining the environment list that <code class="docutils literal notranslate"><span class="pre">tox</span></code> is to operate on happens in this order (if any is found,
+no further lookups are made):</p>
+<ul class="simple">
+<li><p>command line option <code class="docutils literal notranslate"><span class="pre">-eENVLIST</span></code></p></li>
+<li><p>environment variable <code class="docutils literal notranslate"><span class="pre">TOXENV</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file’s <code class="docutils literal notranslate"><span class="pre">envlist</span></code></p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4.0 新版功能: </span>Which tox environments are run during the tox invocation can be further filtered
+via the operating system environment variable <code class="docutils literal notranslate"><span class="pre">TOX_SKIP_ENV</span></code> regular expression
+(e.g. <code class="docutils literal notranslate"><span class="pre">py27.*</span></code> means <strong>don’t</strong> evaluate environments that start with the key <code class="docutils literal notranslate"><span class="pre">py27</span></code>).
+Skipped environments will be logged at level two verbosity level.</p>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-skip_missing_interpreters">
+<strong><span class="pre">skip_missing_interpreters</span></strong><code class="docutils literal notranslate"><span class="pre">=config</span></code><span class="pre">(config|true|false)</span><a class="headerlink" href="#conf-skip_missing_interpreters" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">1.7.2 新版功能.</span></p>
+</div>
+<p>Setting this to <code class="docutils literal notranslate"><span class="pre">true</span></code> will force <code class="docutils literal notranslate"><span class="pre">tox</span></code> to return success even
+if some of the specified environments were missing. This is useful for some CI
+systems or when running on a developer box, where you might only have a subset of
+all your supported interpreters installed but don’t want to mark the build as
+failed because of it. As expected, the command line switch always overrides
+this setting if passed on the invocation. Setting it to <code class="docutils literal notranslate"><span class="pre">config</span></code>
+means that the value is read from the config file.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-ignore_basepython_conflict">
+<strong><span class="pre">ignore_basepython_conflict</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-ignore_basepython_conflict" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.1.0 新版功能.</span></p>
+</div>
+<p>tox allows setting the python version for an environment via the <a class="reference internal" href="#conf-basepython"><code class="xref std std-conf docutils literal notranslate"><span class="pre">basepython</span></code></a>
+setting. If that’s not set tox can set a default value from the environment name (
+e.g. <code class="docutils literal notranslate"><span class="pre">py37</span></code> implies Python 3.7). Matching up the python version with the environment
+name has became expected at this point, leading to surprises when some configs don’t
+do so. To help with sanity of users a warning will be emitted whenever the environment
+name version does not matches up with this expectation. In a future version of tox,
+this warning will become an error.</p>
+<p>Furthermore, we allow hard enforcing this rule (and bypassing the warning) by setting
+this flag to <code class="docutils literal notranslate"><span class="pre">true</span></code>. In such cases we ignore the <a class="reference internal" href="#conf-basepython"><code class="xref std std-conf docutils literal notranslate"><span class="pre">basepython</span></code></a> and instead
+always use the base python implied from the Python name. This allows you to
+configure <a class="reference internal" href="#conf-basepython"><code class="xref std std-conf docutils literal notranslate"><span class="pre">basepython</span></code></a> in the global testenv without affecting environments
+that have implied base python versions.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-isolated_build">
+<strong><span class="pre">isolated_build</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-isolated_build" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3.0 新版功能.</span></p>
+</div>
+<p>Activate isolated build environment. tox will use a virtual environment to build
+a source distribution from the source tree. For build tools and arguments use
+the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file as specified in <a class="reference external" href="https://www.python.org/dev/peps/pep-0517/">PEP-517</a> and <a class="reference external" href="https://www.python.org/dev/peps/pep-0518/">PEP-518</a>. To specify the
+virtual environment Python version define use the <a class="reference internal" href="#conf-isolated_build_env"><code class="xref std std-conf docutils literal notranslate"><span class="pre">isolated_build_env</span></code></a> config
+section.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-isolated_build_env">
+<strong><span class="pre">isolated_build_env</span></strong><code class="docutils literal notranslate"><span class="pre">=.package</span></code><span class="pre">(string)</span><a class="headerlink" href="#conf-isolated_build_env" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3.0 新版功能.</span></p>
+</div>
+<p>Name of the virtual environment used to create a source distribution from the
+source tree.</p>
+</dd></dl>
+
+<div class="section" id="jenkins-override">
+<h3>Jenkins override<a class="headerlink" href="#jenkins-override" title="永久链接至标题">¶</a></h3>
+<p>It is possible to override global settings inside a <a class="reference external" href="https://jenkins.io/index.html">Jenkins</a> instance (detection
+is done by checking for existence of the <code class="docutils literal notranslate"><span class="pre">JENKINS_URL</span></code> environment variable)
+by using the <code class="docutils literal notranslate"><span class="pre">tox:jenkins</span></code> section:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox:jenkins]</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">...  # override settings for the jenkins context</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tox-environments">
+<h2>tox environments<a class="headerlink" href="#tox-environments" title="永久链接至标题">¶</a></h2>
+<p>Test environments are defined under the <code class="docutils literal notranslate"><span class="pre">testenv</span></code> section and individual
+<code class="docutils literal notranslate"><span class="pre">testenv:NAME</span></code> sections, where <code class="docutils literal notranslate"><span class="pre">NAME</span></code> is the name of a specific
+environment.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">...</span><span class="w"></span>
+
+<span class="k">[testenv:NAME]</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Settings defined in the top-level <code class="docutils literal notranslate"><span class="pre">testenv</span></code> section are automatically
+inherited by individual environments unless overridden. Test environment names
+can consist of alphanumeric characters and dashes; for example:
+<code class="docutils literal notranslate"><span class="pre">py38-django30</span></code>. The name will be split on dashes into multiple factors,
+meaning <code class="docutils literal notranslate"><span class="pre">py38-django30</span></code> will be split into two factors: <code class="docutils literal notranslate"><span class="pre">py38</span></code> and
+<code class="docutils literal notranslate"><span class="pre">django30</span></code>. <em>tox</em> defines a number of default factors, which correspond to
+various versions and implementations of Python and provide default values for
+<a class="reference internal" href="#conf-basepython"><code class="xref std std-conf docutils literal notranslate"><span class="pre">basepython</span></code></a>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyNM</span></code>: configures <code class="docutils literal notranslate"><span class="pre">basepython</span> <span class="pre">=</span> <span class="pre">pythonN.M</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyN</span></code>: configures <code class="docutils literal notranslate"><span class="pre">basepython</span> <span class="pre">=</span> <span class="pre">pythonN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">py</span></code>: configures <code class="docutils literal notranslate"><span class="pre">basepython</span> <span class="pre">=</span> <span class="pre">python</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pypyN</span></code>: configures <code class="docutils literal notranslate"><span class="pre">basepython</span> <span class="pre">=</span> <span class="pre">pypyN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pypy</span></code>: configures <code class="docutils literal notranslate"><span class="pre">basepython</span> <span class="pre">=</span> <span class="pre">pypy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">jythonN</span></code>: configures <code class="docutils literal notranslate"><span class="pre">basepython</span> <span class="pre">=</span> <span class="pre">jythonN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">jython</span></code>: configures <code class="docutils literal notranslate"><span class="pre">basepython</span> <span class="pre">=</span> <span class="pre">jython</span></code></p></li>
+</ul>
+<p>It is also possible to define what’s know as <em>generative names</em>, where an
+individual section maps to multiple environments. For example,
+<code class="docutils literal notranslate"><span class="pre">py{37,38}-django{30,31}</span></code> would generate four environments, each
+consisting of two factors: <code class="docutils literal notranslate"><span class="pre">py37-django30</span></code> (<code class="docutils literal notranslate"><span class="pre">py37</span></code>, <code class="docutils literal notranslate"><span class="pre">django30</span></code>),
+<code class="docutils literal notranslate"><span class="pre">py37-django31</span></code> (<code class="docutils literal notranslate"><span class="pre">py37</span></code>, <code class="docutils literal notranslate"><span class="pre">django31</span></code>), <code class="docutils literal notranslate"><span class="pre">py38-django30</span></code> (<code class="docutils literal notranslate"><span class="pre">py38</span></code>,
+<code class="docutils literal notranslate"><span class="pre">django30</span></code>), and <code class="docutils literal notranslate"><span class="pre">py38-django31</span></code> (<code class="docutils literal notranslate"><span class="pre">py38</span></code>, <code class="docutils literal notranslate"><span class="pre">django31</span></code>).  Combined, these
+features provide the ability to write very concise <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> files. This is
+discussed further in <a class="reference internal" href="#generating-environments"><span class="std std-ref">below</span></a>.</p>
+</div>
+<div class="section" id="tox-environment-settings">
+<h2>tox environment settings<a class="headerlink" href="#tox-environment-settings" title="永久链接至标题">¶</a></h2>
+<p>Complete list of settings that you can put into <code class="docutils literal notranslate"><span class="pre">testenv*</span></code> sections:</p>
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-basepython">
+<strong><span class="pre">basepython</span></strong><span class="pre">(NAME-OR-PATH)</span><a class="headerlink" href="#conf-basepython" title="永久链接至目标">¶</a></dt>
+<dd><p>Name or path to a Python interpreter which will be used for creating the virtual environment,
+this determines in practice the python for what we’ll create a virtual isolated environment.
+Use this to specify the python version for a tox environment. If not specified, the virtual
+environments factors (e.g. name part) will be used to automatically set one. For example, <code class="docutils literal notranslate"><span class="pre">py37</span></code>
+means <code class="docutils literal notranslate"><span class="pre">python3.7</span></code>, <code class="docutils literal notranslate"><span class="pre">py3</span></code> means <code class="docutils literal notranslate"><span class="pre">python3</span></code> and <code class="docutils literal notranslate"><span class="pre">py</span></code> means <code class="docutils literal notranslate"><span class="pre">python</span></code>.
+<a class="reference internal" href="#conf-provision_tox_env"><code class="xref std std-conf docutils literal notranslate"><span class="pre">provision_tox_env</span></code></a> environment does not inherit this setting from the <code class="docutils literal notranslate"><span class="pre">toxenv</span></code> section.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 3.1 版更改: </span>After resolving this value if the interpreter reports back a different version number
+than implied from the name a warning will be printed by default. However, if
+<a class="reference internal" href="#conf-ignore_basepython_conflict"><code class="xref std std-conf docutils literal notranslate"><span class="pre">ignore_basepython_conflict</span></code></a> is set, the value is ignored and we force the
+<code class="docutils literal notranslate"><span class="pre">basepython</span></code> implied from the factor name.</p>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-commands">
+<strong><span class="pre">commands</span></strong><span class="pre">(ARGVLIST)</span><a class="headerlink" href="#conf-commands" title="永久链接至目标">¶</a></dt>
+<dd><p>The commands to be called for testing. Only execute if <a class="reference internal" href="#conf-commands_pre"><code class="xref std std-conf docutils literal notranslate"><span class="pre">commands_pre</span></code></a> succeed.</p>
+<p>Each line is interpreted as one command; however a command can be split over
+multiple lines by ending the line with the <code class="docutils literal notranslate"><span class="pre">\</span></code> character.</p>
+<p>Commands will execute one by one in sequential fashion until one of them fails (their exit
+code is non-zero) or all of them succeed. The exit code of a command may be ignored (meaning
+they are always considered successful even if they don’t exist) by prefixing the command with a dash (<code class="docutils literal notranslate"><span class="pre">-</span></code>) - this is
+similar to how <code class="docutils literal notranslate"><span class="pre">make</span></code> recipe lines work. The outcome of the environment is considered successful
+only if all commands (these + setup + teardown) succeeded (exit code ignored via the
+<code class="docutils literal notranslate"><span class="pre">-</span></code> or success exit code value of zero).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>the virtual environment binary path (the <code class="docutils literal notranslate"><span class="pre">bin</span></code> folder within) is prepended to the os <code class="docutils literal notranslate"><span class="pre">PATH</span></code>,
+meaning commands will first try to resolve to an executable from within the
+virtual environment, and only after that outside of it. Therefore <code class="docutils literal notranslate"><span class="pre">python</span></code>
+translates as the virtual environments <code class="docutils literal notranslate"><span class="pre">python</span></code> (having the same runtime version
+as the <a class="reference internal" href="#conf-basepython"><code class="xref std std-conf docutils literal notranslate"><span class="pre">basepython</span></code></a>), and <code class="docutils literal notranslate"><span class="pre">pip</span></code> translates as the virtual environments <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>Inline scripts can be used, however note these are discovered from the project root directory,
+and is not influenced by <a class="reference internal" href="#conf-changedir"><code class="xref std std-conf docutils literal notranslate"><span class="pre">changedir</span></code></a> (this only affects the runtime current working directory).
+To make this behaviour explicit we recommend that you make inline scripts absolute paths by
+prepending <code class="docutils literal notranslate"><span class="pre">{toxinidir}</span></code>, instead of <code class="docutils literal notranslate"><span class="pre">path/to/my_script</span></code> prefer
+<code class="docutils literal notranslate"><span class="pre">{toxinidir}{/}path{/}to{/}my_script</span></code>. If your inline script is platform dependent refer to
+<a class="reference internal" href="example/platform.html#platform-specification"><span class="std std-ref">Platform specification</span></a> on how to select different script per platform.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-commands_pre">
+<strong><span class="pre">commands_pre</span></strong><span class="pre">(ARGVLIST)</span><a class="headerlink" href="#conf-commands_pre" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 新版功能.</span></p>
+</div>
+<p>Commands to run before running the <a class="reference internal" href="#conf-commands"><code class="xref std std-conf docutils literal notranslate"><span class="pre">commands</span></code></a>.
+All evaluation and configuration logic applies from <a class="reference internal" href="#conf-commands"><code class="xref std std-conf docutils literal notranslate"><span class="pre">commands</span></code></a>.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-commands_post">
+<strong><span class="pre">commands_post</span></strong><span class="pre">(ARGVLIST)</span><a class="headerlink" href="#conf-commands_post" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 新版功能.</span></p>
+</div>
+<p>Commands to run after running the <a class="reference internal" href="#conf-commands"><code class="xref std std-conf docutils literal notranslate"><span class="pre">commands</span></code></a>. Execute regardless of the outcome of
+both <a class="reference internal" href="#conf-commands"><code class="xref std std-conf docutils literal notranslate"><span class="pre">commands</span></code></a> and <a class="reference internal" href="#conf-commands_pre"><code class="xref std std-conf docutils literal notranslate"><span class="pre">commands_pre</span></code></a>.
+All evaluation and configuration logic applies from <a class="reference internal" href="#conf-commands"><code class="xref std std-conf docutils literal notranslate"><span class="pre">commands</span></code></a>.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-install_command">
+<strong><span class="pre">install_command</span></strong><code class="docutils literal notranslate"><span class="pre">=python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">{opts}</span> <span class="pre">{packages}</span></code><span class="pre">(ARGV)</span><a class="headerlink" href="#conf-install_command" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">1.6 新版功能.</span></p>
+</div>
+<p>Determines the command used for installing packages into the virtual environment;
+both the package under test and its dependencies (defined with <a class="reference internal" href="#conf-deps"><code class="xref std std-conf docutils literal notranslate"><span class="pre">deps</span></code></a>).
+Must contain the substitution key <code class="docutils literal notranslate"><span class="pre">{packages}</span></code> which will be replaced by the package(s) to
+install.  You should also accept <code class="docutils literal notranslate"><span class="pre">{opts}</span></code> if you are using pip – it will contain index server options
+such as <code class="docutils literal notranslate"><span class="pre">--pre</span></code> (configured as <code class="docutils literal notranslate"><span class="pre">pip_pre</span></code>) and potentially index-options from the
+deprecated <a class="reference internal" href="#conf-indexserver"><code class="xref std std-conf docutils literal notranslate"><span class="pre">indexserver</span></code></a> option.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>You can also provide arbitrary commands to the <code class="docutils literal notranslate"><span class="pre">install_command</span></code>. Please take care that these commands can be
+executed on the supported operating systems. When executing shell scripts we recommend to not specify the script
+directly but instead pass it to the appropriate shell as argument (e.g. prefer <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">script.sh</span></code> over
+<code class="docutils literal notranslate"><span class="pre">script.sh</span></code>).</p>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-list_dependencies_command">
+<strong><span class="pre">list_dependencies_command</span></strong><code class="docutils literal notranslate"><span class="pre">=python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">freeze</span></code><span class="pre">(ARGV)</span><a class="headerlink" href="#conf-list_dependencies_command" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">2.4 新版功能.</span></p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">list_dependencies_command</span></code> setting is used for listing
+the packages installed into the virtual environment.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-ignore_errors">
+<strong><span class="pre">ignore_errors</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-ignore_errors" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">2.0 新版功能.</span></p>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">false</span></code>, a non-zero exit code from one command will abort execution of
+commands for that environment.
+If <code class="docutils literal notranslate"><span class="pre">true</span></code>, a non-zero exit code from one command will be ignored and
+further commands will be executed.  The overall status will be
+“commands failed”, i.e. tox will exit non-zero in case any command failed.</p>
+<p>It may be helpful to note that this setting is analogous to the <code class="docutils literal notranslate"><span class="pre">-k</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--keep-going</span></code> option of GNU Make.</p>
+<p>Note that in tox 2.0, the default behavior of tox with respect to treating
+errors from commands changed. tox &lt; 2.0 would ignore errors by default. tox
+&gt;= 2.0 will abort on an error by default, which is safer and more typical
+of CI and command execution tools, as it doesn’t make sense to run tests if
+installing some prerequisite failed and it doesn’t make sense to try to
+deploy if tests failed.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-pip_pre">
+<strong><span class="pre">pip_pre</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-pip_pre" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">1.9 新版功能.</span></p>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, adds <code class="docutils literal notranslate"><span class="pre">--pre</span></code> to the <code class="docutils literal notranslate"><span class="pre">opts</span></code> passed to
+<a class="reference internal" href="#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span></code></a>. If <a class="reference internal" href="#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span></code></a> uses pip, this
+will cause it to install the latest available pre-release of any
+dependencies without a specified version. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, pip
+will only install final releases of unpinned dependencies.</p>
+<p>Passing the <code class="docutils literal notranslate"><span class="pre">--pre</span></code> command-line option to tox will force this to
+<code class="docutils literal notranslate"><span class="pre">true</span></code> for all testenvs.</p>
+<p>Don’t set this option if your <a class="reference internal" href="#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span></code></a> does not use pip.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-allowlist_externals">
+<strong><span class="pre">allowlist_externals</span></strong><span class="pre">(MULTI-LINE-LIST)</span><a class="headerlink" href="#conf-allowlist_externals" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.18 新版功能.</span></p>
+</div>
+<p>Each line specifies a command name (in glob-style pattern format)
+which can be used in the <code class="docutils literal notranslate"><span class="pre">commands</span></code> section without triggering
+a “not installed in virtualenv” warning.  Example: if you use the
+unix <code class="docutils literal notranslate"><span class="pre">make</span></code> for running tests you can list <code class="docutils literal notranslate"><span class="pre">allowlist_externals=make</span></code>
+or <code class="docutils literal notranslate"><span class="pre">allowlist_externals=/usr/bin/make</span></code> if you want more precision.
+If you don’t want tox to issue a warning in any case, just use
+<code class="docutils literal notranslate"><span class="pre">allowlist_externals=*</span></code> which will match all commands (not recommended).</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">whitelist_externals</span></code> has the same meaning and usage as <code class="docutils literal notranslate"><span class="pre">allowlist_externals</span></code>
+but it is now deprecated.</p>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-changedir">
+<strong><span class="pre">changedir</span></strong><code class="docutils literal notranslate"><span class="pre">={toxinidir}</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-changedir" title="永久链接至目标">¶</a></dt>
+<dd><p>Change the current working directory when executing the test command.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>If the directory does not exist yet, it will be created.</p>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-deps">
+<strong><span class="pre">deps</span></strong><span class="pre">(MULTI-LINE-LIST)</span><a class="headerlink" href="#conf-deps" title="永久链接至目标">¶</a></dt>
+<dd><p>Environment dependencies - installed into the environment (see <a class="reference internal" href="#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span></code></a>) prior
+to project after environment creation. One dependency (a file, a URL or a package name) per
+line. Must be <a class="reference external" href="https://www.python.org/dev/peps/pep-0508/">PEP-508</a> compliant. All installer commands are executed using the <a class="reference internal" href="#toxinidir">toxinidir</a> as the
+current working directory.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest-cov &gt;</span><span class="o">=</span><span class="w"> </span><span class="s">3.5</span><span class="w"></span>
+<span class="w">    </span><span class="na">pywin32 &gt;</span><span class="o">=</span><span class="s">1.0 ; sys_platform == &#39;win32&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="na">octomachinery</span><span class="o">=</span><span class="s">=0.0.13  # pyup: &lt; 0.1.0 # disable feature updates</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 2.3 版更改.</span></p>
+</div>
+<p>Support for index servers is now deprecated, and its usage discouraged.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 3.9 版更改.</span></p>
+</div>
+<p>Comment support on the same line as the dependency. When feeding the content to the install
+tool we’ll strip off content (including) from the first comment marker (<code class="docutils literal notranslate"><span class="pre">#</span></code>)
+preceded by one or more space. For example, if a dependency is
+<code class="docutils literal notranslate"><span class="pre">octomachinery==0.0.13</span>&#160; <span class="pre">#</span> <span class="pre">pyup:</span> <span class="pre">&lt;</span> <span class="pre">0.1.0</span> <span class="pre">#</span> <span class="pre">disable</span> <span class="pre">feature</span> <span class="pre">updates</span></code> it will be turned into
+just <code class="docutils literal notranslate"><span class="pre">octomachinery==0.0.13</span></code>.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-platform">
+<strong><span class="pre">platform</span></strong><span class="pre">(REGEX)</span><a class="headerlink" href="#conf-platform" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">2.0 新版功能.</span></p>
+</div>
+<p>A testenv can define a new <code class="docutils literal notranslate"><span class="pre">platform</span></code> setting as a regular expression.
+If a non-empty expression is defined and does not match against the
+<code class="docutils literal notranslate"><span class="pre">sys.platform</span></code> string the entire test environment will be skipped and
+none of the commands will be executed. Running <code class="docutils literal notranslate"><span class="pre">tox</span> <span class="pre">-e</span> <span class="pre">&lt;platform_name&gt;</span></code>
+will run commands for a particular platform and skip the rest.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-setenv">
+<strong><span class="pre">setenv</span></strong><span class="pre">(MULTI-LINE-LIST)</span><a class="headerlink" href="#conf-setenv" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">0.9 新版功能.</span></p>
+</div>
+<p>Each line contains a NAME=VALUE environment variable setting which
+will be used for all test command invocations as well as for installing
+the sdist package into a virtual environment.</p>
+<p>Notice that when updating a path variable, you can consider the use of
+variable substitution for the current value and to handle path separator.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">setenv</span><span class="w">   </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">PYTHONPATH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{env:PYTHONPATH}{:}{toxinidir}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 新版功能.</span></p>
+</div>
+<p>Support for comments. Lines starting with <code class="docutils literal notranslate"><span class="pre">#</span></code> are ignored.</p>
+<p>Support for environment files. Lines starting with the <code class="docutils literal notranslate"><span class="pre">file|</span></code> contain path to a environment
+file to load. Rules within the environment file are the same as within the <code class="docutils literal notranslate"><span class="pre">setenv</span></code>
+(same replacement and comment support).</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-passenv">
+<strong><span class="pre">passenv</span></strong><span class="pre">(SPACE-SEPARATED-GLOBNAMES)</span><a class="headerlink" href="#conf-passenv" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">2.0 新版功能.</span></p>
+</div>
+<p>A list of wildcard environment variable names which
+shall be copied from the tox invocation environment to the test
+environment when executing test commands.  If a specified environment
+variable doesn’t exist in the tox invocation environment it is ignored.
+You can use <code class="docutils literal notranslate"><span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">?</span></code> to match multiple environment variables with
+one name. The list of environment variable names is not case sensitive, and
+all variables that match when upper cased will be passed. For example, passing
+<code class="docutils literal notranslate"><span class="pre">A</span></code> will pass both <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
+<p>Some variables are always passed through to ensure the basic functionality
+of standard library functions or tooling like pip.
+This is also not case sensitive on all platforms except Windows:</p>
+<ul class="simple">
+<li><p>passed through on all platforms: <code class="docutils literal notranslate"><span class="pre">CURL_CA_BUNDLE</span></code>, <code class="docutils literal notranslate"><span class="pre">PATH</span></code>,
+<code class="docutils literal notranslate"><span class="pre">LANG</span></code>, <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code>, <code class="docutils literal notranslate"><span class="pre">PIP_INDEX_URL</span></code>, <code class="docutils literal notranslate"><span class="pre">PIP_EXTRA_INDEX_URL</span></code>,
+<code class="docutils literal notranslate"><span class="pre">REQUESTS_CA_BUNDLE</span></code>, <code class="docutils literal notranslate"><span class="pre">SSL_CERT_FILE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">HTTP_PROXY</span></code>, <code class="docutils literal notranslate"><span class="pre">HTTPS_PROXY</span></code>, <code class="docutils literal notranslate"><span class="pre">NO_PROXY</span></code></p></li>
+<li><dl class="simple">
+<dt>Windows: <code class="docutils literal notranslate"><span class="pre">SYSTEMDRIVE</span></code>, <code class="docutils literal notranslate"><span class="pre">SYSTEMROOT</span></code>, <code class="docutils literal notranslate"><span class="pre">PATHEXT</span></code>, <code class="docutils literal notranslate"><span class="pre">TEMP</span></code>, <code class="docutils literal notranslate"><span class="pre">TMP</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">NUMBER_OF_PROCESSORS</span></code>, <code class="docutils literal notranslate"><span class="pre">USERPROFILE</span></code>, <code class="docutils literal notranslate"><span class="pre">MSYSTEM</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PROGRAMFILES</span></code>, <code class="docutils literal notranslate"><span class="pre">PROGRAMFILES(X86)</span></code>, <code class="docutils literal notranslate"><span class="pre">PROGRAMDATA</span></code></p>
+</dd>
+</dl>
+</li>
+<li><p>Others (e.g. UNIX, macOS): <code class="docutils literal notranslate"><span class="pre">TMPDIR</span></code></p></li>
+</ul>
+<p>You can override these variables with the <code class="docutils literal notranslate"><span class="pre">setenv</span></code> option.</p>
+<p>If defined the <code class="docutils literal notranslate"><span class="pre">TOX_TESTENV_PASSENV</span></code> environment variable (in the tox
+invocation environment) can define additional space-separated variable
+names that are to be passed down to the test command environment.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 2.7 版更改: </span><code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> will be passed down if explicitly defined. If
+<code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> exists in the host environment but is <strong>not</strong> declared
+in <code class="docutils literal notranslate"><span class="pre">passenv</span></code> a warning will be emitted.</p>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-recreate">
+<strong><span class="pre">recreate</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-recreate" title="永久链接至目标">¶</a></dt>
+<dd><p>Always recreate virtual environment if this option is true.
+If this option is false, <code class="docutils literal notranslate"><span class="pre">tox</span></code>’s resolution mechanism will be used to
+determine whether to recreate the environment.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-downloadcache">
+<strong><span class="pre">downloadcache</span></strong><span class="pre">(PATH)</span><a class="headerlink" href="#conf-downloadcache" title="永久链接至目标">¶</a></dt>
+<dd><p><strong>IGNORED</strong> – Since pip-8 has caching by default this option is now
+ignored.  Please remove it from your configs as a future tox version might
+bark on it.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-sitepackages">
+<strong><span class="pre">sitepackages</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-sitepackages" title="永久链接至目标">¶</a></dt>
+<dd><p>Set to <code class="docutils literal notranslate"><span class="pre">true</span></code> if you want to create virtual environments that also
+have access to globally installed packages.</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>In cases where a command line tool is also installed globally you have
+to make sure that you use the tool installed in the virtualenv by using
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">&lt;command</span> <span class="pre">line</span> <span class="pre">tool&gt;</span></code> (if supported by the tool) or
+<code class="docutils literal notranslate"><span class="pre">{envbindir}/&lt;command</span> <span class="pre">line</span> <span class="pre">tool&gt;</span></code>.</p>
+<p>If you forget to do that you will get a warning like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>WARNING: test command found but not installed in testenv
+    cmd: /path/to/parent/interpreter/bin/&lt;some command&gt;
+    env: /foo/bar/.tox/python
+Maybe you forgot to specify a dependency? See also the allowlist_externals envconfig setting.
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-alwayscopy">
+<strong><span class="pre">alwayscopy</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-alwayscopy" title="永久链接至目标">¶</a></dt>
+<dd><p>Set to <code class="docutils literal notranslate"><span class="pre">true</span></code> if you want virtualenv to always copy files rather than
+symlinking.</p>
+<p>This is useful for situations where hardlinks don’t work (e.g. running in
+VMS with Windows guests).</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-download">
+<strong><span class="pre">download</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-download" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 新版功能.</span></p>
+</div>
+<p>Set to <code class="docutils literal notranslate"><span class="pre">true</span></code> if you want virtualenv to upgrade pip/wheel/setuptools to
+the latest version. If (and only if) you want to choose a specific version
+(not necessarily the latest) then you can add e.g. <code class="docutils literal notranslate"><span class="pre">VIRTUALENV_PIP=20.3.3</span></code>
+to your setenv.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-args_are_paths">
+<strong><span class="pre">args_are_paths</span></strong><code class="docutils literal notranslate"><span class="pre">=true</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-args_are_paths" title="永久链接至目标">¶</a></dt>
+<dd><p>Treat positional arguments passed to <code class="docutils literal notranslate"><span class="pre">tox</span></code> as file system paths
+and - if they exist on the filesystem - rewrite them according
+to the <code class="docutils literal notranslate"><span class="pre">changedir</span></code>. Default is true due to the exists-on-filesystem check it’s
+usually safe to try rewriting.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-envtmpdir">
+<strong><span class="pre">envtmpdir</span></strong><code class="docutils literal notranslate"><span class="pre">={envdir}/tmp</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-envtmpdir" title="永久链接至目标">¶</a></dt>
+<dd><p>Defines a temporary directory for the virtualenv which will be cleared
+each time before the group of test commands is invoked.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-envlogdir">
+<strong><span class="pre">envlogdir</span></strong><code class="docutils literal notranslate"><span class="pre">={envdir}/log</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-envlogdir" title="永久链接至目标">¶</a></dt>
+<dd><p>Defines a directory for logging where tox will put logs of tool
+invocation.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-indexserver">
+<strong><span class="pre">indexserver</span></strong><span class="pre">(URL)</span><a class="headerlink" href="#conf-indexserver" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">0.9 新版功能.</span></p>
+</div>
+<p>(DEPRECATED, will be removed in a future version) Use <a class="reference internal" href="#conf-setenv"><code class="xref std std-conf docutils literal notranslate"><span class="pre">setenv</span></code></a>
+to configure PIP_INDEX_URL environment variable, see below.</p>
+<p>Multi-line <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">URL</span></code> definitions of python package servers.
+You can specify an alternative index server for dependencies by applying the
+<code class="docutils literal notranslate"><span class="pre">:indexservername:depname</span></code> pattern.  The <code class="docutils literal notranslate"><span class="pre">default</span></code> indexserver
+definition determines where unscoped dependencies and the sdist install
+installs from.  Example:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">indexserver</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">https://mypypi.org</span><span class="w"></span>
+</pre></div>
+</div>
+<p>will make tox install all dependencies from this PyPI index server
+(including when installing the project sdist package).</p>
+<p>The recommended way to set a custom index server URL is to use <a class="reference internal" href="#conf-setenv"><code class="xref std std-conf docutils literal notranslate"><span class="pre">setenv</span></code></a>:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">setenv</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">PIP_INDEX_URL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{env:PIP_INDEX_URL:https://pypi.org/simple/}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This will ensure the desired index server gets used for virtual environment
+creation and allow overriding the index server URL with an environment variable.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-envdir">
+<strong><span class="pre">envdir</span></strong><code class="docutils literal notranslate"><span class="pre">={toxworkdir}/{envname}</span></code><span class="pre">(PATH)</span><a class="headerlink" href="#conf-envdir" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">1.5 新版功能.</span></p>
+</div>
+<p>User can set specific path for environment. If path would not be absolute
+it would be treated as relative to <code class="docutils literal notranslate"><span class="pre">{toxinidir}</span></code>.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-usedevelop">
+<strong><span class="pre">usedevelop</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-usedevelop" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">1.6 新版功能.</span></p>
+</div>
+<p>Install the current package in development mode with “setup.py
+develop” instead of installing from the <code class="docutils literal notranslate"><span class="pre">sdist</span></code> package. (This
+uses pip’s <code class="docutils literal notranslate"><span class="pre">-e</span></code> option, so should be avoided if you’ve specified a
+custom <a class="reference internal" href="#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span></code></a> that does not support <code class="docutils literal notranslate"><span class="pre">-e</span></code>). Note that
+changes to the build/install process (including changes in dependencies)
+are only detected when using setuptools with setup.py.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-skip_install">
+<strong><span class="pre">skip_install</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-skip_install" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">1.9 新版功能.</span></p>
+</div>
+<p>Do not install the current package. This can be used when you need the
+virtualenv management but do not want to install the current package
+into that environment.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-ignore_outcome">
+<strong><span class="pre">ignore_outcome</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(true|false)</span><a class="headerlink" href="#conf-ignore_outcome" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">2.2 新版功能.</span></p>
+</div>
+<p>If set to true a failing result of this testenv will not make tox fail,
+only a warning will be produced.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-extras">
+<strong><span class="pre">extras</span></strong><span class="pre">(MULTI-LINE-LIST)</span><a class="headerlink" href="#conf-extras" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">2.4 新版功能.</span></p>
+</div>
+<p>A list of “extras” to be installed with the sdist or develop install.
+For example, <code class="docutils literal notranslate"><span class="pre">extras</span> <span class="pre">=</span> <span class="pre">testing</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">[testing]</span></code> in a
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> command. These are not installed if <code class="docutils literal notranslate"><span class="pre">skip_install</span></code> is
+<code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-description">
+<strong><span class="pre">description</span></strong><code class="docutils literal notranslate"><span class="pre">=no</span> <span class="pre">description</span></code><span class="pre">(SINGLE-LINE-TEXT)</span><a class="headerlink" href="#conf-description" title="永久链接至目标">¶</a></dt>
+<dd><p>A short description of the environment, this will be used to explain
+the environment to the user upon listing environments for the command
+line with any level of verbosity higher than zero.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-parallel_show_output">
+<strong><span class="pre">parallel_show_output</span></strong><code class="docutils literal notranslate"><span class="pre">=false</span></code><span class="pre">(bool)</span><a class="headerlink" href="#conf-parallel_show_output" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.7.0 新版功能.</span></p>
+</div>
+<p>If set to True the content of the output will always be shown when running in parallel mode.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-depends">
+<strong><span class="pre">depends</span></strong><span class="pre">(comma</span> <span class="pre">separated</span> <span class="pre">values)</span><a class="headerlink" href="#conf-depends" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.7.0 新版功能.</span></p>
+</div>
+<p>tox environments this depends on. tox will try to run all dependent environments before running this
+environment. Format is same as <a class="reference internal" href="#conf-envlist"><code class="xref std std-conf docutils literal notranslate"><span class="pre">envlist</span></code></a> (allows factor usage).</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p><code class="docutils literal notranslate"><span class="pre">depends</span></code> does not pull in dependencies into the run target, for example if you select <code class="docutils literal notranslate"><span class="pre">py27,py36,coverage</span></code>
+via the <code class="docutils literal notranslate"><span class="pre">-e</span></code> tox will only run those three (even if <code class="docutils literal notranslate"><span class="pre">coverage</span></code> may specify as <code class="docutils literal notranslate"><span class="pre">depends</span></code> other targets too -
+such as <code class="docutils literal notranslate"><span class="pre">py27,</span> <span class="pre">py35,</span> <span class="pre">py36,</span> <span class="pre">py37</span></code>).</p>
+</div>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-suicide_timeout">
+<strong><span class="pre">suicide_timeout</span></strong><code class="docutils literal notranslate"><span class="pre">=0.0</span></code><span class="pre">(float)</span><a class="headerlink" href="#conf-suicide_timeout" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.15.2 新版功能.</span></p>
+</div>
+<p>When an interrupt is sent via Ctrl+C or the tox process is killed with a SIGTERM,
+a SIGINT is sent to all foreground processes. The <a class="reference internal" href="#conf-suicide_timeout"><code class="xref std std-conf docutils literal notranslate"><span class="pre">suicide_timeout</span></code></a> gives
+the running process time to cleanup and exit before receiving (in some cases, a duplicate) SIGINT from
+tox.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-interrupt_timeout">
+<strong><span class="pre">interrupt_timeout</span></strong><code class="docutils literal notranslate"><span class="pre">=0.3</span></code><span class="pre">(float)</span><a class="headerlink" href="#conf-interrupt_timeout" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.15.0 新版功能.</span></p>
+</div>
+<p>When tox is interrupted, it propagates the signal to the child process
+after <a class="reference internal" href="#conf-suicide_timeout"><code class="xref std std-conf docutils literal notranslate"><span class="pre">suicide_timeout</span></code></a> seconds. If the process still hasn’t exited
+after <a class="reference internal" href="#conf-interrupt_timeout"><code class="xref std std-conf docutils literal notranslate"><span class="pre">interrupt_timeout</span></code></a> seconds, its sends a SIGTERM.</p>
+</dd></dl>
+
+<dl class="std conf">
+<dt class="sig sig-object std" id="conf-terminate_timeout">
+<strong><span class="pre">terminate_timeout</span></strong><code class="docutils literal notranslate"><span class="pre">=0.2</span></code><span class="pre">(float)</span><a class="headerlink" href="#conf-terminate_timeout" title="永久链接至目标">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.15.0 新版功能.</span></p>
+</div>
+<p>When tox is interrupted, after waiting <a class="reference internal" href="#conf-interrupt_timeout"><code class="xref std std-conf docutils literal notranslate"><span class="pre">interrupt_timeout</span></code></a> seconds,
+it propagates the signal to the child process, waits
+<a class="reference internal" href="#conf-interrupt_timeout"><code class="xref std std-conf docutils literal notranslate"><span class="pre">interrupt_timeout</span></code></a> seconds, sends it a SIGTERM, waits
+<a class="reference internal" href="#conf-terminate_timeout"><code class="xref std std-conf docutils literal notranslate"><span class="pre">terminate_timeout</span></code></a> seconds, and sends it a SIGKILL if it hasn’t
+exited.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="substitutions">
+<h2>Substitutions<a class="headerlink" href="#substitutions" title="永久链接至标题">¶</a></h2>
+<p>Any <code class="docutils literal notranslate"><span class="pre">key=value</span></code> setting in an ini-file can make use
+of value substitution through the <code class="docutils literal notranslate"><span class="pre">{...}</span></code> string-substitution pattern.</p>
+<p>You can escape curly braces with the <code class="docutils literal notranslate"><span class="pre">\</span></code> character if you need them, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">commands</span> <span class="o">=</span> <span class="n">echo</span> <span class="s2">&quot;\{posargs\}&quot;</span> <span class="o">=</span> <span class="p">{</span><span class="n">posargs</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note some substitutions (e.g. <code class="docutils literal notranslate"><span class="pre">posargs</span></code>, <code class="docutils literal notranslate"><span class="pre">env</span></code>) may have addition values attached to it,
+via the <code class="docutils literal notranslate"><span class="pre">:</span></code> character (e.g. <code class="docutils literal notranslate"><span class="pre">posargs</span></code> - default value, <code class="docutils literal notranslate"><span class="pre">env</span></code> - key).
+Such substitutions cannot have a space after the <code class="docutils literal notranslate"><span class="pre">:</span></code> character
+(e.g. <code class="docutils literal notranslate"><span class="pre">{posargs:</span> <span class="pre">magic}</span></code> while being at the start of a line
+inside the ini configuration (this would be parsed as factorial <code class="docutils literal notranslate"><span class="pre">{posargs</span></code>,
+having value magic).</p>
+<div class="section" id="globally-available-substitutions">
+<h3>Globally available substitutions<a class="headerlink" href="#globally-available-substitutions" title="永久链接至标题">¶</a></h3>
+<dl class="simple" id="toxinidir">
+<dt><code class="docutils literal notranslate"><span class="pre">{toxinidir}</span></code></dt><dd><p>the directory where <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> is located</p>
+</dd>
+</dl>
+<dl id="toxworkdir">
+<dt><code class="docutils literal notranslate"><span class="pre">{toxworkdir}</span></code></dt><dd><p>the directory where virtual environments are created and sub directories
+for packaging reside.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{temp_dir}</span></code></dt><dd><p>the directory where tox temporary files live.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.16.1 新版功能.</span></p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{homedir}</span></code></dt><dd><p>the user-home directory path.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{distdir}</span></code></dt><dd><p>the directory where sdist-packages will be created in</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{distshare}</span></code></dt><dd><p>(DEPRECATED) the directory where sdist-packages will be copied to so that
+they may be accessed by other processes or tox runs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{:}</span></code></dt><dd><p>OS-specific path separator (<code class="docutils literal notranslate"><span class="pre">:</span></code> on *nix family, <code class="docutils literal notranslate"><span class="pre">;</span></code> on Windows). May be used in <code class="docutils literal notranslate"><span class="pre">setenv</span></code>,
+when target variable is path variable (e.g. PATH or PYTHONPATH).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{/}</span></code></dt><dd><p>OS-specific directory separator (<code class="docutils literal notranslate"><span class="pre">/</span></code> on *nix family, <code class="docutils literal notranslate"><span class="pre">\\</span></code> on Windows).
+Useful for deriving filenames from preset paths, as arguments for commands
+that requires <code class="docutils literal notranslate"><span class="pre">\\</span></code> on Windows. e.g. <code class="docutils literal notranslate"><span class="pre">{distdir}{/}file.txt</span></code>.
+It is not usually needed when using commands written in Python.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="substitutions-for-virtualenv-related-sections">
+<h3>Substitutions for virtualenv-related sections<a class="headerlink" href="#substitutions-for-virtualenv-related-sections" title="永久链接至标题">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">{envname}</span></code></dt><dd><p>the name of the virtual environment</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{envpython}</span></code></dt><dd><p>path to the virtual Python interpreter</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{envdir}</span></code></dt><dd><p>directory of the virtualenv hierarchy</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{envbindir}</span></code></dt><dd><p>directory where executables are located</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{envsitepackagesdir}</span></code></dt><dd><p>directory where packages are installed.
+Note that architecture-specific files may appear in a different directory.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{envtmpdir}</span></code></dt><dd><p>the environment temporary directory</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{envlogdir}</span></code></dt><dd><p>the environment log directory</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="environment-variable-substitutions">
+<h3>Environment variable substitutions<a class="headerlink" href="#environment-variable-substitutions" title="永久链接至标题">¶</a></h3>
+<p>If you specify a substitution string like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">env</span><span class="p">:</span><span class="n">KEY</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>then the value will be retrieved as <code class="docutils literal notranslate"><span class="pre">os.environ['KEY']</span></code>
+and raise an Error if the environment variable
+does not exist.</p>
+</div>
+<div class="section" id="environment-variable-substitutions-with-default-values">
+<h3>Environment variable substitutions with default values<a class="headerlink" href="#environment-variable-substitutions-with-default-values" title="永久链接至标题">¶</a></h3>
+<p>If you specify a substitution string like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">env</span><span class="p">:</span><span class="n">KEY</span><span class="p">:</span><span class="n">DEFAULTVALUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>then the value will be retrieved as <code class="docutils literal notranslate"><span class="pre">os.environ['KEY']</span></code>
+and replace with DEFAULTVALUE if the environment variable does not
+exist.</p>
+<p>If you specify a substitution string like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">env</span><span class="p">:</span><span class="n">KEY</span><span class="p">:}</span>
+</pre></div>
+</div>
+<p>then the value will be retrieved as <code class="docutils literal notranslate"><span class="pre">os.environ['KEY']</span></code>
+and replace with an empty string if the environment variable does not
+exist.</p>
+<p>Substitutions can also be nested. In that case they are expanded starting
+from the innermost expression:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">env</span><span class="p">:</span><span class="n">KEY</span><span class="p">:{</span><span class="n">env</span><span class="p">:</span><span class="n">DEFAULT_OF_KEY</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>the above example is roughly equivalent to
+<code class="docutils literal notranslate"><span class="pre">os.environ.get('KEY',</span> <span class="pre">os.environ['DEFAULT_OF_KEY'])</span></code></p>
+</div>
+<div class="section" id="interactive-shell-substitution">
+<span id="positional-substitution"></span><span id="command-positional-substitution"></span><h3>Interactive shell substitution<a class="headerlink" href="#interactive-shell-substitution" title="永久链接至标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4.0 新版功能.</span></p>
+</div>
+<p>It’s possible to inject a config value only when tox is running in interactive shell (standard input):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">tty</span><span class="p">:</span><span class="n">ON_VALUE</span><span class="p">:</span><span class="n">OFF_VALUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The first value is the value to inject when the interactive terminal is available,
+the second value is the value to use when it’s not. The later on is optional. A good use case
+for this is e.g. passing in the <code class="docutils literal notranslate"><span class="pre">--pdb</span></code> flag for pytest.</p>
+</div>
+<div class="section" id="substitutions-for-positional-arguments-in-commands">
+<h3>Substitutions for positional arguments in commands<a class="headerlink" href="#substitutions-for-positional-arguments-in-commands" title="永久链接至标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">1.0 新版功能.</span></p>
+</div>
+<p>If you specify a substitution string like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">posargs</span><span class="p">:</span><span class="n">DEFAULTS</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>then the value will be replaced with positional arguments as provided
+to the tox command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="n">arg1</span> <span class="n">arg2</span>
+</pre></div>
+</div>
+<p>In this instance, the positional argument portion will be replaced with
+<code class="docutils literal notranslate"><span class="pre">arg1</span> <span class="pre">arg2</span></code>. If no positional arguments were specified, the value of
+DEFAULTS will be used instead. If DEFAULTS contains other substitution
+strings, such as <code class="docutils literal notranslate"><span class="pre">{env:*}</span></code>, they will be interpreted.,</p>
+<p>Use a double <code class="docutils literal notranslate"><span class="pre">--</span></code> if you also want to pass options to an underlying
+test command, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">--</span> <span class="o">--</span><span class="n">opt1</span> <span class="n">ARG1</span>
+</pre></div>
+</div>
+<p>will make the <code class="docutils literal notranslate"><span class="pre">--opt1</span> <span class="pre">ARG1</span></code> appear in all test commands where <code class="docutils literal notranslate"><span class="pre">[]</span></code> or
+<code class="docutils literal notranslate"><span class="pre">{posargs}</span></code> was specified.  By default (see <code class="docutils literal notranslate"><span class="pre">args_are_paths</span></code>
+setting), <code class="docutils literal notranslate"><span class="pre">tox</span></code> rewrites each positional argument if it is a relative
+path and exists on the filesystem to become a path relative to the
+<code class="docutils literal notranslate"><span class="pre">changedir</span></code> setting.</p>
+<p>Previous versions of tox supported the <code class="docutils literal notranslate"><span class="pre">[.*]</span></code> pattern to denote
+positional arguments with defaults. This format has been deprecated.
+Use <code class="docutils literal notranslate"><span class="pre">{posargs:DEFAULTS}</span></code> to specify those.</p>
+</div>
+<div class="section" id="substitution-for-values-from-other-sections">
+<h3>Substitution for values from other sections<a class="headerlink" href="#substitution-for-values-from-other-sections" title="永久链接至标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">1.4 新版功能.</span></p>
+</div>
+<p>Values from other sections can be referred to via:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{[</span><span class="n">sectionname</span><span class="p">]</span><span class="n">valuename</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>which you can use to avoid repetition of config values.
+You can put default values in one section and reference them in others to avoid repeating the same values:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[base]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest</span><span class="w"></span>
+<span class="w">    </span><span class="na">mock</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest-xdist</span><span class="w"></span>
+
+<span class="k">[testenv:dulwich]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">dulwich</span><span class="w"></span>
+<span class="w">    </span><span class="na">{[base]deps}</span><span class="w"></span>
+
+<span class="k">[testenv:mercurial]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">mercurial</span><span class="w"></span>
+<span class="w">    </span><span class="na">{[base]deps}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="generating-environments-conditional-settings">
+<span id="generating-environments"></span><h2>Generating environments, conditional settings<a class="headerlink" href="#generating-environments-conditional-settings" title="永久链接至标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">1.8 新版功能.</span></p>
+</div>
+<p>Suppose you want to test your package against python2.7, python3.6 and against
+several versions of a dependency, say Django 1.5 and Django 1.6. You can
+accomplish that by writing down 2*2 = 4 <code class="docutils literal notranslate"><span class="pre">[testenv:*]</span></code> sections and then
+listing all of them in <code class="docutils literal notranslate"><span class="pre">envlist</span></code>.</p>
+<p>However, a better approach looks like this:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{py27,py36}-django{15,16}</span><span class="w"></span>
+
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest</span><span class="w"></span>
+<span class="w">    </span><span class="na">django15: Django&gt;</span><span class="o">=</span><span class="s">1.5,&lt;1.6</span><span class="w"></span>
+<span class="w">    </span><span class="na">django16: Django&gt;</span><span class="o">=</span><span class="s">1.6,&lt;1.7</span><span class="w"></span>
+<span class="w">    </span><span class="na">py36: unittest2</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This uses two new facilities of tox-1.8:</p>
+<ul class="simple">
+<li><p>generative envlist declarations where each envname
+consists of environment parts or “factors”</p></li>
+<li><p>“factor” specific settings</p></li>
+</ul>
+<p>Let’s go through this step by step.</p>
+<div class="section" id="generative-envlist">
+<span id="id1"></span><h3>Generative envlist<a class="headerlink" href="#generative-envlist" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">envlist</span> <span class="o">=</span> <span class="p">{</span><span class="n">py36</span><span class="p">,</span><span class="n">py27</span><span class="p">}</span><span class="o">-</span><span class="n">django</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This is bash-style syntax and will create <code class="docutils literal notranslate"><span class="pre">2*2=4</span></code> environment names
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py27</span><span class="o">-</span><span class="n">django15</span>
+<span class="n">py27</span><span class="o">-</span><span class="n">django16</span>
+<span class="n">py36</span><span class="o">-</span><span class="n">django15</span>
+<span class="n">py36</span><span class="o">-</span><span class="n">django16</span>
+</pre></div>
+</div>
+<p>You can still list environments explicitly along with generated ones:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">envlist</span> <span class="o">=</span> <span class="p">{</span><span class="n">py27</span><span class="p">,</span><span class="n">py36</span><span class="p">}</span><span class="o">-</span><span class="n">django</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">},</span> <span class="n">docs</span><span class="p">,</span> <span class="n">flake</span>
+</pre></div>
+</div>
+<p>Keep in mind that whitespace characters (except newline) within <code class="docutils literal notranslate"><span class="pre">{}</span></code>
+are stripped, so the following line defines the same environment names:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">envlist</span> <span class="o">=</span> <span class="p">{</span><span class="n">py27</span><span class="p">,</span><span class="n">py36</span><span class="p">}</span><span class="o">-</span><span class="n">django</span><span class="p">{</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span> <span class="p">},</span> <span class="n">docs</span><span class="p">,</span> <span class="n">flake</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>To help with understanding how the variants will produce section values,
+you can ask tox to show their expansion with a new option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -l
+py27-django15
+py27-django16
+py36-django15
+py36-django16
+docs
+flake
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="generative-section-names">
+<span id="generative-sections"></span><h3>Generative section names<a class="headerlink" href="#generative-section-names" title="永久链接至标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 新版功能.</span></p>
+</div>
+<p>Using similar syntax, it is possible to generate sections:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">testenv</span><span class="p">:</span><span class="n">py</span><span class="p">{</span><span class="mi">27</span><span class="p">,</span><span class="mi">36</span><span class="p">}</span><span class="o">-</span><span class="n">flake</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This is equivalent to defining distinct sections:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -a
+py27-flake
+py36-flake
+</pre></div>
+</div>
+<p>It is useful when you need an environment different from the default one,
+but still want to take advantage of factor-conditional settings.</p>
+</div>
+<div class="section" id="factors-and-factor-conditional-settings">
+<span id="factors"></span><h3>Factors and factor-conditional settings<a class="headerlink" href="#factors-and-factor-conditional-settings" title="永久链接至标题">¶</a></h3>
+<p>As discussed previously, parts of an environment name delimited by hyphens are
+called factors and can be used to set values conditionally. In list settings
+such as <code class="docutils literal notranslate"><span class="pre">deps</span></code> or <code class="docutils literal notranslate"><span class="pre">commands</span></code> you can freely intermix optional lines with
+unconditional ones:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest</span><span class="w"></span>
+<span class="w">    </span><span class="na">django15: Django&gt;</span><span class="o">=</span><span class="s">1.5,&lt;1.6</span><span class="w"></span>
+<span class="w">    </span><span class="na">django16: Django&gt;</span><span class="o">=</span><span class="s">1.6,&lt;1.7</span><span class="w"></span>
+<span class="w">    </span><span class="na">py36: unittest2</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Reading it line by line:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pytest</span></code> will be included unconditionally,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Django&gt;=1.5,&lt;1.6</span></code> will be included for environments containing
+<code class="docutils literal notranslate"><span class="pre">django15</span></code> factor,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Django&gt;=1.6,&lt;1.7</span></code> similarly depends on <code class="docutils literal notranslate"><span class="pre">django16</span></code> factor,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unittest2</span></code> will be loaded for Python 3.6 environments.</p></li>
+</ul>
+<p>tox provides a number of default factors corresponding to Python interpreter
+versions. The conditional setting above will lead to either <code class="docutils literal notranslate"><span class="pre">python3.6</span></code> or
+<code class="docutils literal notranslate"><span class="pre">python2.7</span></code> used as base python, e.g. <code class="docutils literal notranslate"><span class="pre">python3.6</span></code> is selected if current
+environment contains <code class="docutils literal notranslate"><span class="pre">py36</span></code> factor.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Configuring <a class="reference internal" href="#conf-basepython"><code class="xref std std-conf docutils literal notranslate"><span class="pre">basepython</span></code></a> for environments using default factors
+will result in a warning. Configure <a class="reference internal" href="#conf-ignore_basepython_conflict"><code class="xref std std-conf docutils literal notranslate"><span class="pre">ignore_basepython_conflict</span></code></a>
+if you wish to explicitly ignore these conflicts, allowing you to define a
+global <a class="reference internal" href="#conf-basepython"><code class="xref std std-conf docutils literal notranslate"><span class="pre">basepython</span></code></a> for all environments <em>except</em> those with
+default factors.</p>
+</div>
+</div>
+<div class="section" id="complex-factor-conditions">
+<h3>Complex factor conditions<a class="headerlink" href="#complex-factor-conditions" title="永久链接至标题">¶</a></h3>
+<p>Sometimes you need to specify the same line for several factors or create a
+special case for a combination of factors. Here is how you do it:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tox]</span><span class="w"></span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">py{27,34,36}-django{15,16}-{sqlite,mysql}</span><span class="w"></span>
+
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">py34-mysql: PyMySQL     # use if both py34 and mysql are in the env name</span><span class="w"></span>
+<span class="w">    </span><span class="na">py27,py36: urllib3      # use if either py36 or py27 are in the env name</span><span class="w"></span>
+<span class="w">    </span><span class="na">py{27,36}-sqlite: mock  # mocking sqlite in python 2.x &amp; 3.6</span><span class="w"></span>
+<span class="w">    </span><span class="na">!py34-sqlite: mock      # mocking sqlite, except in python 3.4</span><span class="w"></span>
+<span class="w">    </span><span class="na">sqlite-!py34: mock      # (same as the line above)</span><span class="w"></span>
+<span class="w">    </span><span class="na">!py34-!py36: enum34     # use if neither py34 nor py36 are in the env name</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Take a look at the first <code class="docutils literal notranslate"><span class="pre">deps</span></code> line. It shows how you can special case
+something for a combination of factors, by just hyphenating the combining
+factors together. This particular line states that <code class="docutils literal notranslate"><span class="pre">PyMySQL</span></code> will be loaded
+for python 3.4, mysql environments, e.g. <code class="docutils literal notranslate"><span class="pre">py34-django15-mysql</span></code> and
+<code class="docutils literal notranslate"><span class="pre">py34-django16-mysql</span></code>.</p>
+<p>The second line shows how you use the same setting for several factors - by
+listing them delimited by commas. It’s possible to list not only simple factors,
+but also their combinations like <code class="docutils literal notranslate"><span class="pre">py27-sqlite,py36-sqlite</span></code>.</p>
+<p>The remaining lines all have the same effect and use conditions equivalent to
+<code class="docutils literal notranslate"><span class="pre">py27-sqlite,py36-sqlite</span></code>. They have all been added only to help demonstrate
+the following:</p>
+<ul class="simple">
+<li><p>how factor expressions get expanded the same way as in envlist</p></li>
+<li><p>how to use negated factor conditions by prefixing negated factors with <code class="docutils literal notranslate"><span class="pre">!</span></code></p></li>
+<li><p>that the order in which factors are hyphenated together does not matter</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Factors don’t do substring matching against env name, instead every
+hyphenated expression is split by <code class="docutils literal notranslate"><span class="pre">-</span></code> and if ALL of its non-negated
+factors and NONE of its negated ones are also factors of an env then that
+condition is considered to hold for that env.</p>
+<p>For example, environment <code class="docutils literal notranslate"><span class="pre">py36-mysql-!dev</span></code>:</p>
+<ul class="simple">
+<li><p>would be matched by expressions <code class="docutils literal notranslate"><span class="pre">py36</span></code>, <code class="docutils literal notranslate"><span class="pre">py36-mysql</span></code> or
+<code class="docutils literal notranslate"><span class="pre">mysql-py36</span></code>,</p></li>
+<li><p>but not <code class="docutils literal notranslate"><span class="pre">py2</span></code>, <code class="docutils literal notranslate"><span class="pre">py36-sql</span></code> or <code class="docutils literal notranslate"><span class="pre">py36-mysql-dev</span></code>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="factors-and-values-substitution-are-compatible">
+<h3>Factors and values substitution are compatible<a class="headerlink" href="#factors-and-values-substitution-are-compatible" title="永久链接至标题">¶</a></h3>
+<p>It is possible to mix both values substitution and factor expressions.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">tox</span><span class="p">]</span>
+<span class="n">envlist</span> <span class="o">=</span> <span class="n">py27</span><span class="p">,</span><span class="n">py36</span><span class="p">,</span><span class="n">coverage</span>
+
+<span class="p">[</span><span class="n">testenv</span><span class="p">]</span>
+<span class="n">deps</span> <span class="o">=</span>
+    <span class="n">flake8</span>
+    <span class="n">coverage</span><span class="p">:</span> <span class="n">coverage</span>
+
+<span class="p">[</span><span class="n">testenv</span><span class="p">:</span><span class="n">py27</span><span class="p">]</span>
+<span class="n">deps</span> <span class="o">=</span>
+    <span class="p">{[</span><span class="n">testenv</span><span class="p">]</span><span class="n">deps</span><span class="p">}</span>
+    <span class="n">pytest</span>
+</pre></div>
+</div>
+<p>With the previous configuration, it will install:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flake8</span></code> and <code class="docutils literal notranslate"><span class="pre">pytest</span></code> packages for <code class="docutils literal notranslate"><span class="pre">py27</span></code> environment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flake8</span></code> package for <code class="docutils literal notranslate"><span class="pre">py36</span></code> environment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flake8</span></code> and <code class="docutils literal notranslate"><span class="pre">coverage</span></code> packages for <code class="docutils literal notranslate"><span class="pre">coverage</span></code> environment.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="advanced-settings">
+<h2>Advanced settings<a class="headerlink" href="#advanced-settings" title="永久链接至标题">¶</a></h2>
+<div class="section" id="handle-interpreter-directives-with-long-lengths">
+<span id="long-interpreter-directives"></span><h3>Handle interpreter directives with long lengths<a class="headerlink" href="#handle-interpreter-directives-with-long-lengths" title="永久链接至标题">¶</a></h3>
+<p>For systems supporting executable text files (scripts with a shebang), the
+system will attempt to parse the interpreter directive to determine the program
+to execute on the target text file. When <code class="docutils literal notranslate"><span class="pre">tox</span></code> prepares a virtual environment
+in a file container which has a large length (e.g. using Jenkins Pipelines), the
+system might not be able to invoke shebang scripts which define interpreters
+beyond system limits (e.g. Linux has a limit of 128; <code class="docutils literal notranslate"><span class="pre">BINPRM_BUF_SIZE</span></code>). To
+workaround an environment which suffers from an interpreter directive limit, a
+user can bypass the system’s interpreter parser by defining the
+<code class="docutils literal notranslate"><span class="pre">TOX_LIMITED_SHEBANG</span></code> environment variable before invoking <code class="docutils literal notranslate"><span class="pre">tox</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">TOX_LIMITED_SHEBANG</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>When the workaround is enabled, all tox-invoked text file executables will have
+their interpreter directive parsed by and explicitly executed by <code class="docutils literal notranslate"><span class="pre">tox</span></code>.</p>
+</div>
+</div>
+<div class="section" id="environment-variables">
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="永久链接至标题">¶</a></h2>
+<p>tox will treat the following environment variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_DISCOVER</span></code> for python discovery first try the python executables under these paths</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOXENV</span></code> see <a class="reference internal" href="#conf-envlist"><code class="xref std std-conf docutils literal notranslate"><span class="pre">envlist</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_LIMITED_SHEBANG</span></code> see <a class="reference internal" href="#long-interpreter-directives"><span class="std std-ref">Handle interpreter directives with long lengths</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_PARALLEL_NO_SPINNER</span></code> see <a class="reference internal" href="example/basic.html#parallel-mode"><span class="std std-ref">Parallel mode</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_TOX_PARALLEL_ENV</span></code> lets tox know that it is invoked in the parallel mode.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_PROVISION</span></code> is only intended to be used internally.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_REPORTER_TIMESTAMP</span></code> enables showing for each output line its delta since the tox startup when set to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_SKIP_ENV</span></code> see <a class="reference internal" href="#conf-envlist"><code class="xref std std-conf docutils literal notranslate"><span class="pre">envlist</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_TESTENV_PASSENV</span></code> see <a class="reference internal" href="#conf-passenv"><code class="xref std std-conf docutils literal notranslate"><span class="pre">passenv</span></code></a>.</p></li>
+</ul>
+<div class="section" id="injected-environment-variables">
+<h3>Injected environment variables<a class="headerlink" href="#injected-environment-variables" title="永久链接至标题">¶</a></h3>
+<p>tox will inject the following environment variables that you can use to test that your command is running within tox:</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 新版功能.</span></p>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_WORK_DIR</span></code> env var is set to the tox work directory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_ENV_NAME</span></code> is set to the current running tox environment name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_ENV_DIR</span></code> is set to the current tox environments working dir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_PACKAGE</span></code> the packaging phases outcome path (useful to inspect and make assertion of the built package itself).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOX_PARALLEL_ENV</span></code> is set to the current running tox environment name, only when running in parallel mode.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">note</dt>
+<dd class="field-odd"><p>this applies for all tox envs (isolated packaging too) and all external
+commands called (e.g. install command - pip).</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="other-rules-and-notes">
+<h2>Other Rules and notes<a class="headerlink" href="#other-rules-and-notes" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code> specifications: if a specified <code class="docutils literal notranslate"><span class="pre">path</span></code> is a relative path
+it will be considered as relative to the <code class="docutils literal notranslate"><span class="pre">toxinidir</span></code>, the directory
+where the configuration file resides.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="cli">
+<h1>CLI<a class="headerlink" href="#cli" title="永久链接至标题">¶</a></h1>
+<div class="section" id="tox">
+<h2>tox<a class="headerlink" href="#tox" title="永久链接至标题">¶</a></h2>
+<p>tox options</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: tox [--version] [-h] [--help-ini] [-v] [-q] [--showconfig] [-l] [-a] [-c CONFIGFILE] [-e envlist] [--devenv ENVDIR] [--notest] [--sdistonly] [--skip-pkg-install] [-p [VAL]] [-o]</span>
+<span class="go">           [--parallel--safe-build] [--installpkg PATH] [--develop] [-i URL] [--pre] [-r] [--result-json PATH] [--discover PATH [PATH ...]] [--hashseed SEED] [--force-dep REQ]</span>
+<span class="go">           [--sitepackages] [--alwayscopy] [--no-provision [REQUIRES_JSON]] [-s [val]] [--workdir PATH]</span>
+<span class="go">           [args ...]</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-arg-args">
+<span class="sig-name descname"><span class="pre">args</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-arg-args" title="永久链接至目标">¶</a></dt>
+<dd><p>additional arguments available to command positional substitution</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-version">
+<span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-version" title="永久链接至目标">¶</a></dt>
+<dd><p>report version information to stdout.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-h">
+<span id="cmdoption-tox-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-h" title="永久链接至目标">¶</a></dt>
+<dd><p>show help about options</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-help-ini">
+<span id="cmdoption-tox-hi"></span><span class="sig-name descname"><span class="pre">--help-ini</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--hi</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-help-ini" title="永久链接至目标">¶</a></dt>
+<dd><p>show help about ini-names</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-v">
+<span id="cmdoption-tox-verbose"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbose</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-v" title="永久链接至目标">¶</a></dt>
+<dd><p>increase verbosity of reporting output.-vv mode turns off output redirection for package installation, above level two verbosity flags are passed through to pip (with two less level)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-q">
+<span id="cmdoption-tox-quiet"></span><span class="sig-name descname"><span class="pre">-q</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--quiet</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-q" title="永久链接至目标">¶</a></dt>
+<dd><p>progressively silence reporting output.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-showconfig">
+<span class="sig-name descname"><span class="pre">--showconfig</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-showconfig" title="永久链接至目标">¶</a></dt>
+<dd><p>show live configuration (by default all env, with -l only default targets, specific via TOXENV/-e)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-l">
+<span id="cmdoption-tox-listenvs"></span><span class="sig-name descname"><span class="pre">-l</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--listenvs</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-l" title="永久链接至目标">¶</a></dt>
+<dd><p>show list of test environments (with description if verbose)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-a">
+<span id="cmdoption-tox-listenvs-all"></span><span class="sig-name descname"><span class="pre">-a</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--listenvs-all</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-a" title="永久链接至目标">¶</a></dt>
+<dd><p>show list of all defined environments (with description if verbose)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-c">
+<span class="sig-name descname"><span class="pre">-c</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;configfile&gt;</span></span><a class="headerlink" href="#cmdoption-tox-c" title="永久链接至目标">¶</a></dt>
+<dd><p>config file name or directory with ‘tox.ini’ file.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-e">
+<span class="sig-name descname"><span class="pre">-e</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;envlist&gt;</span></span><a class="headerlink" href="#cmdoption-tox-e" title="永久链接至目标">¶</a></dt>
+<dd><p>work against specified environments (ALL selects all).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-devenv">
+<span class="sig-name descname"><span class="pre">--devenv</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;envdir&gt;</span></span><a class="headerlink" href="#cmdoption-tox-devenv" title="永久链接至目标">¶</a></dt>
+<dd><p>sets up a development environment at ENVDIR based on the env’s tox configuration specified by <cite>-e</cite> (-e defaults to py).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-notest">
+<span class="sig-name descname"><span class="pre">--notest</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-notest" title="永久链接至目标">¶</a></dt>
+<dd><p>skip invoking test commands.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-sdistonly">
+<span class="sig-name descname"><span class="pre">--sdistonly</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-sdistonly" title="永久链接至目标">¶</a></dt>
+<dd><p>only perform the sdist packaging activity.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-skip-pkg-install">
+<span class="sig-name descname"><span class="pre">--skip-pkg-install</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-skip-pkg-install" title="永久链接至目标">¶</a></dt>
+<dd><p>skip package installation for this run</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-p">
+<span id="cmdoption-tox-parallel"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;val&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;val&gt;</span></span><a class="headerlink" href="#cmdoption-tox-p" title="永久链接至目标">¶</a></dt>
+<dd><p>run tox environments in parallel, the argument controls limit: all, auto or missing argument - cpu count, some positive number, 0 to turn off</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-o">
+<span id="cmdoption-tox-parallel-live"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel-live</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-o" title="永久链接至目标">¶</a></dt>
+<dd><p>connect to stdout while running environments</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-parallel-safe-build">
+<span class="sig-name descname"><span class="pre">--parallel--safe-build</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-parallel-safe-build" title="永久链接至目标">¶</a></dt>
+<dd><p>(deprecated) ensure two tox builds can run in parallel (uses a lock file in the tox workdir with .lock extension)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-installpkg">
+<span class="sig-name descname"><span class="pre">--installpkg</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;path&gt;</span></span><a class="headerlink" href="#cmdoption-tox-installpkg" title="永久链接至目标">¶</a></dt>
+<dd><p>use specified package for installation into venv, instead of creating an sdist.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-develop">
+<span class="sig-name descname"><span class="pre">--develop</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-develop" title="永久链接至目标">¶</a></dt>
+<dd><p>install package in the venv using ‘setup.py develop’ via ‘pip -e .’</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-i">
+<span id="cmdoption-tox-index-url"></span><span class="sig-name descname"><span class="pre">-i</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;url&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--index-url</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;url&gt;</span></span><a class="headerlink" href="#cmdoption-tox-i" title="永久链接至目标">¶</a></dt>
+<dd><p>set indexserver url (if URL is of form name=url set the url for the ‘name’ indexserver, specifically)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-pre">
+<span class="sig-name descname"><span class="pre">--pre</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-pre" title="永久链接至目标">¶</a></dt>
+<dd><p>install pre-releases and development versions of dependencies. This will pass the –pre option to install_command (pip by default).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-r">
+<span id="cmdoption-tox-recreate"></span><span class="sig-name descname"><span class="pre">-r</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--recreate</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-r" title="永久链接至目标">¶</a></dt>
+<dd><p>force recreation of virtual environments</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-result-json">
+<span class="sig-name descname"><span class="pre">--result-json</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;path&gt;</span></span><a class="headerlink" href="#cmdoption-tox-result-json" title="永久链接至目标">¶</a></dt>
+<dd><p>write a json file with detailed information about all commands and results involved.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-discover">
+<span class="sig-name descname"><span class="pre">--discover</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;path&gt;</span></span><a class="headerlink" href="#cmdoption-tox-discover" title="永久链接至目标">¶</a></dt>
+<dd><p>for python discovery first try the python executables under these paths</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-hashseed">
+<span class="sig-name descname"><span class="pre">--hashseed</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;seed&gt;</span></span><a class="headerlink" href="#cmdoption-tox-hashseed" title="永久链接至目标">¶</a></dt>
+<dd><p>set PYTHONHASHSEED to SEED before running commands.  Defaults to a random integer in the range [1, 4294967295] ([1, 1024] on Windows). Passing ‘noset’ suppresses this behavior.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-force-dep">
+<span class="sig-name descname"><span class="pre">--force-dep</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;req&gt;</span></span><a class="headerlink" href="#cmdoption-tox-force-dep" title="永久链接至目标">¶</a></dt>
+<dd><p>Forces a certain version of one of the dependencies when configuring the virtual environment. REQ Examples ‘pytest&lt;2.7’ or ‘django&gt;=1.6’.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-sitepackages">
+<span class="sig-name descname"><span class="pre">--sitepackages</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-sitepackages" title="永久链接至目标">¶</a></dt>
+<dd><p>override sitepackages setting to True in all envs</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-alwayscopy">
+<span class="sig-name descname"><span class="pre">--alwayscopy</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-alwayscopy" title="永久链接至目标">¶</a></dt>
+<dd><p>override alwayscopy setting to True in all envs</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-no-provision">
+<span class="sig-name descname"><span class="pre">--no-provision</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;requires_json&gt;</span></span><a class="headerlink" href="#cmdoption-tox-no-provision" title="永久链接至目标">¶</a></dt>
+<dd><p>do not perform provision, but fail and if a path was provided write provision metadata as JSON to it</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-s">
+<span id="cmdoption-tox-skip-missing-interpreters"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--skip-missing-interpreters</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-tox-s" title="永久链接至目标">¶</a></dt>
+<dd><p>don’t fail tests for missing interpreters: {config,true,false} choice</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-tox-workdir">
+<span class="sig-name descname"><span class="pre">--workdir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;path&gt;</span></span><a class="headerlink" href="#cmdoption-tox-workdir" title="永久链接至目标">¶</a></dt>
+<dd><p>tox working directory</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="index.html">home</a>
+</td><td>
+        <a href="examples.html">examples</a>
+</td></tr><tr><td>
+        <a href="install.html">install</a>
+</td><td>
+        <a href="changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="#">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="support.html">support</a>
+</td><td>
+        <a href="plugins.html">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+
+  <div>
+    <h3><a href="index.html">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">tox configuration specification</a><ul>
+<li><a class="reference internal" href="#configuration-discovery">Configuration discovery</a></li>
+<li><a class="reference internal" href="#tox-global-settings">tox global settings</a><ul>
+<li><a class="reference internal" href="#jenkins-override">Jenkins override</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tox-environments">tox environments</a></li>
+<li><a class="reference internal" href="#tox-environment-settings">tox environment settings</a></li>
+<li><a class="reference internal" href="#substitutions">Substitutions</a><ul>
+<li><a class="reference internal" href="#globally-available-substitutions">Globally available substitutions</a></li>
+<li><a class="reference internal" href="#substitutions-for-virtualenv-related-sections">Substitutions for virtualenv-related sections</a></li>
+<li><a class="reference internal" href="#environment-variable-substitutions">Environment variable substitutions</a></li>
+<li><a class="reference internal" href="#environment-variable-substitutions-with-default-values">Environment variable substitutions with default values</a></li>
+<li><a class="reference internal" href="#interactive-shell-substitution">Interactive shell substitution</a></li>
+<li><a class="reference internal" href="#substitutions-for-positional-arguments-in-commands">Substitutions for positional arguments in commands</a></li>
+<li><a class="reference internal" href="#substitution-for-values-from-other-sections">Substitution for values from other sections</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generating-environments-conditional-settings">Generating environments, conditional settings</a><ul>
+<li><a class="reference internal" href="#generative-envlist">Generative envlist</a></li>
+<li><a class="reference internal" href="#generative-section-names">Generative section names</a></li>
+<li><a class="reference internal" href="#factors-and-factor-conditional-settings">Factors and factor-conditional settings</a></li>
+<li><a class="reference internal" href="#complex-factor-conditions">Complex factor conditions</a></li>
+<li><a class="reference internal" href="#factors-and-values-substitution-are-compatible">Factors and values substitution are compatible</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-settings">Advanced settings</a><ul>
+<li><a class="reference internal" href="#handle-interpreter-directives-with-long-lengths">Handle interpreter directives with long lengths</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#environment-variables">Environment variables</a><ul>
+<li><a class="reference internal" href="#injected-environment-variables">Injected environment variables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-rules-and-notes">Other Rules and notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cli">CLI</a><ul>
+<li><a class="reference internal" href="#tox">tox</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="example/platform.html" title="上一章">Platform specification</a></li>
+      <li>Next: <a href="support.html" title="下一章">Support and contact channels</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

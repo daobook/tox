@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/announce/changelog-only.rst:2
+msgid "Less announcing, more change-logging"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:4
+msgid ""
+"With version 2.5.0 we dropped creating special announcement documents and"
+" rely on communicating all relevant changes through the `CHANGELOG "
+"<https://github.com/tox-dev/tox/blob/master/CHANGELOG.rst>`_. See at "
+"`PyPI <https://pypi.org/project/tox/>`_ for a rendered version of the "
+"last changes containing links to the important issues and pull requests "
+"that were integrated into the release."
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:10
+msgid ""
+"The historic release announcements are still online here for various "
+"versions:"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:12
+msgid "`0.5 <https://tox.readthedocs.io/en/2.4.0/announce/release-0.5.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:13
+msgid "`1.0 <https://tox.readthedocs.io/en/2.4.0/announce/release-1.0.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:14
+msgid "`1.1 <https://tox.readthedocs.io/en/2.4.0/announce/release-1.1.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:15
+msgid "`1.2 <https://tox.readthedocs.io/en/2.4.0/announce/release-1.2.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:16
+msgid "`1.3 <https://tox.readthedocs.io/en/2.4.0/announce/release-1.3.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:17
+msgid "`1.4 <https://tox.readthedocs.io/en/2.4.0/announce/release-1.4.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:18
+msgid ""
+"`1.4.3 "
+"<https://tox.readthedocs.io/en/2.4.0/announce/release-1.4.3.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:19
+msgid "`1.8 <https://tox.readthedocs.io/en/2.4.0/announce/release-1.8.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:20
+msgid "`1.9 <https://tox.readthedocs.io/en/2.4.0/announce/release-1.9.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:21
+msgid "`2.0 <https://tox.readthedocs.io/en/2.4.0/announce/release-2.0.html>`_,"
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:22
+msgid ""
+"`2.4.0 "
+"<https://tox.readthedocs.io/en/2.4.0/announce/release-2.4.0.html>`_."
+msgstr ""
+
+#: ../../docs/announce/changelog-only.rst:25
+msgid "Happy testing, The tox maintainers"
+msgstr ""
+

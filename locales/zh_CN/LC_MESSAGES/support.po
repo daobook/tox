@@ -1,0 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:54+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/support.rst:4
+msgid "Support and contact channels"
+msgstr ""
+
+#: ../../docs/support.rst:6
+msgid "Getting in contact:"
+msgstr ""
+
+#: ../../docs/support.rst:8
+msgid "file a `report on the issue tracker`_"
+msgstr ""
+
+#: ../../docs/support.rst:9
+msgid "hang out on the tox discord server channel at https://discord.gg/tox"
+msgstr ""
+
+#: ../../docs/support.rst:10
+msgid ""
+"`fork the github repository`_ and submit merge/pull requests (see the "
+"developers help page -- :ref:`developers`)"
+msgstr ""
+
+#: ../../docs/support.rst:13
+msgid "Paid professional support"
+msgstr ""
+
+#: ../../docs/support.rst:15
+msgid ""
+"Contact holger at `merlinux.eu`_, an association of experienced well-"
+"known Python developers."
+msgstr ""
+

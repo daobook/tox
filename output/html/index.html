@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to the tox automation project &#8212; tox 3.24.6.dev14 文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/toxfavi.ico"/>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="tox installation" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-the-tox-automation-project">
+<h1>Welcome to the tox automation project<a class="headerlink" href="#welcome-to-the-tox-automation-project" title="永久链接至标题">¶</a></h1>
+<div class="section" id="vision-standardize-testing-in-python">
+<h2>Vision: standardize testing in Python<a class="headerlink" href="#vision-standardize-testing-in-python" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tox</span></code> aims to automate and standardize testing in Python.  It is part
+of a larger vision of easing the packaging, testing and release process
+of Python software.</p>
+</div>
+<div class="section" id="what-is-tox">
+<h2>What is tox?<a class="headerlink" href="#what-is-tox" title="永久链接至标题">¶</a></h2>
+<p>tox is a generic <a class="reference external" href="https://pypi.org/project/virtualenv">virtualenv</a> management and test command line tool you can use for:</p>
+<ul class="simple">
+<li><p>checking that your package installs correctly with different Python versions and
+interpreters</p></li>
+<li><p>running your tests in each of the environments, configuring your test tool of choice</p></li>
+<li><p>acting as a frontend to Continuous Integration servers, greatly
+reducing boilerplate and merging CI and shell-based testing.</p></li>
+</ul>
+</div>
+<div class="section" id="basic-example">
+<h2>Basic example<a class="headerlink" href="#basic-example" title="永久链接至标题">¶</a></h2>
+<p>First, install <code class="docutils literal notranslate"><span class="pre">tox</span></code> with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tox</span></code>.
+Then put basic information about your project and the test environments you
+want your project to run in into a <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file residing
+right next to your <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># content of: tox.ini , put in same dir as setup.py</span><span class="w"></span>
+<span class="k">[tox]</span><span class="w"></span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">py27,py36</span><span class="w"></span>
+
+<span class="k">[testenv]</span><span class="w"></span>
+<span class="c1"># install pytest in the virtualenv where commands will be executed</span><span class="w"></span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pytest</span><span class="w"></span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># NOTE: you can run any command line tool here - not just tests</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest</span><span class="w"></span>
+</pre></div>
+</div>
+<p>You can also try generating a <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file automatically, by running
+<code class="docutils literal notranslate"><span class="pre">tox-quickstart</span></code> and then answering a few simple questions.</p>
+<p>To sdist-package, install and test your project against Python2.7 and Python3.6, just type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span>
+</pre></div>
+</div>
+<p>and watch things happen (you must have python2.7 and python3.6 installed in your
+environment otherwise you will see errors).  When you run <code class="docutils literal notranslate"><span class="pre">tox</span></code> a second time
+you’ll note that it runs much faster because it keeps track of virtualenv details
+and will not recreate or re-install dependencies.  You also might want to
+checkout <a class="reference internal" href="examples.html"><span class="doc">tox configuration and usage examples</span></a> to get some more ideas.</p>
+</div>
+<div class="section" id="system-overview">
+<h2>System overview<a class="headerlink" href="#system-overview" title="永久链接至标题">¶</a></h2>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/tox_flow.png"><img alt="_images/tox_flow.png" src="_images/tox_flow.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">tox workflow diagram</span><a class="headerlink" href="#id1" title="永久链接至图片">¶</a></p>
+</div>
+<p>tox roughly follows the following phases:</p>
+<ol class="arabic">
+<li><p><strong>configuration:</strong> load <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> and merge it with options from the command line and the
+operating system environment variables.</p></li>
+<li><p><strong>packaging</strong> (optional): create a source distribution of the current project by invoking</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup.py sdist
+</pre></div>
+</div>
+<p>Note that for this operation the same Python environment will be used as the one tox is
+installed into (therefore you need to make sure that it contains your build dependencies).
+Skip this step for application projects that don’t have a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p>
+</li>
+<li><p><strong>environment</strong> - for each tox environment (e.g. <code class="docutils literal notranslate"><span class="pre">py27</span></code>, <code class="docutils literal notranslate"><span class="pre">py36</span></code>) do:</p>
+<blockquote>
+<div><p>1. <strong>environment creation</strong>: create a fresh environment, by default <a class="reference external" href="https://pypi.org/project/virtualenv">virtualenv</a> is used. tox will
+automatically try to discover a valid Python interpreter version by using the environment name
+(e.g. <code class="docutils literal notranslate"><span class="pre">py27</span></code> means Python 2.7 and the <code class="docutils literal notranslate"><span class="pre">basepython</span></code> configuration value) and the current
+operating system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> value. This is created at first run only to be re-used at subsequent
+runs. If certain aspects of the project change, a re-creation of the environment is
+automatically triggered. To force the recreation tox can be invoked with <code class="docutils literal notranslate"><span class="pre">-r</span></code>/<code class="docutils literal notranslate"><span class="pre">--recreate</span></code>.</p>
+<p>2. <strong>install</strong> (optional): install the environment dependencies specified inside the
+<a class="reference internal" href="config.html#conf-deps"><code class="xref std std-conf docutils literal notranslate"><span class="pre">deps</span></code></a> configuration section, and then the earlier packaged source distribution.
+By default <code class="docutils literal notranslate"><span class="pre">pip</span></code> is used to install packages, however one can customise this via
+<a class="reference internal" href="config.html#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span></code></a>. Note <code class="docutils literal notranslate"><span class="pre">pip</span></code> will not update project dependencies (specified either
+in the <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> or the <code class="docutils literal notranslate"><span class="pre">extras</span></code> section of the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>) if any version already
+exists in the virtual environment; therefore we recommend to recreate your environments
+whenever your project dependencies change.</p>
+<p>3. <strong>commands</strong>: run the specified commands in the specified order. Whenever the exit code of
+any of them is not zero stop, and mark the environment failed. Note, starting a command with a
+single dash character means ignore exit code.</p>
+</div></blockquote>
+</li>
+<li><p><strong>report</strong> print out a report of outcomes for each tox environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>____________________ summary ____________________
+py27: commands succeeded
+ERROR:   py36: commands failed
+</pre></div>
+</div>
+<p>Only if all environments ran successfully tox will return exit code <code class="docutils literal notranslate"><span class="pre">0</span></code> (success). In this
+case you’ll also see the message <code class="docutils literal notranslate"><span class="pre">congratulations</span> <span class="pre">:)</span></code>.</p>
+</li>
+</ol>
+<p>tox will take care of environment isolation for you: it will strip away all operating system
+environment variables not specified via <a class="reference internal" href="config.html#conf-passenv"><code class="xref std std-conf docutils literal notranslate"><span class="pre">passenv</span></code></a>. Furthermore, it will also alter the
+<code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable so that your commands resolve first and foremost within the current active
+tox environment. In general all executables in the path are available in <code class="docutils literal notranslate"><span class="pre">commands</span></code>, but tox will
+emit a warning if it was not explicitly allowed via <a class="reference internal" href="config.html#conf-allowlist_externals"><code class="xref std std-conf docutils literal notranslate"><span class="pre">allowlist_externals</span></code></a>.</p>
+</div>
+<div class="section" id="current-features">
+<h2>Current features<a class="headerlink" href="#current-features" title="永久链接至标题">¶</a></h2>
+<ul>
+<li><p><strong>automation of tedious Python related test activities</strong></p></li>
+<li><p><strong>test your Python package against many interpreter and dependency configs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>automatic customizable (re)creation of <a class="reference external" href="https://pypi.org/project/virtualenv">virtualenv</a> test environments</p></li>
+<li><p>installs your <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> based project into each virtual environment</p></li>
+<li><p>test-tool agnostic: runs pytest, nose or unittests in a uniform manner</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><a class="reference internal" href="plugins.html"><span class="doc">plugin system</span></a> to modify tox execution with simple hooks.</p></li>
+<li><p>uses <a class="reference external" href="https://pypi.org/project/pip">pip</a> and <a class="reference external" href="https://pypi.org/project/setuptools">setuptools</a> by default.  Support for configuring the installer command
+through <a class="reference internal" href="config.html#conf-install_command"><code class="xref std std-conf docutils literal notranslate"><span class="pre">install_command</span> <span class="pre">=</span> <span class="pre">ARGV</span></code></a>.</p></li>
+<li><p><strong>cross-Python compatible</strong>: CPython-2.7, 3.5 and higher, Jython and <a class="reference external" href="https://pypy.org">pypy</a>.</p></li>
+<li><p><strong>cross-platform</strong>: Windows and Unix style environments</p></li>
+<li><p><strong>integrates with continuous integration servers</strong> like <a class="reference external" href="https://jenkins.io/index.html">Jenkins</a>
+(formerly known as Hudson) and helps you to avoid boilerplatish
+and platform-specific build-step hacks.</p></li>
+<li><p><strong>full interoperability with devpi</strong>: is integrated with and
+is used for testing in the <a class="reference external" href="https://doc.devpi.net">devpi</a> system, a versatile PyPI
+index server and release managing tool.</p></li>
+<li><p><strong>driven by a simple ini-style config file</strong></p></li>
+<li><p><strong>documented</strong> <a class="reference internal" href="examples.html"><span class="doc">examples</span></a> and <a class="reference internal" href="config.html"><span class="doc">configuration</span></a></p></li>
+<li><p><strong>concise reporting</strong> about tool invocations and configuration errors</p></li>
+<li><p><strong>professionally</strong> <a class="reference internal" href="support.html"><span class="doc">supported</span></a></p></li>
+<li><p>supports <a class="reference internal" href="example/basic.html#multiindex"><span class="std std-ref">using different / multiple PyPI index servers</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="related-projects">
+<h2>Related projects<a class="headerlink" href="#related-projects" title="永久链接至标题">¶</a></h2>
+<p>tox has influenced several other projects in the Python test automation space. If tox doesn’t quite fit your needs or you want to do more research, we recommend taking a look at these projects:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.pyinvoke.org/">Invoke</a> is a general-purpose task execution library, similar to Make. Invoke is far more general-purpose than tox but it does not contain the Python testing-specific features that tox specializes in.</p></li>
+<li><p><a class="reference external" href="https://nox.thea.codes">Nox</a> is a project similar in spirit to tox but different in approach. Nox’s key difference is that it uses Python scripts instead of a configuration file. Nox might be useful if you find tox’s configuration too limiting but aren’t looking to move to something as general-purpose as Invoke or Make.</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/img/tox.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">standardise testing in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=tox-dev&repo=tox&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<div id="searchbox" style="display: none">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+<h3>quicklinks</h3>
+<div style="text-align: left; font-size: 100%; vertical-align: middle;">
+<table>
+<tr>
+<td>
+        <a href="#">home</a>
+</td><td>
+        <a href="examples.html">examples</a>
+</td></tr><tr><td>
+        <a href="install.html">install</a>
+</td><td>
+        <a href="changelog.html">changelog</a>
+</td></tr><tr><td>
+        <a href="config.html">config</a>
+</td><td>
+        <a href="https://github.com/tox-dev/tox/issues">issues[gh]</a>
+</td></tr><tr><td>
+        <a href="support.html">support</a>
+</td><td>
+        <a href="plugins.html">plugins/hooks</a>
+</td>
+</tr></table>
+</div>
+
+  <div>
+    <h3><a href="#">目录</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Welcome to the tox automation project</a><ul>
+<li><a class="reference internal" href="#vision-standardize-testing-in-python">Vision: standardize testing in Python</a></li>
+<li><a class="reference internal" href="#what-is-tox">What is tox?</a></li>
+<li><a class="reference internal" href="#basic-example">Basic example</a></li>
+<li><a class="reference internal" href="#system-overview">System overview</a></li>
+<li><a class="reference internal" href="#current-features">Current features</a></li>
+<li><a class="reference internal" href="#related-projects">Related projects</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="install.html" title="下一章">tox installation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2010-2022, holger krekel and others.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/tox-dev/tox" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

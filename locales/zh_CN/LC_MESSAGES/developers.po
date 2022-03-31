@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:54+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/developers.rst:4
+msgid "Developers FAQ"
+msgstr ""
+
+#: ../../docs/developers.rst:5
+msgid ""
+"This section contains information for users who want to extend the tox "
+"source code."
+msgstr ""
+
+#: ../../docs/developers.rst:11
+msgid "PyCharm"
+msgstr ""
+
+#: ../../docs/developers.rst:12
+msgid "To generate the **project interpreter** you can use ``tox -rvvve dev``."
+msgstr ""
+
+#: ../../docs/developers.rst:13
+msgid ""
+"For tests we use **pytest**, therefore change the `Default test runner "
+"<https://www.jetbrains.com/help/pycharm/python-integrated-tools.html>`_ "
+"to ``pytest``."
+msgstr ""
+
+#: ../../docs/developers.rst:14
+msgid ""
+"In order to be able to **debug** tests which create a virtual environment"
+" (the ones in ``test_z_cmdline.py``) one needs to disable the PyCharm "
+"feature `Attach to subprocess automatically while debugging "
+"<https://www.jetbrains.com/help/pycharm/python-debugger.html>`_ (because "
+"virtualenv creation calls via subprocess to the ``pip`` executable, and "
+"PyCharm rewrites all calls to Python interpreters to attach to its "
+"debugger - however, this rewrite for pip makes it to have bad arguments: "
+"``no such option --port``)."
+msgstr ""
+
+#: ../../docs/developers.rst:22
+msgid "Multiple Python versions on Windows"
+msgstr ""
+
+#: ../../docs/developers.rst:23
+msgid ""
+"In order to run the unit tests locally all Python versions enlisted in "
+"``tox.ini`` need to be installed."
+msgstr ""
+
+#: ../../docs/developers.rst:25
+msgid "For a nice Windows terminal take a look at `cmder`_."
+msgstr ""
+
+#: ../../docs/developers.rst:29
+msgid ""
+"One solution for this is to install the latest conda, and then install "
+"all Python versions via conda envs. This will create separate folders for"
+" each Python version."
+msgstr ""
+
+#: ../../docs/developers.rst:36
+msgid "For tox to find them you'll need to:"
+msgstr ""
+
+#: ../../docs/developers.rst:38
+msgid ""
+"add the main installation version to the systems ``PATH`` variable (e.g. "
+"``D:\\Anaconda`` - you can use `WindowsPathEditor`_)"
+msgstr ""
+
+#: ../../docs/developers.rst:39
+msgid ""
+"for other versions create a BAT scripts into the main installation folder"
+" to delegate the call to the correct Python interpreter:"
+msgstr ""
+
+#: ../../docs/developers.rst:50
+msgid ""
+"This way you can also directly call from cli the matching Python version"
+"  if you need to(similarly to UNIX systems), for example:"
+msgstr ""
+

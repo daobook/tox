@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/unittest.rst:2
+msgid "unittest2, discover and tox"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:5
+msgid "Running unittests with 'discover'"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:7
+msgid ""
+"The discover_ project allows you to discover and run unittests that you "
+"can easily integrate it in a ``tox`` run.  As an example, perform a "
+"checkout of `Pygments <https://pypi.org/project/Pygments>`_:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:15
+msgid "and add the following ``tox.ini`` to it:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:27
+msgid ""
+"If you now invoke ``tox`` you will see the creation of three virtual "
+"environments and a unittest-run performed in each of them."
+msgstr ""
+
+#: ../../docs/example/unittest.rst:32
+msgid "Running unittest2 and sphinx tests in one go"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:36
+msgid ""
+"`Michael Foord`_ has contributed a ``tox.ini`` file that allows you to "
+"run all tests for his mock_ project, including some sphinx-based "
+"doctests.  If you checkout its repository with:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:45
+msgid ""
+"The checkout has a `tox.ini file <https://github.com/testing-"
+"cabal/mock/blob/master/tox.ini>`_ that looks like this:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:75
+msgid ""
+"mock uses unittest2_ to run the tests. Invoking ``tox`` starts test "
+"discovery by executing the ``unit2 discover`` commands on Python 2.7, "
+"3.5, 3.6 and 3.7 respectively.  Against Python3.6 and Python2.7 it will "
+"additionally run sphinx-mediated doctests. If building the docs fails, "
+"due to a reST error, or any of the doctests fails, it will be reported by"
+" the tox run."
+msgstr ""
+
+#: ../../docs/example/unittest.rst:82
+msgid ""
+"The ``[]`` parentheses in the commands provide :ref:`positional "
+"substitution` which means you can e.g. type:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:89
+msgid "which will ultimately invoke:"
+msgstr ""
+
+#: ../../docs/example/unittest.rst:95
+msgid ""
+"in each of the environments. This allows you to customize test discovery "
+"in your ``tox`` runs."
+msgstr ""
+

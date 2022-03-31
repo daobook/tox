@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:56+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/example/platform.rst:4
+msgid "Platform specification"
+msgstr ""
+
+#: ../../docs/example/platform.rst:7
+msgid "Basic multi-platform example"
+msgstr ""
+
+#: ../../docs/example/platform.rst:9
+msgid "Assuming the following layout:"
+msgstr ""
+
+#: ../../docs/example/platform.rst:16
+msgid "and the following ``tox.ini`` content:"
+msgstr ""
+
+#: ../../docs/example/platform.rst:41
+msgid ""
+"you can invoke ``tox`` in the directory where your ``tox.ini`` resides. "
+"``tox`` creates two virtualenv environments with the ``python2.7`` and "
+"``python3.6`` interpreters, respectively, and will then run the specified"
+" command according to platform you invoke ``tox`` at."
+msgstr ""
+

@@ -1,0 +1,459 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:54+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/plugins.rst:4
+msgid "tox plugins"
+msgstr ""
+
+#: ../../docs/plugins.rst:8
+msgid ""
+"A growing number of hooks make tox modifiable in different phases of "
+"execution by writing plugins."
+msgstr ""
+
+#: ../../docs/plugins.rst:10
+msgid ""
+"tox - like `pytest`_ and `devpi`_ - uses `pluggy`_ to provide an "
+"extension mechanism for pip-installable internal or devpi/PyPI-published "
+"plugins."
+msgstr ""
+
+#: ../../docs/plugins.rst:13
+msgid "Using plugins"
+msgstr ""
+
+#: ../../docs/plugins.rst:15
+msgid ""
+"To start using a plugin you need to install it in the same environment "
+"where the tox host is installed."
+msgstr ""
+
+#: ../../docs/plugins.rst:18
+msgid "e.g.:"
+msgstr ""
+
+#: ../../docs/plugins.rst:24
+msgid ""
+"You can search for available plugins on PyPI by visiting `PyPI "
+"<https://pypi.org/search/?q=tox>`_ and searching for packages that are "
+"prefixed ``tox-`` or contain the word \"plugin\" in the description. "
+"Examples include::"
+msgstr ""
+
+#: ../../docs/plugins.rst:65
+msgid ""
+"There might also be some plugins not (yet) available from PyPI that could"
+" be installed directly from source hosters like Github or Bitbucket (or "
+"from a local clone). See the associated `pip documentation "
+"<https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support>`_."
+msgstr ""
+
+#: ../../docs/plugins.rst:68
+msgid ""
+"To see what is installed you can call ``tox --version`` to get the "
+"version of the host and names and locations of all installed plugins::"
+msgstr ""
+
+#: ../../docs/plugins.rst:77
+msgid "Creating a plugin"
+msgstr ""
+
+#: ../../docs/plugins.rst:79
+msgid "Start from a template"
+msgstr ""
+
+#: ../../docs/plugins.rst:81
+msgid ""
+"You can create a new tox plugin with all the bells and whistles via a "
+"`Cookiecutter`_ template (see `cookiecutter-tox-plugin`_ - this will "
+"create a complete PyPI-releasable, documented project with license, "
+"documentation and CI."
+msgstr ""
+
+#: ../../docs/plugins.rst:92
+msgid "Tutorial: a minimal tox plugin"
+msgstr ""
+
+#: ../../docs/plugins.rst:96
+msgid ""
+"This is the minimal implementation to demonstrate what is absolutely "
+"necessary to have a working plugin for internal use. To move from "
+"something like this to a publishable plugin you could apply "
+"``cookiecutter -f cookiecutter-tox-plugin`` and adapt the code to the "
+"package based structure used in the cookiecutter."
+msgstr ""
+
+#: ../../docs/plugins.rst:101
+msgid ""
+"Let us consider you want to extend tox behaviour by displaying fireworks "
+"at the end of a successful tox run (we won't go into the details of how "
+"to display fireworks though)."
+msgstr ""
+
+#: ../../docs/plugins.rst:104
+msgid ""
+"To create a working plugin you need at least a python project with a tox "
+"entry point and a python module implementing one or more of the pluggy-"
+"based hooks tox specifies (using the ``@tox.hookimpl`` decorator as "
+"marker)."
+msgstr ""
+
+#: ../../docs/plugins.rst:108
+msgid "minimal structure:"
+msgstr ""
+
+#: ../../docs/plugins.rst:117
+msgid "contents of ``tox_fireworks.py``:"
+msgstr ""
+
+#: ../../docs/plugins.rst:142
+msgid "See :ref:`toxHookSpecsApi` for details"
+msgstr ""
+
+#: ../../docs/plugins.rst:144
+msgid "contents of ``setup.py``:"
+msgstr ""
+
+#: ../../docs/plugins.rst:157
+msgid ""
+"Using the  **tox-** prefix in ``tox-fireworks`` is an established "
+"convention to be able to see from the project name that this is a plugin "
+"for tox. It also makes it easier to find with e.g. ``pip search 'tox-'`` "
+"once it is released on PyPI."
+msgstr ""
+
+#: ../../docs/plugins.rst:161
+msgid ""
+"To make your new plugin discoverable by tox, you need to install it. "
+"During development you should install it with ``-e`` or ``--editable``, "
+"so that changes to the code are immediately active:"
+msgstr ""
+
+#: ../../docs/plugins.rst:170
+msgid "Publish your plugin to PyPI"
+msgstr ""
+
+#: ../../docs/plugins.rst:172
+msgid ""
+"If you think the rest of the world could profit using your plugin, you "
+"can publish it to PyPI."
+msgstr ""
+
+#: ../../docs/plugins.rst:174
+msgid ""
+"You need to add some more meta data to ``setup.py`` (see `cookiecutter-"
+"tox-plugin`_ for a complete example or consult the `setup.py docs "
+"<https://docs.python.org/3/distutils/setupscript.html>`_)."
+msgstr ""
+
+#: ../../docs/plugins.rst:180
+msgid ""
+"Make sure your plugin project name is prefixed by ``tox-`` to be easy to "
+"find via e.g. ``pip search tox-``"
+msgstr ""
+
+#: ../../docs/plugins.rst:183
+msgid "You can and publish it like:"
+msgstr ""
+
+#: ../../docs/plugins.rst:192
+msgid ""
+"You could also use `twine <https://pypi.org/project/twine/>`_ for secure "
+"uploads."
+msgstr ""
+
+#: ../../docs/plugins.rst:194
+msgid ""
+"For more information about packaging and deploying Python projects see "
+"the `Python Packaging Guide`_."
+msgstr ""
+
+#: ../../docs/plugins.rst:201
+msgid "Hook specifications and related API"
+msgstr ""
+
+#: of tox.hookspecs:1
+msgid "Hook specifications for tox - see https://pluggy.readthedocs.io/"
+msgstr ""
+
+#: of tox.hookspecs.tox_addoption:1
+msgid "add command line options to the argparse-style parser object."
+msgstr ""
+
+#: of tox.hookspecs.tox_cleanup:1
+msgid ""
+"Called just before the session is destroyed, allowing any final cleanup "
+"operation"
+msgstr ""
+
+#: of tox.hookspecs.tox_configure:1
+msgid "Called after command line options are parsed and ini-file has been read."
+msgstr ""
+
+#: of tox.hookspecs.tox_configure:3
+msgid ""
+"Please be aware that the config object layout may change between major "
+"tox versions."
+msgstr ""
+
+#: of tox.hookspecs.tox_get_python_executable:1
+msgid "Return a python executable for the given python base name."
+msgstr ""
+
+#: of tox.hookspecs.tox_get_python_executable:3
+msgid "The first plugin/hook which returns an executable path will determine it."
+msgstr ""
+
+#: of tox.hookspecs.tox_get_python_executable:5
+msgid ""
+"``envconfig`` is the testenv configuration which contains per-testenv "
+"configuration, notably the ``.envname`` and ``.basepython`` setting."
+msgstr ""
+
+#: of tox.hookspecs.tox_package:1
+msgid "Return the package to be installed for the given venv."
+msgstr ""
+
+#: of tox.hookspecs.tox_package:3
+msgid "Called once for every environment."
+msgstr ""
+
+#: of tox.hookspecs.tox_runenvreport:1
+msgid "Get the installed packages and versions in this venv."
+msgstr ""
+
+#: of tox.hookspecs.tox_runenvreport:3
+msgid ""
+"This could be used for alternative (ie non-pip) package managers, this "
+"plugin should return a ``list`` of type ``str``"
+msgstr ""
+
+#: of tox.hookspecs.tox_runtest:1
+msgid "Run the tests for this venv."
+msgstr ""
+
+#: of tox.hookspecs.tox_runtest:3 tox.hookspecs.tox_testenv_create:14
+#: tox.hookspecs.tox_testenv_install_deps:16
+msgid ""
+"This hook uses ``firstresult=True`` (see `pluggy first result only`_) -- "
+"hooks implementing this will be run until one returns non-``None``."
+msgstr ""
+
+#: of tox.hookspecs.tox_runtest_post:1
+msgid "Perform arbitrary action after running tests for this venv."
+msgstr ""
+
+#: of tox.hookspecs.tox_runtest_post:3
+msgid "This could be used to have per-venv test reporting of pass/fail status."
+msgstr ""
+
+#: of tox.hookspecs.tox_runtest_pre:1
+msgid "Perform arbitrary action before running tests for this venv."
+msgstr ""
+
+#: of tox.hookspecs.tox_runtest_pre:3
+msgid ""
+"This could be used to indicate that tests for a given venv have started, "
+"for instance."
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_create:1
+msgid "Perform creation action for this venv."
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_create:3
+#: tox.hookspecs.tox_testenv_install_deps:3
+msgid "Some example usage:"
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_create:5
+msgid ""
+"To *add* behavior but still use tox's implementation to set up a "
+"virtualenv, implement this hook but do not return a value (or explicitly "
+"return ``None``)."
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_create:8
+msgid ""
+"To *override* tox's virtualenv creation, implement this hook and return a"
+" non-``None`` value."
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_create:11
+#: tox.hookspecs.tox_testenv_install_deps:13
+msgid ""
+"This api is experimental due to the unstable api of "
+":class:`tox.venv.VirtualEnv`."
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_install_deps:1
+msgid "Perform install dependencies action for this venv."
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_install_deps:5
+msgid ""
+"To *add* behavior but still use tox's implementation to install "
+"dependencies, implement this hook but do not return a value (or "
+"explicitly return ``None``).  One use-case may be to install (or ensure) "
+"non-python dependencies such as debian packages."
+msgstr ""
+
+#: of tox.hookspecs.tox_testenv_install_deps:9
+msgid ""
+"To *override* tox's installation of dependencies, implement this hook and"
+" return a non-``None`` value.  One use-case may be to install via a "
+"different installation tool such as `pip-accel`_ or `pip-faster`_."
+msgstr ""
+
+#: of tox.config.Parser:1
+msgid "Command line and ini-parser control object."
+msgstr ""
+
+#: of tox.config.Parser.add_argument:1
+msgid ""
+"add argument to command line parser.  This takes the same arguments that "
+"``argparse.ArgumentParser.add_argument``."
+msgstr ""
+
+#: of tox.config.Parser.add_testenv_attribute:1
+msgid "add an ini-file variable for \"testenv\" section."
+msgstr ""
+
+#: of tox.config.Parser.add_testenv_attribute:3
+msgid ""
+"Types are specified as strings like \"bool\", \"line-list\", \"string\", "
+"\"argv\", \"path\", \"argvlist\"."
+msgstr ""
+
+#: of tox.config.Parser.add_testenv_attribute:6
+msgid ""
+"The ``postprocess`` function will be called for each testenv like "
+"``postprocess(testenv_config=testenv_config, value=value)`` where "
+"``value`` is the value as read from the ini (or the default value) and "
+"``testenv_config`` is a :py:class:`tox.config.TestenvConfig` instance "
+"which will receive all ini-variables as object attributes."
+msgstr ""
+
+#: of tox.config.Parser.add_testenv_attribute:12
+msgid ""
+"Any postprocess function must return a value which will then be set as "
+"the final value in the testenv section."
+msgstr ""
+
+#: of tox.config.Parser.add_testenv_attribute_obj:1
+msgid "add an ini-file variable as an object."
+msgstr ""
+
+#: of tox.config.Parser.add_testenv_attribute_obj:3
+msgid ""
+"This works as the ``add_testenv_attribute`` function but expects "
+"\"name\", \"type\", \"help\", and \"postprocess\" attributes on the "
+"object."
+msgstr ""
+
+#: of tox.config.Config:1
+msgid "Global Tox config object."
+msgstr ""
+
+#: ../../docstring of tox.config.Config.args:1
+msgid "option namespace containing all parsed command line options"
+msgstr ""
+
+#: ../../docstring of tox.config.Config.envconfigs:1
+msgid "Mapping envname -> envconfig"
+msgstr ""
+
+#: of tox.config.TestenvConfig:1
+msgid "Testenv Configuration object."
+msgstr ""
+
+#: of tox.config.TestenvConfig:3
+msgid ""
+"In addition to some core attributes/properties this config object holds "
+"all per-testenv ini attributes as attributes, see \"tox --help-ini\" for "
+"an overview."
+msgstr ""
+
+#: ../../docstring of tox.config.TestenvConfig.config:1
+msgid "global tox config object"
+msgstr ""
+
+#: ../../docstring of tox.config.TestenvConfig.envname:1
+msgid "test environment name"
+msgstr ""
+
+#: of tox.config.TestenvConfig.envpython:1
+msgid "Path to python executable."
+msgstr ""
+
+#: ../../docstring of tox.config.TestenvConfig.factors:1
+msgid "set of factors"
+msgstr ""
+
+#: of tox.config.TestenvConfig.get_envbindir:1
+msgid "Path to directory where scripts/binaries reside."
+msgstr ""
+
+#: of tox.config.TestenvConfig.get_envpython:1
+msgid "path to python/jython executable."
+msgstr ""
+
+#: of tox.config.TestenvConfig.get_envsitepackagesdir:1
+#: tox.config.TestenvConfig.python_info:1
+msgid "Return sitepackagesdir of the virtualenv environment."
+msgstr ""
+
+#: of tox.config.TestenvConfig.get_envsitepackagesdir:3
+msgid "NOTE: Only available during execution, not during parsing."
+msgstr ""
+
+#: of tox.venv.VirtualEnv.getcommandpath:1
+msgid "Return absolute path (str or localpath) for specified command name."
+msgstr ""
+
+#: of tox.venv.VirtualEnv.getcommandpath:3
+msgid "If it's a local path we will rewrite it as as a relative path."
+msgstr ""
+
+#: of tox.venv.VirtualEnv.getcommandpath:4
+msgid ""
+"If venv is True we will check if the command is coming from the venv or "
+"is allowed to come from external."
+msgstr ""
+
+#: of tox.venv.VirtualEnv.name:1
+msgid "test environment name."
+msgstr ""
+
+#: of tox.venv.VirtualEnv.path:1
+msgid "Path to environment base dir."
+msgstr ""
+
+#: of tox.venv.VirtualEnv.update:1
+msgid ""
+"return status string for updating actual venv to match configuration. if "
+"status string is empty, all is ok."
+msgstr ""
+
+#: of tox.session.Session:1
+msgid ""
+"The session object that ties together configuration, reporting, venv "
+"creation, testing."
+msgstr ""
+

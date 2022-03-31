@@ -1,0 +1,1680 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2010-2022, holger krekel and others
+# This file is distributed under the same license as the tox package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tox 3.24\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-31 13:54+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../docs/config.rst:4
+msgid "tox configuration specification"
+msgstr ""
+
+#: ../../docs/config.rst:7
+msgid "Configuration discovery"
+msgstr ""
+
+#: ../../docs/config.rst:9
+msgid ""
+"At the moment tox supports three configuration locations prioritized in "
+"the following order:"
+msgstr ""
+
+#: ../../docs/config.rst:11
+msgid "``pyproject.toml``,"
+msgstr ""
+
+#: ../../docs/config.rst:12
+msgid "``tox.ini``,"
+msgstr ""
+
+#: ../../docs/config.rst:13
+msgid "``setup.cfg``."
+msgstr ""
+
+#: ../../docs/config.rst:15
+msgid ""
+"As far as the configuration format at the moment we only support standard"
+" ConfigParser_ \"ini-style\" format (there is a plan to add a pure TOML "
+"one soon). ``tox.ini`` and ``setup.cfg`` are such files. Note that "
+"``setup.cfg`` requires the content to be under the ``tox:tox`` and "
+"``testenv`` sections and is otherwise ignored. ``pyproject.toml`` on the "
+"other hand is in TOML format. However, one can inline the *ini-style* "
+"format under the ``tool.tox.legacy_tox_ini`` key as a multi-line string."
+msgstr ""
+
+#: ../../docs/config.rst:22
+msgid ""
+"Below you find the specification for the *ini-style* format, but you "
+"might want to skim some :doc:`examples` first and use this page as a "
+"reference."
+msgstr ""
+
+#: ../../docs/config.rst:26
+msgid "tox global settings"
+msgstr ""
+
+#: ../../docs/config.rst:28
+msgid "Global settings are defined under the ``tox`` section as:"
+msgstr ""
+
+#: ../../docs/config.rst:37
+msgid ""
+"Define the minimal tox version required to run; if the host's tox version"
+" is less than this the tool will create an environment and provision it "
+"with a version of tox that satisfies this under "
+":conf:`provision_tox_env`."
+msgstr ""
+
+#: ../../docs/config.rst:43 ../../docs/config.rst:64 ../../docs/config.rst:76
+msgid ""
+"When tox is invoked with the ``--no-provision`` flag, the provision won't"
+" be attempted, tox will fail instead."
+msgstr ""
+
+#: ../../docs/config.rst:66
+msgid "(LIST of PEP-508)"
+msgstr ""
+
+#: ../../docs/config.rst:50
+msgid ""
+"Specify python packages that need to exist alongside the tox installation"
+" for the tox build to be able to start (must be PEP-508_ compliant). Use "
+"this to specify plugin requirements (or the version of ``virtualenv`` - "
+"determines the default ``pip``, ``setuptools``, and ``wheel`` versions "
+"the tox environments start with). If these dependencies are not specified"
+" tox will create :conf:`provision_tox_env` environment so that they are "
+"satisfied and delegate all calls to that."
+msgstr ""
+
+#: ../../docs/config.rst:78 ../../docs/config.rst:180
+msgid "(string)"
+msgstr ""
+
+#: ../../docs/config.rst:71
+msgid ""
+"Name of the virtual environment used to provision a tox having all "
+"dependencies specified inside :conf:`requires` and :conf:`minversion`."
+msgstr ""
+
+#: ../../docs/config.rst:82 ../../docs/config.rst:91 ../../docs/config.rst:101
+#: ../../docs/config.rst:106 ../../docs/config.rst:111
+#: ../../docs/config.rst:117 ../../docs/config.rst:384
+#: ../../docs/config.rst:499 ../../docs/config.rst:548
+#: ../../docs/config.rst:553 ../../docs/config.rst:593
+msgid "(PATH)"
+msgstr ""
+
+#: ../../docs/config.rst:81
+msgid ""
+"Directory for tox to generate its environments into, will be created if "
+"it does not exist."
+msgstr ""
+
+#: ../../docs/config.rst:87
+msgid ""
+"Directory where to put tox temporary files. For example: we create a hard"
+" link (if possible, otherwise new copy) in this directory for the project"
+" package. This ensures tox works correctly when having parallel runs (as "
+"each session will have its own copy of the project package - e.g. the "
+"source distribution)."
+msgstr ""
+
+#: ../../docs/config.rst:96 ../../docs/config.rst:163 ../../docs/config.rst:173
+#: ../../docs/config.rst:344 ../../docs/config.rst:359
+#: ../../docs/config.rst:493 ../../docs/config.rst:519
+#: ../../docs/config.rst:527 ../../docs/config.rst:536
+#: ../../docs/config.rst:543 ../../docs/config.rst:604
+#: ../../docs/config.rst:612 ../../docs/config.rst:619
+msgid "(true|false)"
+msgstr ""
+
+#: ../../docs/config.rst:94
+msgid ""
+"Flag indicating to perform the packaging operation or not. Set it to "
+"``true`` when using tox for an application, instead of a library."
+msgstr ""
+
+#: ../../docs/config.rst:99
+msgid ""
+"Indicates where the packaging root file exists (historically the "
+"``setup.py`` for ``setuptools``). This will be the working directory when"
+" performing the packaging."
+msgstr ""
+
+#: ../../docs/config.rst:104
+msgid ""
+"Directory where the packaged source distribution should be put. Note this"
+" is cleaned at the start of every packaging invocation."
+msgstr ""
+
+#: ../../docs/config.rst:109
+msgid ""
+"Do not build the package, but instead use the latest package available "
+"under this path. You can override it via the command line flag "
+"``--installpkg``."
+msgstr ""
+
+#: ../../docs/config.rst:114
+msgid ""
+"Folder where the packaged source distribution will be moved, this is not "
+"cleaned between packaging invocations. On Jenkins (exists ``JENKINS_URL``"
+" or ``HUDSON_URL`` environment variable) the default path is "
+"``{toxworkdir}/distshare``."
+msgstr ""
+
+#: ../../docs/config.rst:133 ../../docs/config.rst:653
+msgid "(comma separated values)"
+msgstr ""
+
+#: ../../docs/config.rst:120
+msgid ""
+"Determining the environment list that ``tox`` is to operate on happens in"
+" this order (if any is found, no further lookups are made):"
+msgstr ""
+
+#: ../../docs/config.rst:123
+msgid "command line option ``-eENVLIST``"
+msgstr ""
+
+#: ../../docs/config.rst:124
+msgid "environment variable ``TOXENV``"
+msgstr ""
+
+#: ../../docs/config.rst:125
+msgid "``tox.ini`` file's ``envlist``"
+msgstr ""
+
+#: ../../docs/config.rst:129
+msgid ""
+"Which tox environments are run during the tox invocation can be further "
+"filtered via the operating system environment variable ``TOX_SKIP_ENV`` "
+"regular expression (e.g. ``py27.*`` means **don't** evaluate environments"
+" that start with the key ``py27``). Skipped environments will be logged "
+"at level two verbosity level."
+msgstr ""
+
+#: ../../docs/config.rst:145
+msgid "(config|true|false)"
+msgstr ""
+
+#: ../../docs/config.rst:138
+msgid ""
+"Setting this to ``true`` will force ``tox`` to return success even if "
+"some of the specified environments were missing. This is useful for some "
+"CI systems or when running on a developer box, where you might only have "
+"a subset of all your supported interpreters installed but don't want to "
+"mark the build as failed because of it. As expected, the command line "
+"switch always overrides this setting if passed on the invocation. Setting"
+" it to ``config`` means that the value is read from the config file."
+msgstr ""
+
+#: ../../docs/config.rst:150
+msgid ""
+"tox allows setting the python version for an environment via the "
+":conf:`basepython` setting. If that's not set tox can set a default value"
+" from the environment name ( e.g. ``py37`` implies Python 3.7). Matching "
+"up the python version with the environment name has became expected at "
+"this point, leading to surprises when some configs don't do so. To help "
+"with sanity of users a warning will be emitted whenever the environment "
+"name version does not matches up with this expectation. In a future "
+"version of tox, this warning will become an error."
+msgstr ""
+
+#: ../../docs/config.rst:158
+msgid ""
+"Furthermore, we allow hard enforcing this rule (and bypassing the "
+"warning) by setting this flag to ``true``. In such cases we ignore the "
+":conf:`basepython` and instead always use the base python implied from "
+"the Python name. This allows you to configure :conf:`basepython` in the "
+"global testenv without affecting environments that have implied base "
+"python versions."
+msgstr ""
+
+#: ../../docs/config.rst:168
+msgid ""
+"Activate isolated build environment. tox will use a virtual environment "
+"to build a source distribution from the source tree. For build tools and "
+"arguments use the ``pyproject.toml`` file as specified in `PEP-517`_ and "
+"`PEP-518`_. To specify the virtual environment Python version define use "
+"the :conf:`isolated_build_env` config section."
+msgstr ""
+
+#: ../../docs/config.rst:178
+msgid ""
+"Name of the virtual environment used to create a source distribution from"
+" the source tree."
+msgstr ""
+
+#: ../../docs/config.rst:182
+msgid "Jenkins override"
+msgstr ""
+
+#: ../../docs/config.rst:184
+msgid ""
+"It is possible to override global settings inside a Jenkins_ instance "
+"(detection is done by checking for existence of the ``JENKINS_URL`` "
+"environment variable) by using the ``tox:jenkins`` section:"
+msgstr ""
+
+#: ../../docs/config.rst:195
+msgid "tox environments"
+msgstr ""
+
+#: ../../docs/config.rst:197
+msgid ""
+"Test environments are defined under the ``testenv`` section and "
+"individual ``testenv:NAME`` sections, where ``NAME`` is the name of a "
+"specific environment."
+msgstr ""
+
+#: ../../docs/config.rst:209
+msgid ""
+"Settings defined in the top-level ``testenv`` section are automatically "
+"inherited by individual environments unless overridden. Test environment "
+"names can consist of alphanumeric characters and dashes; for example: "
+"``py38-django30``. The name will be split on dashes into multiple "
+"factors, meaning ``py38-django30`` will be split into two factors: "
+"``py38`` and ``django30``. *tox* defines a number of default factors, "
+"which correspond to various versions and implementations of Python and "
+"provide default values for :conf:`basepython`:"
+msgstr ""
+
+#: ../../docs/config.rst:218
+msgid "``pyNM``: configures ``basepython = pythonN.M``"
+msgstr ""
+
+#: ../../docs/config.rst:219
+msgid "``pyN``: configures ``basepython = pythonN``"
+msgstr ""
+
+#: ../../docs/config.rst:220
+msgid "``py``: configures ``basepython = python``"
+msgstr ""
+
+#: ../../docs/config.rst:221
+msgid "``pypyN``: configures ``basepython = pypyN``"
+msgstr ""
+
+#: ../../docs/config.rst:222
+msgid "``pypy``: configures ``basepython = pypy``"
+msgstr ""
+
+#: ../../docs/config.rst:223
+msgid "``jythonN``: configures ``basepython = jythonN``"
+msgstr ""
+
+#: ../../docs/config.rst:224
+msgid "``jython``: configures ``basepython = jython``"
+msgstr ""
+
+#: ../../docs/config.rst:226
+msgid ""
+"It is also possible to define what's know as *generative names*, where an"
+" individual section maps to multiple environments. For example, "
+"``py{37,38}-django{30,31}`` would generate four environments, each "
+"consisting of two factors: ``py37-django30`` (``py37``, ``django30``), "
+"``py37-django31`` (``py37``, ``django31``), ``py38-django30`` (``py38``, "
+"``django30``), and ``py38-django31`` (``py38``, ``django31``).  Combined,"
+" these features provide the ability to write very concise ``tox.ini`` "
+"files. This is discussed further in :ref:`below <generating-"
+"environments>`."
+msgstr ""
+
+#: ../../docs/config.rst:237
+msgid "tox environment settings"
+msgstr ""
+
+#: ../../docs/config.rst:239
+msgid "Complete list of settings that you can put into ``testenv*`` sections:"
+msgstr ""
+
+#: ../../docs/config.rst:257
+msgid "(NAME-OR-PATH)"
+msgstr ""
+
+#: ../../docs/config.rst:243
+msgid ""
+"Name or path to a Python interpreter which will be used for creating the "
+"virtual environment, this determines in practice the python for what "
+"we'll create a virtual isolated environment. Use this to specify the "
+"python version for a tox environment. If not specified, the virtual "
+"environments factors (e.g. name part) will be used to automatically set "
+"one. For example, ``py37`` means ``python3.7``, ``py3`` means ``python3``"
+" and ``py`` means ``python``. :conf:`provision_tox_env` environment does "
+"not inherit this setting from the ``toxenv`` section."
+msgstr ""
+
+#: ../../docs/config.rst:252
+msgid ""
+"After resolving this value if the interpreter reports back a different "
+"version number than implied from the name a warning will be printed by "
+"default. However, if :conf:`ignore_basepython_conflict` is set, the value"
+" is ignored and we force the ``basepython`` implied from the factor name."
+msgstr ""
+
+#: ../../docs/config.rst:284 ../../docs/config.rst:291
+#: ../../docs/config.rst:299
+msgid "(ARGVLIST)"
+msgstr ""
+
+#: ../../docs/config.rst:260
+msgid ""
+"The commands to be called for testing. Only execute if "
+":conf:`commands_pre` succeed."
+msgstr ""
+
+#: ../../docs/config.rst:262
+msgid ""
+"Each line is interpreted as one command; however a command can be split "
+"over multiple lines by ending the line with the ``\\`` character."
+msgstr ""
+
+#: ../../docs/config.rst:265
+msgid ""
+"Commands will execute one by one in sequential fashion until one of them "
+"fails (their exit code is non-zero) or all of them succeed. The exit code"
+" of a command may be ignored (meaning they are always considered "
+"successful even if they don't exist) by prefixing the command with a dash"
+" (``-``) - this is similar to how ``make`` recipe lines work. The outcome"
+" of the environment is considered successful only if all commands (these "
+"+ setup + teardown) succeeded (exit code ignored via the ``-`` or success"
+" exit code value of zero)."
+msgstr ""
+
+#: ../../docs/config.rst
+msgid "note"
+msgstr ""
+
+#: ../../docs/config.rst:272
+msgid ""
+"the virtual environment binary path (the ``bin`` folder within) is "
+"prepended to the os ``PATH``, meaning commands will first try to resolve "
+"to an executable from within the virtual environment, and only after that"
+" outside of it. Therefore ``python`` translates as the virtual "
+"environments ``python`` (having the same runtime version as the "
+":conf:`basepython`), and ``pip`` translates as the virtual environments "
+"``pip``."
+msgstr ""
+
+#: ../../docs/config.rst:278
+msgid ""
+"Inline scripts can be used, however note these are discovered from the "
+"project root directory, and is not influenced by :conf:`changedir` (this "
+"only affects the runtime current working directory). To make this "
+"behaviour explicit we recommend that you make inline scripts absolute "
+"paths by prepending ``{toxinidir}``, instead of ``path/to/my_script`` "
+"prefer ``{toxinidir}{/}path{/}to{/}my_script``. If your inline script is "
+"platform dependent refer to :ref:`platform-specification` on how to "
+"select different script per platform."
+msgstr ""
+
+#: ../../docs/config.rst:289
+msgid ""
+"Commands to run before running the :conf:`commands`. All evaluation and "
+"configuration logic applies from :conf:`commands`."
+msgstr ""
+
+#: ../../docs/config.rst:296
+msgid ""
+"Commands to run after running the :conf:`commands`. Execute regardless of"
+" the outcome of both :conf:`commands` and :conf:`commands_pre`. All "
+"evaluation and configuration logic applies from :conf:`commands`."
+msgstr ""
+
+#: ../../docs/config.rst:317 ../../docs/config.rst:324
+msgid "(ARGV)"
+msgstr ""
+
+#: ../../docs/config.rst:304
+msgid ""
+"Determines the command used for installing packages into the virtual "
+"environment; both the package under test and its dependencies (defined "
+"with :conf:`deps`). Must contain the substitution key ``{packages}`` "
+"which will be replaced by the package(s) to install.  You should also "
+"accept ``{opts}`` if you are using pip -- it will contain index server "
+"options such as ``--pre`` (configured as ``pip_pre``) and potentially "
+"index-options from the deprecated :conf:`indexserver` option."
+msgstr ""
+
+#: ../../docs/config.rst:313
+msgid ""
+"You can also provide arbitrary commands to the ``install_command``. "
+"Please take care that these commands can be executed on the supported "
+"operating systems. When executing shell scripts we recommend to not "
+"specify the script directly but instead pass it to the appropriate shell "
+"as argument (e.g. prefer ``bash script.sh`` over ``script.sh``)."
+msgstr ""
+
+#: ../../docs/config.rst:322
+msgid ""
+"The ``list_dependencies_command`` setting is used for listing the "
+"packages installed into the virtual environment."
+msgstr ""
+
+#: ../../docs/config.rst:329
+msgid ""
+"If ``false``, a non-zero exit code from one command will abort execution "
+"of commands for that environment. If ``true``, a non-zero exit code from "
+"one command will be ignored and further commands will be executed.  The "
+"overall status will be \"commands failed\", i.e. tox will exit non-zero "
+"in case any command failed."
+msgstr ""
+
+#: ../../docs/config.rst:335
+msgid ""
+"It may be helpful to note that this setting is analogous to the ``-k`` or"
+" ``--keep-going`` option of GNU Make."
+msgstr ""
+
+#: ../../docs/config.rst:338
+msgid ""
+"Note that in tox 2.0, the default behavior of tox with respect to "
+"treating errors from commands changed. tox < 2.0 would ignore errors by "
+"default. tox >= 2.0 will abort on an error by default, which is safer and"
+" more typical of CI and command execution tools, as it doesn't make sense"
+" to run tests if installing some prerequisite failed and it doesn't make "
+"sense to try to deploy if tests failed."
+msgstr ""
+
+#: ../../docs/config.rst:349
+msgid ""
+"If ``true``, adds ``--pre`` to the ``opts`` passed to "
+":conf:`install_command`. If :conf:`install_command` uses pip, this will "
+"cause it to install the latest available pre-release of any dependencies "
+"without a specified version. If ``false``, pip will only install final "
+"releases of unpinned dependencies."
+msgstr ""
+
+#: ../../docs/config.rst:355
+msgid ""
+"Passing the ``--pre`` command-line option to tox will force this to "
+"``true`` for all testenvs."
+msgstr ""
+
+#: ../../docs/config.rst:358
+msgid "Don't set this option if your :conf:`install_command` does not use pip."
+msgstr ""
+
+#: ../../docs/config.rst:376 ../../docs/config.rst:413
+#: ../../docs/config.rst:448 ../../docs/config.rst:628
+msgid "(MULTI-LINE-LIST)"
+msgstr ""
+
+#: ../../docs/config.rst:364
+msgid ""
+"Each line specifies a command name (in glob-style pattern format) which "
+"can be used in the ``commands`` section without triggering a \"not "
+"installed in virtualenv\" warning.  Example: if you use the unix ``make``"
+" for running tests you can list ``allowlist_externals=make`` or "
+"``allowlist_externals=/usr/bin/make`` if you want more precision. If you "
+"don't want tox to issue a warning in any case, just use "
+"``allowlist_externals=*`` which will match all commands (not "
+"recommended)."
+msgstr ""
+
+#: ../../docs/config.rst:374
+msgid ""
+"``whitelist_externals`` has the same meaning and usage as "
+"``allowlist_externals`` but it is now deprecated."
+msgstr ""
+
+#: ../../docs/config.rst:379
+msgid "Change the current working directory when executing the test command."
+msgstr ""
+
+#: ../../docs/config.rst:383
+msgid "If the directory does not exist yet, it will be created."
+msgstr ""
+
+#: ../../docs/config.rst:387
+msgid ""
+"Environment dependencies - installed into the environment (see "
+":conf:`install_command`) prior to project after environment creation. One"
+" dependency (a file, a URL or a package name) per line. Must be PEP-508_ "
+"compliant. All installer commands are executed using the toxinidir_ as "
+"the current working directory."
+msgstr ""
+
+#: ../../docs/config.rst:404
+msgid "Support for index servers is now deprecated, and its usage discouraged."
+msgstr ""
+
+#: ../../docs/config.rst:408
+msgid ""
+"Comment support on the same line as the dependency. When feeding the "
+"content to the install tool we'll strip off content (including) from the "
+"first comment marker (``#``) preceded by one or more space. For example, "
+"if a dependency is ``octomachinery==0.0.13  # pyup: < 0.1.0 # disable "
+"feature updates`` it will be turned into just ``octomachinery==0.0.13``."
+msgstr ""
+
+#: ../../docs/config.rst:423
+msgid "(REGEX)"
+msgstr ""
+
+#: ../../docs/config.rst:418
+msgid ""
+"A testenv can define a new ``platform`` setting as a regular expression. "
+"If a non-empty expression is defined and does not match against the "
+"``sys.platform`` string the entire test environment will be skipped and "
+"none of the commands will be executed. Running ``tox -e <platform_name>``"
+" will run commands for a particular platform and skip the rest."
+msgstr ""
+
+#: ../../docs/config.rst:428
+msgid ""
+"Each line contains a NAME=VALUE environment variable setting which will "
+"be used for all test command invocations as well as for installing the "
+"sdist package into a virtual environment."
+msgstr ""
+
+#: ../../docs/config.rst:432
+msgid ""
+"Notice that when updating a path variable, you can consider the use of "
+"variable substitution for the current value and to handle path separator."
+msgstr ""
+
+#: ../../docs/config.rst:443
+msgid "Support for comments. Lines starting with ``#`` are ignored."
+msgstr ""
+
+#: ../../docs/config.rst:445
+msgid ""
+"Support for environment files. Lines starting with the ``file|`` contain "
+"path to a environment file to load. Rules within the environment file are"
+" the same as within the ``setenv`` (same replacement and comment "
+"support)."
+msgstr ""
+
+#: ../../docs/config.rst:487
+msgid "(SPACE-SEPARATED-GLOBNAMES)"
+msgstr ""
+
+#: ../../docs/config.rst:453
+msgid ""
+"A list of wildcard environment variable names which shall be copied from "
+"the tox invocation environment to the test environment when executing "
+"test commands.  If a specified environment variable doesn't exist in the "
+"tox invocation environment it is ignored. You can use ``*`` and ``?`` to "
+"match multiple environment variables with one name. The list of "
+"environment variable names is not case sensitive, and all variables that "
+"match when upper cased will be passed. For example, passing ``A`` will "
+"pass both ``A`` and ``a``."
+msgstr ""
+
+#: ../../docs/config.rst:462
+msgid ""
+"Some variables are always passed through to ensure the basic "
+"functionality of standard library functions or tooling like pip. This is "
+"also not case sensitive on all platforms except Windows:"
+msgstr ""
+
+#: ../../docs/config.rst:466
+msgid ""
+"passed through on all platforms: ``CURL_CA_BUNDLE``, ``PATH``, ``LANG``, "
+"``LANGUAGE``, ``LD_LIBRARY_PATH``, ``PIP_INDEX_URL``, "
+"``PIP_EXTRA_INDEX_URL``, ``REQUESTS_CA_BUNDLE``, ``SSL_CERT_FILE``, "
+"``HTTP_PROXY``, ``HTTPS_PROXY``, ``NO_PROXY``"
+msgstr ""
+
+#: ../../docs/config.rst:472
+msgid "Windows: ``SYSTEMDRIVE``, ``SYSTEMROOT``, ``PATHEXT``, ``TEMP``, ``TMP``"
+msgstr ""
+
+#: ../../docs/config.rst:472
+msgid ""
+"``NUMBER_OF_PROCESSORS``, ``USERPROFILE``, ``MSYSTEM``, ``PROGRAMFILES``,"
+" ``PROGRAMFILES(X86)``, ``PROGRAMDATA``"
+msgstr ""
+
+#: ../../docs/config.rst:474
+msgid "Others (e.g. UNIX, macOS): ``TMPDIR``"
+msgstr ""
+
+#: ../../docs/config.rst:476
+msgid "You can override these variables with the ``setenv`` option."
+msgstr ""
+
+#: ../../docs/config.rst:478
+msgid ""
+"If defined the ``TOX_TESTENV_PASSENV`` environment variable (in the tox "
+"invocation environment) can define additional space-separated variable "
+"names that are to be passed down to the test command environment."
+msgstr ""
+
+#: ../../docs/config.rst:484
+msgid ""
+"``PYTHONPATH`` will be passed down if explicitly defined. If "
+"``PYTHONPATH`` exists in the host environment but is **not** declared in "
+"``passenv`` a warning will be emitted."
+msgstr ""
+
+#: ../../docs/config.rst:490
+msgid ""
+"Always recreate virtual environment if this option is true. If this "
+"option is false, ``tox``'s resolution mechanism will be used to determine"
+" whether to recreate the environment."
+msgstr ""
+
+#: ../../docs/config.rst:496
+msgid ""
+"**IGNORED** -- Since pip-8 has caching by default this option is now "
+"ignored.  Please remove it from your configs as a future tox version "
+"might bark on it."
+msgstr ""
+
+#: ../../docs/config.rst:502
+msgid ""
+"Set to ``true`` if you want to create virtual environments that also have"
+" access to globally installed packages."
+msgstr ""
+
+#: ../../docs/config.rst:507
+msgid ""
+"In cases where a command line tool is also installed globally you have to"
+" make sure that you use the tool installed in the virtualenv by using "
+"``python -m <command line tool>`` (if supported by the tool) or "
+"``{envbindir}/<command line tool>``."
+msgstr ""
+
+#: ../../docs/config.rst:512
+msgid "If you forget to do that you will get a warning like this::"
+msgstr ""
+
+#: ../../docs/config.rst:522
+msgid ""
+"Set to ``true`` if you want virtualenv to always copy files rather than "
+"symlinking."
+msgstr ""
+
+#: ../../docs/config.rst:525
+msgid ""
+"This is useful for situations where hardlinks don't work (e.g. running in"
+" VMS with Windows guests)."
+msgstr ""
+
+#: ../../docs/config.rst:532
+msgid ""
+"Set to ``true`` if you want virtualenv to upgrade pip/wheel/setuptools to"
+" the latest version. If (and only if) you want to choose a specific "
+"version (not necessarily the latest) then you can add e.g. "
+"``VIRTUALENV_PIP=20.3.3`` to your setenv."
+msgstr ""
+
+#: ../../docs/config.rst:539
+msgid ""
+"Treat positional arguments passed to ``tox`` as file system paths and - "
+"if they exist on the filesystem - rewrite them according to the "
+"``changedir``. Default is true due to the exists-on-filesystem check it's"
+" usually safe to try rewriting."
+msgstr ""
+
+#: ../../docs/config.rst:546
+msgid ""
+"Defines a temporary directory for the virtualenv which will be cleared "
+"each time before the group of test commands is invoked."
+msgstr ""
+
+#: ../../docs/config.rst:551
+msgid ""
+"Defines a directory for logging where tox will put logs of tool "
+"invocation."
+msgstr ""
+
+#: ../../docs/config.rst:586
+msgid "(URL)"
+msgstr ""
+
+#: ../../docs/config.rst:558
+msgid ""
+"(DEPRECATED, will be removed in a future version) Use :conf:`setenv` to "
+"configure PIP_INDEX_URL environment variable, see below."
+msgstr ""
+
+#: ../../docs/config.rst:561
+msgid ""
+"Multi-line ``name = URL`` definitions of python package servers. You can "
+"specify an alternative index server for dependencies by applying the "
+"``:indexservername:depname`` pattern.  The ``default`` indexserver "
+"definition determines where unscoped dependencies and the sdist install "
+"installs from.  Example:"
+msgstr ""
+
+#: ../../docs/config.rst:573
+msgid ""
+"will make tox install all dependencies from this PyPI index server "
+"(including when installing the project sdist package)."
+msgstr ""
+
+#: ../../docs/config.rst:576
+msgid ""
+"The recommended way to set a custom index server URL is to use "
+":conf:`setenv`:"
+msgstr ""
+
+#: ../../docs/config.rst:584
+msgid ""
+"This will ensure the desired index server gets used for virtual "
+"environment creation and allow overriding the index server URL with an "
+"environment variable."
+msgstr ""
+
+#: ../../docs/config.rst:591
+msgid ""
+"User can set specific path for environment. If path would not be absolute"
+" it would be treated as relative to ``{toxinidir}``."
+msgstr ""
+
+#: ../../docs/config.rst:598
+msgid ""
+"Install the current package in development mode with \"setup.py develop\""
+" instead of installing from the ``sdist`` package. (This uses pip's "
+"``-e`` option, so should be avoided if you've specified a custom "
+":conf:`install_command` that does not support ``-e``). Note that changes "
+"to the build/install process (including changes in dependencies) are only"
+" detected when using setuptools with setup.py."
+msgstr ""
+
+#: ../../docs/config.rst:609
+msgid ""
+"Do not install the current package. This can be used when you need the "
+"virtualenv management but do not want to install the current package into"
+" that environment."
+msgstr ""
+
+#: ../../docs/config.rst:617
+msgid ""
+"If set to true a failing result of this testenv will not make tox fail, "
+"only a warning will be produced."
+msgstr ""
+
+#: ../../docs/config.rst:624
+msgid ""
+"A list of \"extras\" to be installed with the sdist or develop install. "
+"For example, ``extras = testing`` is equivalent to ``[testing]`` in a "
+"``pip install`` command. These are not installed if ``skip_install`` is "
+"``true``."
+msgstr ""
+
+#: ../../docs/config.rst:634
+msgid "(SINGLE-LINE-TEXT)"
+msgstr ""
+
+#: ../../docs/config.rst:631
+msgid ""
+"A short description of the environment, this will be used to explain the "
+"environment to the user upon listing environments for the command line "
+"with any level of verbosity higher than zero."
+msgstr ""
+
+#: ../../docs/config.rst:640
+msgid "(bool)"
+msgstr ""
+
+#: ../../docs/config.rst:639
+msgid ""
+"If set to True the content of the output will always be shown when "
+"running in parallel mode."
+msgstr ""
+
+#: ../../docs/config.rst:645
+msgid ""
+"tox environments this depends on. tox will try to run all dependent "
+"environments before running this environment. Format is same as "
+":conf:`envlist` (allows factor usage)."
+msgstr ""
+
+#: ../../docs/config.rst:650
+msgid ""
+"``depends`` does not pull in dependencies into the run target, for "
+"example if you select ``py27,py36,coverage`` via the ``-e`` tox will only"
+" run those three (even if ``coverage`` may specify as ``depends`` other "
+"targets too - such as ``py27, py35, py36, py37``)."
+msgstr ""
+
+#: ../../docs/config.rst:662 ../../docs/config.rst:670
+#: ../../docs/config.rst:680
+msgid "(float)"
+msgstr ""
+
+#: ../../docs/config.rst:658
+msgid ""
+"When an interrupt is sent via Ctrl+C or the tox process is killed with a "
+"SIGTERM, a SIGINT is sent to all foreground processes. The "
+":conf:`suicide_timeout` gives the running process time to cleanup and "
+"exit before receiving (in some cases, a duplicate) SIGINT from tox."
+msgstr ""
+
+#: ../../docs/config.rst:667
+msgid ""
+"When tox is interrupted, it propagates the signal to the child process "
+"after :conf:`suicide_timeout` seconds. If the process still hasn't exited"
+" after :conf:`interrupt_timeout` seconds, its sends a SIGTERM."
+msgstr ""
+
+#: ../../docs/config.rst:675
+msgid ""
+"When tox is interrupted, after waiting :conf:`interrupt_timeout` seconds,"
+" it propagates the signal to the child process, waits "
+":conf:`interrupt_timeout` seconds, sends it a SIGTERM, waits "
+":conf:`terminate_timeout` seconds, and sends it a SIGKILL if it hasn't "
+"exited."
+msgstr ""
+
+#: ../../docs/config.rst:682
+msgid "Substitutions"
+msgstr ""
+
+#: ../../docs/config.rst:684
+msgid ""
+"Any ``key=value`` setting in an ini-file can make use of value "
+"substitution through the ``{...}`` string-substitution pattern."
+msgstr ""
+
+#: ../../docs/config.rst:687
+msgid ""
+"You can escape curly braces with the ``\\`` character if you need them, "
+"for example::"
+msgstr ""
+
+#: ../../docs/config.rst:692
+msgid ""
+"Note some substitutions (e.g. ``posargs``, ``env``) may have addition "
+"values attached to it, via the ``:`` character (e.g. ``posargs`` - "
+"default value, ``env`` - key). Such substitutions cannot have a space "
+"after the ``:`` character (e.g. ``{posargs: magic}`` while being at the "
+"start of a line inside the ini configuration (this would be parsed as "
+"factorial ``{posargs``, having value magic)."
+msgstr ""
+
+#: ../../docs/config.rst:700
+msgid "Globally available substitutions"
+msgstr ""
+
+#: ../../docs/config.rst:705
+msgid "``{toxinidir}``"
+msgstr ""
+
+#: ../../docs/config.rst:705
+msgid "the directory where ``tox.ini`` is located"
+msgstr ""
+
+#: ../../docs/config.rst:711
+msgid "``{toxworkdir}``"
+msgstr ""
+
+#: ../../docs/config.rst:710
+msgid ""
+"the directory where virtual environments are created and sub directories "
+"for packaging reside."
+msgstr ""
+
+#: ../../docs/config.rst:716
+msgid "``{temp_dir}``"
+msgstr ""
+
+#: ../../docs/config.rst:714
+msgid "the directory where tox temporary files live."
+msgstr ""
+
+#: ../../docs/config.rst:719
+msgid "``{homedir}``"
+msgstr ""
+
+#: ../../docs/config.rst:719
+msgid "the user-home directory path."
+msgstr ""
+
+#: ../../docs/config.rst:722
+msgid "``{distdir}``"
+msgstr ""
+
+#: ../../docs/config.rst:722
+msgid "the directory where sdist-packages will be created in"
+msgstr ""
+
+#: ../../docs/config.rst:726
+msgid "``{distshare}``"
+msgstr ""
+
+#: ../../docs/config.rst:725
+msgid ""
+"(DEPRECATED) the directory where sdist-packages will be copied to so that"
+" they may be accessed by other processes or tox runs."
+msgstr ""
+
+#: ../../docs/config.rst:730
+msgid "``{:}``"
+msgstr ""
+
+#: ../../docs/config.rst:729
+msgid ""
+"OS-specific path separator (``:`` on \\*nix family, ``;`` on Windows). "
+"May be used in ``setenv``, when target variable is path variable (e.g. "
+"PATH or PYTHONPATH)."
+msgstr ""
+
+#: ../../docs/config.rst:736
+msgid "``{/}``"
+msgstr ""
+
+#: ../../docs/config.rst:733
+msgid ""
+"OS-specific directory separator (``/`` on \\*nix family, ``\\\\`` on "
+"Windows). Useful for deriving filenames from preset paths, as arguments "
+"for commands that requires ``\\\\`` on Windows. e.g. "
+"``{distdir}{/}file.txt``. It is not usually needed when using commands "
+"written in Python."
+msgstr ""
+
+#: ../../docs/config.rst:739
+msgid "Substitutions for virtualenv-related sections"
+msgstr ""
+
+#: ../../docs/config.rst:741
+msgid "``{envname}``"
+msgstr ""
+
+#: ../../docs/config.rst:742
+msgid "the name of the virtual environment"
+msgstr ""
+
+#: ../../docs/config.rst:743
+msgid "``{envpython}``"
+msgstr ""
+
+#: ../../docs/config.rst:744
+msgid "path to the virtual Python interpreter"
+msgstr ""
+
+#: ../../docs/config.rst:745
+msgid "``{envdir}``"
+msgstr ""
+
+#: ../../docs/config.rst:746
+msgid "directory of the virtualenv hierarchy"
+msgstr ""
+
+#: ../../docs/config.rst:747
+msgid "``{envbindir}``"
+msgstr ""
+
+#: ../../docs/config.rst:748
+msgid "directory where executables are located"
+msgstr ""
+
+#: ../../docs/config.rst:750
+msgid "``{envsitepackagesdir}``"
+msgstr ""
+
+#: ../../docs/config.rst:750
+msgid ""
+"directory where packages are installed. Note that architecture-specific "
+"files may appear in a different directory."
+msgstr ""
+
+#: ../../docs/config.rst:752
+msgid "``{envtmpdir}``"
+msgstr ""
+
+#: ../../docs/config.rst:753
+msgid "the environment temporary directory"
+msgstr ""
+
+#: ../../docs/config.rst:756
+msgid "``{envlogdir}``"
+msgstr ""
+
+#: ../../docs/config.rst:755
+msgid "the environment log directory"
+msgstr ""
+
+#: ../../docs/config.rst:759
+msgid "Environment variable substitutions"
+msgstr ""
+
+#: ../../docs/config.rst:761 ../../docs/config.rst:773
+#: ../../docs/config.rst:781 ../../docs/config.rst:818
+msgid "If you specify a substitution string like this::"
+msgstr ""
+
+#: ../../docs/config.rst:765
+msgid ""
+"then the value will be retrieved as ``os.environ['KEY']`` and raise an "
+"Error if the environment variable does not exist."
+msgstr ""
+
+#: ../../docs/config.rst:771
+msgid "Environment variable substitutions with default values"
+msgstr ""
+
+#: ../../docs/config.rst:777
+msgid ""
+"then the value will be retrieved as ``os.environ['KEY']`` and replace "
+"with DEFAULTVALUE if the environment variable does not exist."
+msgstr ""
+
+#: ../../docs/config.rst:785
+msgid ""
+"then the value will be retrieved as ``os.environ['KEY']`` and replace "
+"with an empty string if the environment variable does not exist."
+msgstr ""
+
+#: ../../docs/config.rst:789
+msgid ""
+"Substitutions can also be nested. In that case they are expanded starting"
+" from the innermost expression::"
+msgstr ""
+
+#: ../../docs/config.rst:794
+msgid ""
+"the above example is roughly equivalent to ``os.environ.get('KEY', "
+"os.environ['DEFAULT_OF_KEY'])``"
+msgstr ""
+
+#: ../../docs/config.rst:801
+msgid "Interactive shell substitution"
+msgstr ""
+
+#: ../../docs/config.rst:805
+msgid ""
+"It's possible to inject a config value only when tox is running in "
+"interactive shell (standard input)::"
+msgstr ""
+
+#: ../../docs/config.rst:809
+msgid ""
+"The first value is the value to inject when the interactive terminal is "
+"available, the second value is the value to use when it's not. The later "
+"on is optional. A good use case for this is e.g. passing in the ``--pdb``"
+" flag for pytest."
+msgstr ""
+
+#: ../../docs/config.rst:814
+msgid "Substitutions for positional arguments in commands"
+msgstr ""
+
+#: ../../docs/config.rst:822
+msgid ""
+"then the value will be replaced with positional arguments as provided to "
+"the tox command::"
+msgstr ""
+
+#: ../../docs/config.rst:827
+msgid ""
+"In this instance, the positional argument portion will be replaced with "
+"``arg1 arg2``. If no positional arguments were specified, the value of "
+"DEFAULTS will be used instead. If DEFAULTS contains other substitution "
+"strings, such as ``{env:*}``, they will be interpreted.,"
+msgstr ""
+
+#: ../../docs/config.rst:832
+msgid ""
+"Use a double ``--`` if you also want to pass options to an underlying "
+"test command, for example::"
+msgstr ""
+
+#: ../../docs/config.rst:837
+msgid ""
+"will make the ``--opt1 ARG1`` appear in all test commands where ``[]`` or"
+" ``{posargs}`` was specified.  By default (see ``args_are_paths`` "
+"setting), ``tox`` rewrites each positional argument if it is a relative "
+"path and exists on the filesystem to become a path relative to the "
+"``changedir`` setting."
+msgstr ""
+
+#: ../../docs/config.rst:843
+msgid ""
+"Previous versions of tox supported the ``[.*]`` pattern to denote "
+"positional arguments with defaults. This format has been deprecated. Use "
+"``{posargs:DEFAULTS}`` to specify those."
+msgstr ""
+
+#: ../../docs/config.rst:849
+msgid "Substitution for values from other sections"
+msgstr ""
+
+#: ../../docs/config.rst:853
+msgid "Values from other sections can be referred to via::"
+msgstr ""
+
+#: ../../docs/config.rst:857
+msgid ""
+"which you can use to avoid repetition of config values. You can put "
+"default values in one section and reference them in others to avoid "
+"repeating the same values:"
+msgstr ""
+
+#: ../../docs/config.rst:882
+msgid "Generating environments, conditional settings"
+msgstr ""
+
+#: ../../docs/config.rst:886
+msgid ""
+"Suppose you want to test your package against python2.7, python3.6 and "
+"against several versions of a dependency, say Django 1.5 and Django 1.6. "
+"You can accomplish that by writing down 2*2 = 4 ``[testenv:*]`` sections "
+"and then listing all of them in ``envlist``."
+msgstr ""
+
+#: ../../docs/config.rst:891
+msgid "However, a better approach looks like this:"
+msgstr ""
+
+#: ../../docs/config.rst:906
+msgid "This uses two new facilities of tox-1.8:"
+msgstr ""
+
+#: ../../docs/config.rst:908
+msgid ""
+"generative envlist declarations where each envname consists of "
+"environment parts or \"factors\""
+msgstr ""
+
+#: ../../docs/config.rst:911
+msgid "\"factor\" specific settings"
+msgstr ""
+
+#: ../../docs/config.rst:913
+msgid "Let's go through this step by step."
+msgstr ""
+
+#: ../../docs/config.rst:919
+msgid "Generative envlist"
+msgstr ""
+
+#: ../../docs/config.rst:925
+msgid ""
+"This is bash-style syntax and will create ``2*2=4`` environment names "
+"like this::"
+msgstr ""
+
+#: ../../docs/config.rst:933
+msgid "You can still list environments explicitly along with generated ones::"
+msgstr ""
+
+#: ../../docs/config.rst:937
+msgid ""
+"Keep in mind that whitespace characters (except newline) within ``{}`` "
+"are stripped, so the following line defines the same environment names::"
+msgstr ""
+
+#: ../../docs/config.rst:944
+msgid ""
+"To help with understanding how the variants will produce section values, "
+"you can ask tox to show their expansion with a new option::"
+msgstr ""
+
+#: ../../docs/config.rst:959
+msgid "Generative section names"
+msgstr ""
+
+#: ../../docs/config.rst:963
+msgid "Using similar syntax, it is possible to generate sections::"
+msgstr ""
+
+#: ../../docs/config.rst:967
+msgid "This is equivalent to defining distinct sections::"
+msgstr ""
+
+#: ../../docs/config.rst:973
+msgid ""
+"It is useful when you need an environment different from the default one,"
+" but still want to take advantage of factor-conditional settings."
+msgstr ""
+
+#: ../../docs/config.rst:980
+msgid "Factors and factor-conditional settings"
+msgstr ""
+
+#: ../../docs/config.rst:982
+msgid ""
+"As discussed previously, parts of an environment name delimited by "
+"hyphens are called factors and can be used to set values conditionally. "
+"In list settings such as ``deps`` or ``commands`` you can freely intermix"
+" optional lines with unconditional ones:"
+msgstr ""
+
+#: ../../docs/config.rst:996
+msgid "Reading it line by line:"
+msgstr ""
+
+#: ../../docs/config.rst:998
+msgid "``pytest`` will be included unconditionally,"
+msgstr ""
+
+#: ../../docs/config.rst:999
+msgid ""
+"``Django>=1.5,<1.6`` will be included for environments containing "
+"``django15`` factor,"
+msgstr ""
+
+#: ../../docs/config.rst:1001
+msgid "``Django>=1.6,<1.7`` similarly depends on ``django16`` factor,"
+msgstr ""
+
+#: ../../docs/config.rst:1002
+msgid "``unittest2`` will be loaded for Python 3.6 environments."
+msgstr ""
+
+#: ../../docs/config.rst:1004
+msgid ""
+"tox provides a number of default factors corresponding to Python "
+"interpreter versions. The conditional setting above will lead to either "
+"``python3.6`` or ``python2.7`` used as base python, e.g. ``python3.6`` is"
+" selected if current environment contains ``py36`` factor."
+msgstr ""
+
+#: ../../docs/config.rst:1011
+msgid ""
+"Configuring :conf:`basepython` for environments using default factors "
+"will result in a warning. Configure :conf:`ignore_basepython_conflict` if"
+" you wish to explicitly ignore these conflicts, allowing you to define a "
+"global :conf:`basepython` for all environments *except* those with "
+"default factors."
+msgstr ""
+
+#: ../../docs/config.rst:1018
+msgid "Complex factor conditions"
+msgstr ""
+
+#: ../../docs/config.rst:1020
+msgid ""
+"Sometimes you need to specify the same line for several factors or create"
+" a special case for a combination of factors. Here is how you do it:"
+msgstr ""
+
+#: ../../docs/config.rst:1037
+msgid ""
+"Take a look at the first ``deps`` line. It shows how you can special case"
+" something for a combination of factors, by just hyphenating the "
+"combining factors together. This particular line states that ``PyMySQL`` "
+"will be loaded for python 3.4, mysql environments, e.g. "
+"``py34-django15-mysql`` and ``py34-django16-mysql``."
+msgstr ""
+
+#: ../../docs/config.rst:1043
+msgid ""
+"The second line shows how you use the same setting for several factors - "
+"by listing them delimited by commas. It's possible to list not only "
+"simple factors, but also their combinations like "
+"``py27-sqlite,py36-sqlite``."
+msgstr ""
+
+#: ../../docs/config.rst:1047
+msgid ""
+"The remaining lines all have the same effect and use conditions "
+"equivalent to ``py27-sqlite,py36-sqlite``. They have all been added only "
+"to help demonstrate the following:"
+msgstr ""
+
+#: ../../docs/config.rst:1051
+msgid "how factor expressions get expanded the same way as in envlist"
+msgstr ""
+
+#: ../../docs/config.rst:1052
+msgid ""
+"how to use negated factor conditions by prefixing negated factors with "
+"``!``"
+msgstr ""
+
+#: ../../docs/config.rst:1053
+msgid "that the order in which factors are hyphenated together does not matter"
+msgstr ""
+
+#: ../../docs/config.rst:1057
+msgid ""
+"Factors don't do substring matching against env name, instead every "
+"hyphenated expression is split by ``-`` and if ALL of its non-negated "
+"factors and NONE of its negated ones are also factors of an env then that"
+" condition is considered to hold for that env."
+msgstr ""
+
+#: ../../docs/config.rst:1062
+msgid "For example, environment ``py36-mysql-!dev``:"
+msgstr ""
+
+#: ../../docs/config.rst:1064
+msgid ""
+"would be matched by expressions ``py36``, ``py36-mysql`` or ``mysql-"
+"py36``,"
+msgstr ""
+
+#: ../../docs/config.rst:1066
+msgid "but not ``py2``, ``py36-sql`` or ``py36-mysql-dev``."
+msgstr ""
+
+#: ../../docs/config.rst:1069
+msgid "Factors and values substitution are compatible"
+msgstr ""
+
+#: ../../docs/config.rst:1071
+msgid ""
+"It is possible to mix both values substitution and factor expressions. "
+"For example::"
+msgstr ""
+
+#: ../../docs/config.rst:1087
+msgid "With the previous configuration, it will install:"
+msgstr ""
+
+#: ../../docs/config.rst:1089
+msgid "``flake8`` and ``pytest`` packages for ``py27`` environment."
+msgstr ""
+
+#: ../../docs/config.rst:1090
+msgid "``flake8`` package for ``py36`` environment."
+msgstr ""
+
+#: ../../docs/config.rst:1091
+msgid "``flake8`` and ``coverage`` packages for ``coverage`` environment."
+msgstr ""
+
+#: ../../docs/config.rst:1094
+msgid "Advanced settings"
+msgstr ""
+
+#: ../../docs/config.rst:1099
+msgid "Handle interpreter directives with long lengths"
+msgstr ""
+
+#: ../../docs/config.rst:1101
+msgid ""
+"For systems supporting executable text files (scripts with a shebang), "
+"the system will attempt to parse the interpreter directive to determine "
+"the program to execute on the target text file. When ``tox`` prepares a "
+"virtual environment in a file container which has a large length (e.g. "
+"using Jenkins Pipelines), the system might not be able to invoke shebang "
+"scripts which define interpreters beyond system limits (e.g. Linux has a "
+"limit of 128; ``BINPRM_BUF_SIZE``). To workaround an environment which "
+"suffers from an interpreter directive limit, a user can bypass the "
+"system's interpreter parser by defining the ``TOX_LIMITED_SHEBANG`` "
+"environment variable before invoking ``tox``::"
+msgstr ""
+
+#: ../../docs/config.rst:1113
+msgid ""
+"When the workaround is enabled, all tox-invoked text file executables "
+"will have their interpreter directive parsed by and explicitly executed "
+"by ``tox``."
+msgstr ""
+
+#: ../../docs/config.rst:1117
+msgid "Environment variables"
+msgstr ""
+
+#: ../../docs/config.rst:1118
+msgid "tox will treat the following environment variables:"
+msgstr ""
+
+#: ../../docs/config.rst:1120
+msgid ""
+"``TOX_DISCOVER`` for python discovery first try the python executables "
+"under these paths"
+msgstr ""
+
+#: ../../docs/config.rst:1121
+msgid "``TOXENV`` see :conf:`envlist`."
+msgstr ""
+
+#: ../../docs/config.rst:1122
+msgid "``TOX_LIMITED_SHEBANG`` see :ref:`long interpreter directives`."
+msgstr ""
+
+#: ../../docs/config.rst:1123
+msgid "``TOX_PARALLEL_NO_SPINNER`` see :ref:`parallel_mode`."
+msgstr ""
+
+#: ../../docs/config.rst:1124
+msgid ""
+"``_TOX_PARALLEL_ENV`` lets tox know that it is invoked in the parallel "
+"mode."
+msgstr ""
+
+#: ../../docs/config.rst:1125
+msgid "``TOX_PROVISION`` is only intended to be used internally."
+msgstr ""
+
+#: ../../docs/config.rst:1126
+msgid ""
+"``TOX_REPORTER_TIMESTAMP`` enables showing for each output line its delta"
+" since the tox startup when set to ``1``."
+msgstr ""
+
+#: ../../docs/config.rst:1127
+msgid "``TOX_SKIP_ENV`` see :conf:`envlist`."
+msgstr ""
+
+#: ../../docs/config.rst:1128
+msgid "``TOX_TESTENV_PASSENV`` see :conf:`passenv`."
+msgstr ""
+
+#: ../../docs/config.rst:1131
+msgid "Injected environment variables"
+msgstr ""
+
+#: ../../docs/config.rst:1132
+msgid ""
+"tox will inject the following environment variables that you can use to "
+"test that your command is running within tox:"
+msgstr ""
+
+#: ../../docs/config.rst:1136
+msgid "``TOX_WORK_DIR`` env var is set to the tox work directory"
+msgstr ""
+
+#: ../../docs/config.rst:1137
+msgid "``TOX_ENV_NAME`` is set to the current running tox environment name"
+msgstr ""
+
+#: ../../docs/config.rst:1138
+msgid "``TOX_ENV_DIR`` is set to the current tox environments working dir."
+msgstr ""
+
+#: ../../docs/config.rst:1139
+msgid ""
+"``TOX_PACKAGE`` the packaging phases outcome path (useful to inspect and "
+"make assertion of the built package itself)."
+msgstr ""
+
+#: ../../docs/config.rst:1140
+msgid ""
+"``TOX_PARALLEL_ENV`` is set to the current running tox environment name, "
+"only when running in parallel mode."
+msgstr ""
+
+#: ../../docs/config.rst:1142
+msgid ""
+"this applies for all tox envs (isolated packaging too) and all external "
+"commands called (e.g. install command - pip)."
+msgstr ""
+
+#: ../../docs/config.rst:1146
+msgid "Other Rules and notes"
+msgstr ""
+
+#: ../../docs/config.rst:1148
+msgid ""
+"``path`` specifications: if a specified ``path`` is a relative path it "
+"will be considered as relative to the ``toxinidir``, the directory where "
+"the configuration file resides."
+msgstr ""
+
+#: ../../docs/config.rst:1153
+msgid "CLI"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "tox"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "tox options"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "additional arguments available to command positional substitution"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "report version information to stdout."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "show help about options"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "show help about ini-names"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"increase verbosity of reporting output.-vv mode turns off output "
+"redirection for package installation, above level two verbosity flags are"
+" passed through to pip (with two less level)"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "progressively silence reporting output."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"show live configuration (by default all env, with -l only default "
+"targets, specific via TOXENV/-e)"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "show list of test environments (with description if verbose)"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "show list of all defined environments (with description if verbose)"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "config file name or directory with 'tox.ini' file."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "work against specified environments (ALL selects all)."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"sets up a development environment at ENVDIR based on the env's tox "
+"configuration specified by `-e` (-e defaults to py)."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "skip invoking test commands."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "only perform the sdist packaging activity."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "skip package installation for this run"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"run tox environments in parallel, the argument controls limit: all, auto "
+"or missing argument - cpu count, some positive number, 0 to turn off"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "connect to stdout while running environments"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"(deprecated) ensure two tox builds can run in parallel (uses a lock file "
+"in the tox workdir with .lock extension)"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"use specified package for installation into venv, instead of creating an "
+"sdist."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "install package in the venv using 'setup.py develop' via 'pip -e .'"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"set indexserver url (if URL is of form name=url set the url for the "
+"'name' indexserver, specifically)"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"install pre-releases and development versions of dependencies. This will "
+"pass the --pre option to install_command (pip by default)."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "force recreation of virtual environments"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"write a json file with detailed information about all commands and "
+"results involved."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "for python discovery first try the python executables under these paths"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"set PYTHONHASHSEED to SEED before running commands.  Defaults to a random"
+" integer in the range [1, 4294967295] ([1, 1024] on Windows). Passing "
+"'noset' suppresses this behavior."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"Forces a certain version of one of the dependencies when configuring the "
+"virtual environment. REQ Examples 'pytest<2.7' or 'django>=1.6'."
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "override sitepackages setting to True in all envs"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "override alwayscopy setting to True in all envs"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid ""
+"do not perform provision, but fail and if a path was provided write "
+"provision metadata as JSON to it"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "don't fail tests for missing interpreters: {config,true,false} choice"
+msgstr ""
+
+#: ../../<autoprogram>:1
+msgid "tox working directory"
+msgstr ""
+
